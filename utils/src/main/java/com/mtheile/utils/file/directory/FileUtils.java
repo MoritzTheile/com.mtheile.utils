@@ -11,7 +11,7 @@ import java.util.Vector;
 
 public class FileUtils {
 	
-	/**
+		/**
 	 * This method returns a new file object which points to the physical data 
 	 * referenced by the input file before calling this method.
 	 * 
@@ -35,6 +35,10 @@ public class FileUtils {
 		return renamedFile;
 	}
 
+	public static List<File> listFiles(String directory, boolean recurse){
+		return listFiles(new File(directory), recurse);
+	}
+	
 	/**
 	 * This method returns a Collection with Files from given directory. If recurse==true 
 	 * files from sub directories are returned as well.
