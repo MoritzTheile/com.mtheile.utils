@@ -73,6 +73,10 @@ public class FileUtils {
 	 */
 	public static void deleteTree(File path) {
 
+		if (!path.exists()) {
+			return;
+		}
+
 		for (File file : path.listFiles()) {
 
 			if (file.isDirectory()) {

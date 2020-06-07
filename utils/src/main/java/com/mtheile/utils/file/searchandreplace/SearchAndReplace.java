@@ -9,8 +9,8 @@ import java.nio.file.StandardOpenOption;
 
 public class SearchAndReplace {
 
-	public static void searchAndReplace(String regex, String replacement, File file) throws Exception{
-		
+	public static void searchAndReplace(String regex, String replacement, File file) throws Exception {
+
 		Path path = Paths.get(file.getPath());
 
 		byte[] bytesFromFile = Files.readAllBytes(path);
@@ -19,7 +19,11 @@ public class SearchAndReplace {
 
 		textFromFile = textFromFile.replaceAll(regex, replacement);
 
+		if (file.exists()) {
+			file.delete();
+		}
+
 		Files.write(path, textFromFile.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE);
-		
+
 	}
 }
