@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import com.mtheile.utils.file.directory.FileUtils;
-import com.mtheile.utils.file.searchandreplace.SearchAndReplace;
+import com.mtheile.utils.file.textfile.TextFileManipulator;
 
 public class CodeProcessor {
 
@@ -34,19 +34,19 @@ public class CodeProcessor {
 
 		for (File file : destDirFiles) {
 
-			SearchAndReplace.searchAndReplace("" +
+			TextFileManipulator.searchAndReplace("" +
 					"@GeneratedValue\\(strategy = GenerationType\\.SEQUENCE, generator = \"sequenceGenerator\"\\)\\R    @SequenceGenerator\\(name = \"sequenceGenerator\"\\)\\R",
 					"@GeneratedValue(generator = \"prod-generator\")\n@GenericGenerator(name = \"prod-generator\", strategy = \"com.mtheile.utils.simpleetl.util.CustomIdGenerator\")\n", file);
 
-			SearchAndReplace.searchAndReplace("" +
+			TextFileManipulator.searchAndReplace("" +
 					"implements Serializable \\{",
 					"extends WithCustomId implements Serializable \\{", file);
 
-			SearchAndReplace.searchAndReplace("" +
+			TextFileManipulator.searchAndReplace("" +
 					"com.lithodat.app.domain",
 					"com.mtheile.utils.simpleetl." + DOMAIN + ".domain", file);
 
-			SearchAndReplace.searchAndReplace("" +
+			TextFileManipulator.searchAndReplace("" +
 					"import org\\.hibernate\\.annotations\\.CacheConcurrencyStrategy;",
 					"import org.hibernate.annotations.CacheConcurrencyStrategy;\r\n"
 							+ "import org.hibernate.annotations.GenericGenerator;\n"
@@ -58,24 +58,24 @@ public class CodeProcessor {
 
 		for (File file : enumerationDirFiles) {
 
-			SearchAndReplace.searchAndReplace("" +
+			TextFileManipulator.searchAndReplace("" +
 					"com.lithodat.app.domain",
 					"com.mtheile.utils.simpleetl." + DOMAIN + ".domain", file);
 
 		}
 
-		SearchAndReplace.searchAndReplace("extends AbstractAuditingEntity", "", getFile(destDirFiles, "User.java"));
-		SearchAndReplace.searchAndReplace("import com\\.lithodat\\.app\\.config\\.Constants;", "", getFile(destDirFiles, "User.java"));
-		SearchAndReplace.searchAndReplace("import org\\.apache\\.commons\\.lang3\\.StringUtils;", "", getFile(destDirFiles, "User.java"));
-		SearchAndReplace.searchAndReplace("@Pattern", "// @Pattern", getFile(destDirFiles, "User.java"));
-		SearchAndReplace.searchAndReplace("this\\.login = StringUtils\\.lowerCase\\(login, Locale\\.ENGLISH\\);", "this.login = login;", getFile(destDirFiles, "User.java"));
+		TextFileManipulator.searchAndReplace("extends AbstractAuditingEntity", "", getFile(destDirFiles, "User.java"));
+		TextFileManipulator.searchAndReplace("import com\\.lithodat\\.app\\.config\\.Constants;", "", getFile(destDirFiles, "User.java"));
+		TextFileManipulator.searchAndReplace("import org\\.apache\\.commons\\.lang3\\.StringUtils;", "", getFile(destDirFiles, "User.java"));
+		TextFileManipulator.searchAndReplace("@Pattern", "// @Pattern", getFile(destDirFiles, "User.java"));
+		TextFileManipulator.searchAndReplace("this\\.login = StringUtils\\.lowerCase\\(login, Locale\\.ENGLISH\\);", "this.login = login;", getFile(destDirFiles, "User.java"));
 
-		SearchAndReplace.searchAndReplace("extends WithCustomId", "", getFile(destDirFiles, "AbstractAuditingEntity.java"));
-		SearchAndReplace.searchAndReplace("@Audited", "", getFile(destDirFiles, "AbstractAuditingEntity.java"));
-		SearchAndReplace.searchAndReplace("import org\\.hibernate\\.envers\\.Audited;", "", getFile(destDirFiles, "AbstractAuditingEntity.java"));
+		TextFileManipulator.searchAndReplace("extends WithCustomId", "", getFile(destDirFiles, "AbstractAuditingEntity.java"));
+		TextFileManipulator.searchAndReplace("@Audited", "", getFile(destDirFiles, "AbstractAuditingEntity.java"));
+		TextFileManipulator.searchAndReplace("import org\\.hibernate\\.envers\\.Audited;", "", getFile(destDirFiles, "AbstractAuditingEntity.java"));
 
-		SearchAndReplace.searchAndReplace("extends WithCustomId", "", getFile(destDirFiles, "PersistentAuditEvent.java"));
-		SearchAndReplace.searchAndReplace("@GenericGenerator", "// @GenericGenerator", getFile(destDirFiles, "PersistentAuditEvent.java"));
+		TextFileManipulator.searchAndReplace("extends WithCustomId", "", getFile(destDirFiles, "PersistentAuditEvent.java"));
+		TextFileManipulator.searchAndReplace("@GenericGenerator", "// @GenericGenerator", getFile(destDirFiles, "PersistentAuditEvent.java"));
 
 	}
 

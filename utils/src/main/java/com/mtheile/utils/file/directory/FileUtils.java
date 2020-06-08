@@ -67,6 +67,10 @@ public class FileUtils {
 
 	}
 
+	public static void deleteTree(String path) {
+		deleteTree(new File(path));
+	}
+
 	/**
 	 * Deletes folder recursively.
 	 * 
@@ -177,6 +181,36 @@ public class FileUtils {
 		}
 		if (destination != null) {
 			destination.close();
+		}
+
+	}
+
+	public static void deleteFileFromDir(String dir, String fileName) {
+		deleteFileFromDir(new File(dir), fileName);
+	}
+
+	public static void deleteFileFromDir(File dir, String fileName) {
+		for (File file : listFiles(dir, false)) {
+
+			if (file.getName().equals(fileName)) {
+				file.delete();
+			}
+
+		}
+	}
+
+	public static void deleteFilesFromDir(String dir, String fileNameRegEx) {
+		deleteFilesFromDir(new File(dir), fileNameRegEx);
+	}
+
+	public static void deleteFilesFromDir(File dir, String fileNameRegEx) {
+
+		for (File file : listFiles(dir, false)) {
+
+			if (file.getName().matches(fileNameRegEx)) {
+				file.delete();
+			}
+
 		}
 
 	}
