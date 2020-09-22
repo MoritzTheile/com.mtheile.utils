@@ -86,6 +86,46 @@ public class TextFileManipulator {
 
 	}
 
+	public static void deleteSections(File file, String sectionStart, String sectionEnd, boolean keepSectionMarker, boolean useRegex) throws Exception {
+
+		if (!useRegex) {
+			sectionStart = Pattern.quote(sectionStart);
+			sectionEnd = Pattern.quote(sectionEnd);
+		}
+
+		String textFromFile = fileToString(file);
+
+		// interesting: https://www.rexegg.com/regex-quantifiers.html
+		String fullRegex = "(?s)" + "(" + sectionStart + ")" + ".*?" + "(" + sectionEnd + ")";
+
+		Pattern pattern = Pattern.compile(fullRegex);
+
+		Matcher matcher = pattern.matcher(textFromFile);
+
+		while (matcher.find()) {
+
+			String section = matcher.group();
+
+			String replacement = "";
+
+			if (keepSectionMarker) {
+
+				replacement = matcher.group(1) + matcher.group(2);
+
+			}
+
+			// in case section is followed by newline also delete new line
+			textFromFile = textFromFile.replaceAll(Pattern.quote(section) + "[\\r]{0,1}[\\n]{0,1}", replacement);
+
+			// in case section is not followed by newline
+			textFromFile = textFromFile.replaceAll(Pattern.quote(section), replacement);
+
+		}
+
+		Files.write(Paths.get(file.getPath()), textFromFile.getBytes(StandardCharsets.UTF_8));
+
+	}
+
 	private static String fileToString(File file) throws IOException {
 
 		Path path = Paths.get(file.getPath());

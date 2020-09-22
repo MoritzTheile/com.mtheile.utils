@@ -7,7 +7,7 @@ public class EntityRemover {
 
 	public static final String JHI_PROJ_HOME = "C:\\Users\\theil\\git\\com.lithodat.app";
 
-	public static final String ENTITY_NAME = "TestAsdf";
+	public static final String ENTITY_NAME = "ChronoProperty";
 
 	public static void main(String[] args) throws Exception {
 

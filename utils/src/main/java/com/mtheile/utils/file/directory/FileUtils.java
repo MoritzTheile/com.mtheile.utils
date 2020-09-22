@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FileUtils {
@@ -194,6 +195,48 @@ public class FileUtils {
 
 			if (file.getName().equals(fileName)) {
 				file.delete();
+			}
+
+		}
+	}
+
+	public static void deleteFilesFromDirExcept(File dir, String... exclusionPatterns) {
+
+		List<String> exclusionPatternList = new ArrayList<String>(Arrays.asList(exclusionPatterns));
+
+		for (File file : listFiles(dir, false)) {
+
+			boolean excluded = false;
+
+			for (String exclusionPattern : exclusionPatternList) {
+
+				excluded = excluded || file.getName().matches(exclusionPattern);
+
+			}
+
+			if (!file.isDirectory() && !excluded) {
+				file.delete();
+			}
+
+		}
+	}
+
+	public static void deleteDirsFromDirExcept(File dir, String... exclusionPatterns) {
+
+		List<String> exclusionPatternList = new ArrayList<String>(Arrays.asList(exclusionPatterns));
+
+		for (File file : listFiles(dir, false)) {
+
+			boolean excluded = false;
+
+			for (String exclusionPattern : exclusionPatternList) {
+
+				excluded = excluded || file.getName().matches(exclusionPattern);
+
+			}
+
+			if (file.isDirectory() && !excluded) {
+				deleteTree(file);
 			}
 
 		}
