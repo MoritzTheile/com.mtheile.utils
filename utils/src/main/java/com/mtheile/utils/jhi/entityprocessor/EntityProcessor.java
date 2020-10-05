@@ -13,6 +13,7 @@ public class EntityProcessor {
 		addCascadeTypeRemove("DataPackage.java", "dataPackage2Supervisors");
 		addCascadeTypeRemove("DataPackage.java", "dataPackage2Editors");
 		addCascadeTypeRemove("DataPackage.java", "dataPoints");
+		addCascadeTypeRemove("DataPackage.java", "baskets");
 
 	}
 
@@ -31,12 +32,14 @@ public class EntityProcessor {
 	public static final String ASSOSTRING_TOKEN = "ASSOSTRING_TOKEN";
 
 	public static final String matcher = ""
+			+ "(?s)" // switch on DOTALL: dot matches line breaks now
+			+ "@OneToMany\\(mappedBy = \"(.*)\"\\)" // this line gets replaced using $1
 			+ ""
-			+ "@OneToMany\\(mappedBy = \"(.*)\"\\)"
+			+ "(" // start of $2
 			+ ""
-			+ "("
-			+ "\\R.*@Cache\\(usage = CacheConcurrencyStrategy\\.NONSTRICT_READ_WRITE\\)"
-			+ "\\R.*private Set<.*> " + ASSOSTRING_TOKEN + " = new HashSet<>\\(\\);"
+			+ ".*?"
+			+ "private Set<.*> " + ASSOSTRING_TOKEN + " = new HashSet<>\\(\\);"
+			+ ""
 			+ ")";
 
 	public static final String replacement = "@OneToMany(mappedBy = \"$1\", cascade = CascadeType.REMOVE)$2";
