@@ -23,7 +23,10 @@ public class ModelRebuilder {
 		FileUtils.deleteFilesFromDirExcept(new File(JHI_PROJ_HOME + "\\src\\main\\resources\\config\\liquibase\\changelog"), "00000000000000_initial_schema\\.xml");
 		//
 		// // liquibase/data
-		FileUtils.deleteFilesFromDir(JHI_PROJ_HOME + "\\src\\main\\resources\\config\\liquibase\\data", ".*\\.csv");
+		FileUtils.deleteFilesFromDirExcept(new File(JHI_PROJ_HOME + "\\src\\main\\resources\\config\\liquibase\\data"),
+				"user.csv",
+				"authority.csv",
+				"user_authority.csv");
 		//
 		// // liquibase/master.xml
 		TextFileManipulator.deleteSections(new File(JHI_PROJ_HOME + "\\src\\main\\resources\\config\\liquibase\\master.xml"), "<!--  jhipster-needle-insertion-start-changelog -->\\R", "[\\t ]*<!-- jhipster-needle-liquibase-add-changelog ", true, true);
@@ -44,6 +47,7 @@ public class ModelRebuilder {
 		FileUtils.deleteFilesFromDirExcept(new File(JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\repository"),
 				"AuthorityRepository\\.java",
 				"package-info\\.java",
+				"PersistenceAuditEventRepository\\.java",
 				"CustomAuditEventRepository\\.java",
 				"UserRepository\\.java");
 		//
@@ -52,6 +56,7 @@ public class ModelRebuilder {
 		FileUtils.deleteFilesFromDirExcept(new File(JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\web\\rest"),
 				"AccountResource\\.java",
 				"package-info\\.java",
+				"PersistenceAuditEventRepository\\.java",
 				"ArchiveResource\\.java",
 				"AuditResource\\.java",
 				"ClientForwardController\\.java",
@@ -72,6 +77,7 @@ public class ModelRebuilder {
 		// FileUtils.deleteFileFromDir(JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\service\\dto", ENTITY_NAME + "Criteria.java");
 		FileUtils.deleteFilesFromDirExcept(new File(JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\service\\dto"),
 				"UserDTO\\.java",
+				"PasswordChangeDTO\\.java",
 				"package-info\\.java");
 		//
 		// // service/impl
