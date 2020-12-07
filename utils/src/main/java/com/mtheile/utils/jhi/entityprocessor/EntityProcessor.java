@@ -14,6 +14,26 @@ public class EntityProcessor {
 		addCascadeTypeRemove("DataPackage.java", "dataPackage2Editors");
 		addCascadeTypeRemove("DataPackage.java", "dataPoints");
 		addCascadeTypeRemove("DataPackage.java", "baskets");
+		addCascadeTypeRemove("DataPackage.java", "samples");
+
+		addCascadeTypeRemove("DataPoint.java", "tag2DataPoints");
+		addCascadeTypeRemove("DataPoint.java", "flag2DataPoints");
+		addCascadeTypeRemove("DataPoint.java", "literature2DataPoints");
+		addCascadeTypeRemove("DataPoint.java", "person2DataPoints");
+		addCascadeTypeRemove("DataPoint.java", "funding2DataPoints");
+		addCascadeTypeRemove("DataPoint.java", "lab2DataPoints");
+		addCascadeTypeRemove("DataPoint.java", "machine2DataPoints");
+		addCascadeTypeRemove("DataPoint.java", "statements");
+		addCascadeTypeRemove("DataPoint.java", "datapointProperties");
+
+		addCascadeTypeRemove("Sample.java", "literature2Samples");
+		addCascadeTypeRemove("Sample.java", "person2Samples");
+		addCascadeTypeRemove("Sample.java", "funding2Samples");
+		addCascadeTypeRemove("Sample.java", "analytes");
+		addCascadeTypeRemove("Sample.java", "");
+		addCascadeTypeRemove("Sample.java", "");
+		addCascadeTypeRemove("Sample.java", "");
+		addCascadeTypeRemove("Sample.java", "");
 
 	}
 
