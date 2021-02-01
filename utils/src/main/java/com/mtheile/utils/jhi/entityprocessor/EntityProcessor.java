@@ -30,6 +30,7 @@ public class EntityProcessor {
 		addCascadeTypeRemove("Sample.java", "person2Samples");
 		addCascadeTypeRemove("Sample.java", "funding2Samples");
 		addCascadeTypeRemove("Sample.java", "analytes");
+		addCascadeTypeRemove("Sample.java", "images");
 
 	}
 

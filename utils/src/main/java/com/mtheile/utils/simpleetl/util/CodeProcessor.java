@@ -34,6 +34,13 @@ public class CodeProcessor {
 
 		for (File file : destDirFiles) {
 
+			// TODO? make all relationships lazy
+
+			// see: https://vladmihalcea.com/the-best-way-to-lazy-load-entity-attributes-using-jpa-and-hibernate/
+			// TODO? making all @Lobs lazy: @Lob @Basic(fetch = FetchType.LAZY)
+
+			// TODO fix hash functions
+
 			TextFileManipulator.searchAndReplace("" +
 					"@GeneratedValue\\(strategy = GenerationType\\.SEQUENCE, generator = \"sequenceGenerator\"\\)\\R    @SequenceGenerator\\(name = \"sequenceGenerator\"\\)\\R",
 					"@GeneratedValue(generator = \"prod-generator\")\n@GenericGenerator(name = \"prod-generator\", strategy = \"com.mtheile.utils.simpleetl.util.CustomIdGenerator\")\n", file);
