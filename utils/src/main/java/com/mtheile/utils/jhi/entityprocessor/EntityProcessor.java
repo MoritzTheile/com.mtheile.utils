@@ -22,8 +22,8 @@ public class EntityProcessor {
 	private static void fixUpperLowerCaseButInMapper() throws Exception {
 		for (File file : FileUtils.listFiles(MAPPER_DIR, false)) {
 			if (!file.isDirectory()) {
-				TextFileManipulator.searchAndReplace("source = \"uPbSHRIMPSingleGrain", "source = \"UPbSHRIMPSingleGrain", file);
-				TextFileManipulator.searchAndReplace("target = \"uPbSHRIMPSingleGrain", "target = \"UPbSHRIMPSingleGrain", file);
+				TextFileManipulator.searchAndReplace("source = \"sHRIMP", "source = \"SHRIMP", file);
+				TextFileManipulator.searchAndReplace("target = \"sHRIMP", "target = \"SHRIMP", file);
 			}
 		}
 
