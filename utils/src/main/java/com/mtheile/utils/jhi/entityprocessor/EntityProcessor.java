@@ -48,6 +48,7 @@ public class EntityProcessor {
 	}
 
 	private static void addCascadingRemoves() throws Exception {
+
 		addCascadeTypeRemove("DataPackage.java", "dataPackage2Supervisors");
 		addCascadeTypeRemove("DataPackage.java", "dataPackage2Editors");
 		addCascadeTypeRemove("DataPackage.java", "dataPoints");
@@ -69,23 +70,39 @@ public class EntityProcessor {
 		addCascadeTypeRemove("Sample.java", "funding2Samples");
 		addCascadeTypeRemove("Sample.java", "analytes");
 		addCascadeTypeRemove("Sample.java", "images");
+		addCascadeTypeRemove("Sample.java", "sampleProperties");
+		addCascadeTypeRemove("Sample.java", "tag2Samples");
+
+		addCascadeTypeRemove("Statement.java", "geoEventAtAge");
+		addCascadeTypeRemove("Statement.java", "tempAtAge");
+		addCascadeTypeRemove("Statement.java", "tempGradient");
+
+		addCascadeTypeRemove("GeoEventAtAge.java", "sHRIMPAge");
+
+		addCascadeTypeRemove("SHRIMPDataPoint.java", "sHRIMPSpots");
+		addCascadeTypeRemove("SHRIMPDataPoint.java", "dataPoints");
 	}
 
 	private static void addCascadeTypeRemove(String entityFile, String assoName) throws Exception {
 
 		File file = new File(DOMAIN_DIR + entityFile);
 
-		TextFileManipulator.searchAndReplace(getRegex(assoName), replacement, file);
+		TextFileManipulator.searchAndReplace(getRegex1(assoName), replacement1, file);
+		TextFileManipulator.searchAndReplace(getRegex2(assoName), replacement2, file);
 
-	}
-
-	private static String getRegex(String assoName) {
-		return matcher.replaceAll(ASSOSTRING_TOKEN, assoName);
 	}
 
 	public static final String ASSOSTRING_TOKEN = "ASSOSTRING_TOKEN";
 
-	public static final String matcher = ""
+	private static String getRegex1(String assoName) {
+		return matcher1.replaceAll(ASSOSTRING_TOKEN, assoName);
+	}
+
+	private static String getRegex2(String assoName) {
+		return matcher2.replaceAll(ASSOSTRING_TOKEN, assoName);
+	}
+
+	public static final String matcher1 = ""
 			+ "(?s)" // switch on DOTALL: dot matches line breaks now
 			+ "@OneToMany\\(mappedBy = \"(.*)\"\\)" // this line gets replaced using $1
 			+ ""
@@ -96,6 +113,13 @@ public class EntityProcessor {
 			+ ""
 			+ ")";
 
-	public static final String replacement = "@OneToMany(mappedBy = \"$1\", cascade = CascadeType.REMOVE)$2";
+	public static final String replacement1 = "@OneToMany(mappedBy = \"$1\", cascade = CascadeType.REMOVE)$2";
 
+	public static final String matcher2 = "(?s)" // switch on DOTALL: dot matches line breaks now
+			+ "    @OneToOne(\\R"
+			+ "    .*"
+			+ "    private .* " + ASSOSTRING_TOKEN + ";\\R)"
+			+ "";
+
+	public static final String replacement2 = "    @OneToOne(cascade = CascadeType.REMOVE)$1";
 }
