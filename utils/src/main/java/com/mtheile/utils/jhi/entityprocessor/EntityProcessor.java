@@ -10,6 +10,7 @@ public class EntityProcessor {
 	public static final String JHI_PROJ_HOME = "C:\\Users\\theil\\git\\com.lithodat.app";
 	public static final String DOMAIN_DIR = JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\domain\\";
 	public static final String SERVICE_DIR = JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\service";
+	public static final String DTO_DIR = JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\service\\dto\\";
 	public static final String MAPPER_DIR = JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\service\\mapper";
 
 	public static void main(String[] args) throws Exception {
@@ -17,6 +18,7 @@ public class EntityProcessor {
 		addCascadingRemoves();
 		makeCreateSpecificationPublic();
 		fixUpperLowerCaseButInMapper();
+		addChangedByInterfaceToDTOs();
 	}
 
 	private static void fixUpperLowerCaseButInMapper() throws Exception {
@@ -45,6 +47,18 @@ public class EntityProcessor {
 			}
 		}
 
+	}
+
+	private static void addChangedByInterfaceToDTOs() throws Exception {
+		addChangedByInterfaceToDTO("SampleDTO.java");
+	}
+
+	private static void addChangedByInterfaceToDTO(String entityFile) throws Exception {
+
+		File file = new File(DTO_DIR + entityFile);
+
+		TextFileManipulator.searchAndReplace("implements Serializable", "implements Serializable, ChangedBy", file);
+		TextFileManipulator.searchAndReplace("package com.lithodat.app.service.dto;", "package com.lithodat.app.service.dto;\nimport com.lithodat.app.litho.service.dto.base.ChangedBy;", file);
 	}
 
 	private static void addCascadingRemoves() throws Exception {
