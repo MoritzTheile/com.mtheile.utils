@@ -51,6 +51,16 @@ public class EntityProcessor {
 
 	private static void addChangedByInterfaceToDTOs() throws Exception {
 		addChangedByInterfaceToDTO("SampleDTO.java");
+		addChangedByInterfaceToDTO("DataPointDTO.java");
+		addChangedByInterfaceToDTO("DataPackageDTO.java");
+		addChangedByInterfaceToDTO("PersonDTO.java");
+		addChangedByInterfaceToDTO("LiteratureDTO.java");
+		addChangedByInterfaceToDTO("FundingDTO.java");
+		addChangedByInterfaceToDTO("ArchiveDTO.java");
+		addChangedByInterfaceToDTO("StratigraphicUnitDTO.java");
+		addChangedByInterfaceToDTO("ReferenceMaterialDTO.java");
+		addChangedByInterfaceToDTO("MaterialDTO.java");
+		addChangedByInterfaceToDTO("MachineDTO.java");
 	}
 
 	private static void addChangedByInterfaceToDTO(String entityFile) throws Exception {
