@@ -24,8 +24,17 @@ public class EntityProcessor {
 	private static void fixUpperLowerCaseButInMapper() throws Exception {
 		for (File file : FileUtils.listFiles(MAPPER_DIR, false)) {
 			if (!file.isDirectory()) {
+
 				TextFileManipulator.searchAndReplace("source = \"sHRIMP", "source = \"SHRIMP", file);
 				TextFileManipulator.searchAndReplace("target = \"sHRIMP", "target = \"SHRIMP", file);
+
+				TextFileManipulator.searchAndReplace("source = \"fTRawDataPoint", "source = \"FTRawDataPoint", file);
+				TextFileManipulator.searchAndReplace("target = \"fTRawDataPoint", "target = \"FTRawDataPoint", file);
+
+				TextFileManipulator.searchAndReplace(" = \"uErrorType", " = \"UErrorType", file);
+
+				TextFileManipulator.searchAndReplace(" = \"dPerErrorType", " = \"DPerErrorType", file);
+
 			}
 		}
 
