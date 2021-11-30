@@ -35,6 +35,8 @@ public class EntityProcessor {
 
 				TextFileManipulator.searchAndReplace(" = \"dPerErrorType", " = \"DPerErrorType", file);
 
+				TextFileManipulator.searchAndReplace(" = \"fTDataPoint", " = \"FTDataPoint", file);
+
 			}
 		}
 
