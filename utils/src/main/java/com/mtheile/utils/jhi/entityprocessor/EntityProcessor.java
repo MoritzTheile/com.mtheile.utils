@@ -37,6 +37,13 @@ public class EntityProcessor {
 
 				TextFileManipulator.searchAndReplace(" = \"fTDataPoint", " = \"FTDataPoint", file);
 
+				TextFileManipulator.searchAndReplace(" = \"eUEquation", " = \"EUEquation", file);
+				TextFileManipulator.searchAndReplace(" = \"rFTequation", " = \"RFTequation", file);
+				TextFileManipulator.searchAndReplace(" = \"rSVequation", " = \"RSVequation", file);
+				TextFileManipulator.searchAndReplace(" = \"uAmountErrorType", " = \"UAmountErrorType", file);
+				TextFileManipulator.searchAndReplace(" = \"uConcentrationErrorType", " = \"UConcentrationErrorType", file);
+				TextFileManipulator.searchAndReplace(" = \"eUErrorType", " = \"EUErrorType", file);
+
 			}
 		}
 
