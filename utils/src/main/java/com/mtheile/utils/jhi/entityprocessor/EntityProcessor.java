@@ -19,6 +19,7 @@ public class EntityProcessor {
 		makeCreateSpecificationPublic();
 		fixUpperLowerCaseButInMapper();
 		addChangedByInterfaceToDTOs();
+		makeEntityLazy("DataPoint.java");
 	}
 
 	private static void fixUpperLowerCaseButInMapper() throws Exception {
@@ -44,6 +45,8 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace(" = \"uConcentrationErrorType", " = \"UConcentrationErrorType", file);
 				TextFileManipulator.searchAndReplace(" = \"eUErrorType", " = \"EUErrorType", file);
 
+				TextFileManipulator.searchAndReplace(" = \"gCDataPoint", " = \"GCDataPoint", file);
+
 			}
 		}
 
@@ -64,6 +67,14 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace("@Lob\\R", "@Lob @Basic(fetch = FetchType.LAZY)\n", file);
 			}
 		}
+
+	}
+
+	private static void makeEntityLazy(String entityFile) throws Exception {
+		File file = new File(DOMAIN_DIR + entityFile);
+
+		TextFileManipulator.searchAndReplace("@OneToOne\\(", "@OneToOne(fetch = FetchType.LAZY, ", file);
+		TextFileManipulator.searchAndReplace("@ManyToOne", "@ManyToOne(fetch = FetchType.LAZY)", file);
 
 	}
 
