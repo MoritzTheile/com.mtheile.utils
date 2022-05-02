@@ -46,6 +46,7 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace(" = \"eUErrorType", " = \"EUErrorType", file);
 
 				TextFileManipulator.searchAndReplace(" = \"gCDataPoint", " = \"GCDataPoint", file);
+				TextFileManipulator.searchAndReplace(" = \"lAICPMS", " = \"LAICPMS", file);
 
 			}
 		}
@@ -64,6 +65,8 @@ public class EntityProcessor {
 	private static void makeLobFetchLazy() throws Exception {
 		for (File file : FileUtils.listFiles(DOMAIN_DIR, false)) {
 			if (!file.isDirectory()) {
+				// In order to prevent the storage of text via link reference activate next line
+				// TextFileManipulator.searchAndReplace("@Lob\\R", "//removed by EntityProcessor: @Lob @Basic(fetch = FetchType.LAZY)\n", file);
 				TextFileManipulator.searchAndReplace("@Lob\\R", "@Lob @Basic(fetch = FetchType.LAZY)\n", file);
 			}
 		}

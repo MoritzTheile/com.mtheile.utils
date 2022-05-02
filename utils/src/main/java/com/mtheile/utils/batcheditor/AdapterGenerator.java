@@ -13,8 +13,8 @@ public class AdapterGenerator {
 
 	public static void main(String args[]) throws Exception {
 
-		String dtoName = "FTDataPointLithoDTO";
-		String dtoGetter = "\\.getFTDataPointDTO()";
+		String dtoName = "HeDataPointLithoDTO";
+		String dtoGetter = "\\.getHeDataPointDTO()";
 
 		for (Field field : getFields()) {
 
@@ -180,69 +180,119 @@ public class AdapterGenerator {
 
 	private static String fieldsAsTSV() {
 		return ""
-				+ "mountIDCount	String\r\n" +
-				"analyticalSessionID	String\r\n" +
-				"mountIDLength	String\r\n" +
-				"ftCharacterisationMethod	LFTCharacterisationMethod \r\n" +
-				"ftUDeterminationTechnique	LFTUDeterminationTechnique\r\n" +
-				"noOfGrains	Integer\r\n" +
-				"area	Float\r\n" +
-				"rhod	Float\r\n" +
-				"nd	Integer\r\n" +
-				"rhoS	Float\r\n" +
-				"ns	Integer\r\n" +
-				"rhoi	Float\r\n" +
-				"ni	Integer\r\n" +
-				"dosimeter	LDosimeter\r\n" +
-				"uCont	Float\r\n" +
-				"uStandardError	Float\r\n" +
-				"dPar	Float\r\n" +
-				"dParStandardError	Float\r\n" +
-				"dPer	Float\r\n" +
-				"dPerStandardError	Float\r\n" +
-				"rmr0	Float\r\n" +
-				"rmr0StandardError	Float\r\n" +
-				"kParameter	Float\r\n" +
-				"kParameterStandardError	Float\r\n" +
-				"rmr0Equation	LRmr0Equation\r\n" +
-				"chi2pct	Float\r\n" +
-				"dispersion	Float\r\n" +
-				"ftAgeType	LFTAgeType\r\n" +
-				"ftAgeEquation	LFTAgeEquation\r\n" +
-				"meanAgeMa	Float\r\n" +
-				"meanErrorMa	Float\r\n" +
-				"centralAgeMa	Float\r\n" +
-				"centralErrorMa	Float\r\n" +
-				"pooledAgeMa	Float\r\n" +
-				"pooledErrorMa	Float\r\n" +
-				"popAgeMa	Float\r\n" +
-				"popErrorMa	Float\r\n" +
-				"ageComment	String\r\n" +
-				"ageErrorType	LErrorType\r\n" +
-				"mtl	Float\r\n" +
-				"mtl1se	Float\r\n" +
-				"nTracks	Integer\r\n" +
-				"stdDevMu	Float\r\n" +
-				"etchant	LEtchant\r\n" +
-				"etchingTime	Float\r\n" +
-				"etchingTemp	Float\r\n" +
-				"zetaCalibration	Float\r\n" +
-				"zetaError	Float\r\n" +
-				"zetaErrorType	LErrorType\r\n" +
-				"range (ok, instead of r?)	Float\r\n" +
-				"lambda	LLambda\r\n" +
-				"lambdaF	LLambdaF\r\n" +
-				"qEfficiencyFactor	Float\r\n" +
-				"irradiationReactor	IrradiationReactor\r\n" +
-				"comment	Text\r\n" +
-				"neutronDose	Integer\r\n" +
-				"uCaRatio	Float\r\n" +
-				"uCaRatioError	Float\r\n" +
-				"dParNumTotal	Integer\r\n" +
-				"dPerNumTotal	Integer\r\n" +
-				"ftAnalyticalSoftware	LFTAnalyticalSoftware\r\n" +
-				"ftAnalyticalAlgorithm	LFTAnalyticalAlgorithm\r\n" +
-				"cfIrradiation	boolean"
+				+ "mineral	Material\r\n" +
+				"mountID	String\r\n" +
+				"datasetID	String\r\n" +
+				"referenceMaterial	ReferenceMaterial (shared across models)\r\n" +
+				"numAliquots	Integer\r\n" +
+				"grainDimensionEquations	LHeGrainDimensionEq\r\n" +
+				"alphaStopDistRef	LHeAlphaStopDistRef\r\n" +
+				"ftEquation	LHeFTEquation\r\n" +
+				"rSVequation	LHeRSVEq\r\n" +
+				"rFTequation	LHeRFTEq\r\n" +
+				"eUEquation	LHeeUEquation\r\n" +
+				"heAgeEquation	LHeAgeEquation\r\n" +
+				"correctedHeAgeMethod	LHeCorrectedAgeMethod\r\n" +
+				"uncertaintyComment	TextBlob\r\n" +
+				"meanUncorrectedHeAge	Float\r\n" +
+				"meanUncorrectedHeAgeError	Float\r\n" +
+				"meanUncorrectedHeAgeErrorType	LErrorType\r\n" +
+				"weightedMeanUncorrectedHeAge	Float\r\n" +
+				"weightedMeanUncorrectedHeAgeError	Float\r\n" +
+				"weightedMeanUncorrectedHeAgeErrorType	LErrorType\r\n" +
+				"mswdUncorrected	Float\r\n" +
+				"confidenceInterval95Uncorrected	Float\r\n" +
+				"chi2pctUncorrected	Float\r\n" +
+				"iqrUncorrected	Float\r\n" +
+				"meanCorrectedHeAge	Float\r\n" +
+				"meanCorrectedHeAgeError	Float\r\n" +
+				"meanCorrectedHeAgeErrorType	LErrorType\r\n" +
+				"weightedMeanCorrectedHeAge	Float\r\n" +
+				"weightedMeanCorrectedHeAgeError	Float\r\n" +
+				"weightedMeanCorrectedHeAgeErrorType	LErrorType\r\n" +
+				"mswdCorrected	Float\r\n" +
+				"confidenceInterval95Corrected	Float\r\n" +
+				"chi2pctCorrected	Float\r\n" +
+				"iqrCorrected	Float\r\n" +
+				"comment	TextBlob\r\n" +
+				"pitMeasuringTechnique	LHePitMeasuringTechnique\r\n" +
+				"pitVolumeSoftware	LHePitVolumeSoftware\r\n" +
+				"insituHeTechnique	LHeInSituMeasurementTechnique\r\n" +
+				"insituParentTechnique	LParentInSituMeasurementTechnique"
+
+				//				+ "geochemAnalyticalType	LGCAnalyticalTechnique\r\n" +
+				//				"dataReductionSoftware	LDataReductionSoftware\r\n" +
+				//				"analyticalSessionID	String\r\n" +
+				//				"mountID	String\r\n" +
+				//				"analysisScale	LGCAnalysisScale\r\n" +
+				//				"mineral	Material (filtered for mineral)\r\n" +
+				//				"referenceMaterial	ReferenceMaterial (shared across models)\r\n" +
+				//				"oxideErrorType	LErrorType\r\n" +
+				//				"elementErrorType	LErrorType"
+
+				//				+ "mountIDCount	String\r\n" +
+				//				"analyticalSessionID	String\r\n" +
+				//				"mountIDLength	String\r\n" +
+				//				"ftCharacterisationMethod	LFTCharacterisationMethod \r\n" +
+				//				"ftUDeterminationTechnique	LFTUDeterminationTechnique\r\n" +
+				//				"noOfGrains	Integer\r\n" +
+				//				"area	Float\r\n" +
+				//				"rhod	Float\r\n" +
+				//				"nd	Integer\r\n" +
+				//				"rhoS	Float\r\n" +
+				//				"ns	Integer\r\n" +
+				//				"rhoi	Float\r\n" +
+				//				"ni	Integer\r\n" +
+				//				"dosimeter	LDosimeter\r\n" +
+				//				"uCont	Float\r\n" +
+				//				"uStandardError	Float\r\n" +
+				//				"dPar	Float\r\n" +
+				//				"dParStandardError	Float\r\n" +
+				//				"dPer	Float\r\n" +
+				//				"dPerStandardError	Float\r\n" +
+				//				"rmr0	Float\r\n" +
+				//				"rmr0StandardError	Float\r\n" +
+				//				"kParameter	Float\r\n" +
+				//				"kParameterStandardError	Float\r\n" +
+				//				"rmr0Equation	LRmr0Equation\r\n" +
+				//				"chi2pct	Float\r\n" +
+				//				"dispersion	Float\r\n" +
+				//				"ftAgeType	LFTAgeType\r\n" +
+				//				"ftAgeEquation	LFTAgeEquation\r\n" +
+				//				"meanAgeMa	Float\r\n" +
+				//				"meanErrorMa	Float\r\n" +
+				//				"centralAgeMa	Float\r\n" +
+				//				"centralErrorMa	Float\r\n" +
+				//				"pooledAgeMa	Float\r\n" +
+				//				"pooledErrorMa	Float\r\n" +
+				//				"popAgeMa	Float\r\n" +
+				//				"popErrorMa	Float\r\n" +
+				//				"ageComment	String\r\n" +
+				//				"ageErrorType	LErrorType\r\n" +
+				//				"mtl	Float\r\n" +
+				//				"mtl1se	Float\r\n" +
+				//				"nTracks	Integer\r\n" +
+				//				"stdDevMu	Float\r\n" +
+				//				"etchant	LEtchant\r\n" +
+				//				"etchingTime	Float\r\n" +
+				//				"etchingTemp	Float\r\n" +
+				//				"zetaCalibration	Float\r\n" +
+				//				"zetaError	Float\r\n" +
+				//				"zetaErrorType	LErrorType\r\n" +
+				//				"range (ok, instead of r?)	Float\r\n" +
+				//				"lambda	LLambda\r\n" +
+				//				"lambdaF	LLambdaF\r\n" +
+				//				"qEfficiencyFactor	Float\r\n" +
+				//				"irradiationReactor	IrradiationReactor\r\n" +
+				//				"comment	Text\r\n" +
+				//				"neutronDose	Integer\r\n" +
+				//				"uCaRatio	Float\r\n" +
+				//				"uCaRatioError	Float\r\n" +
+				//				"dParNumTotal	Integer\r\n" +
+				//				"dPerNumTotal	Integer\r\n" +
+				//				"ftAnalyticalSoftware	LFTAnalyticalSoftware\r\n" +
+				//				"ftAnalyticalAlgorithm	LFTAnalyticalAlgorithm\r\n" +
+				//				"cfIrradiation	boolean"
 				+ "";
 	}
 
