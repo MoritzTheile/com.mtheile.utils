@@ -7,6 +7,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -133,6 +135,23 @@ public class TextFileManipulator {
 		byte[] bytesFromFile = Files.readAllBytes(path);
 
 		return new String(bytesFromFile, StandardCharsets.UTF_8);
+
+	}
+
+	public static List<String> getMatches(String regex, File file) throws Exception {
+
+		String textFromFile = fileToString(file);
+
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(textFromFile);
+
+		List<String> allMatches = new ArrayList<>();
+
+		while (m.find()) {
+			allMatches.add(m.group());
+		}
+
+		return allMatches;
 
 	}
 
