@@ -33,18 +33,18 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace("source = \"fTRawDataPoint", "source = \"FTRawDataPoint", file);
 				TextFileManipulator.searchAndReplace("target = \"fTRawDataPoint", "target = \"FTRawDataPoint", file);
 
-				TextFileManipulator.searchAndReplace(" = \"uErrorType", " = \"UErrorType", file);
+				TextFileManipulator.searchAndReplace(" = \"uUncertaintyType", " = \"UUncertaintyType", file);
 
-				TextFileManipulator.searchAndReplace(" = \"dPerErrorType", " = \"DPerErrorType", file);
+				TextFileManipulator.searchAndReplace(" = \"dPerUncertaintyType", " = \"DPerUncertaintyType", file);
 
 				TextFileManipulator.searchAndReplace(" = \"fTDataPoint", " = \"FTDataPoint", file);
 
 				TextFileManipulator.searchAndReplace(" = \"eUEquation", " = \"EUEquation", file);
 				TextFileManipulator.searchAndReplace(" = \"rFTequation", " = \"RFTequation", file);
 				TextFileManipulator.searchAndReplace(" = \"rSVequation", " = \"RSVequation", file);
-				TextFileManipulator.searchAndReplace(" = \"uAmountErrorType", " = \"UAmountErrorType", file);
-				TextFileManipulator.searchAndReplace(" = \"uConcentrationErrorType", " = \"UConcentrationErrorType", file);
-				TextFileManipulator.searchAndReplace(" = \"eUErrorType", " = \"EUErrorType", file);
+				TextFileManipulator.searchAndReplace(" = \"uAmountUncertaintyType", " = \"UAmountUncertaintyType", file);
+				TextFileManipulator.searchAndReplace(" = \"uConcentrationUncertaintyType", " = \"UConcentrationUncertaintyType", file);
+				TextFileManipulator.searchAndReplace(" = \"eUUncertaintyType", " = \"EUUncertaintyType", file);
 
 				TextFileManipulator.searchAndReplace(" = \"gCDataPoint", " = \"GCDataPoint", file);
 				TextFileManipulator.searchAndReplace(" = \"lAICPMS", " = \"LAICPMS", file);
