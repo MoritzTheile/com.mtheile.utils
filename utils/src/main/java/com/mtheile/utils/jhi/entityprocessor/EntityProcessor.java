@@ -65,6 +65,7 @@ public class EntityProcessor {
 
 	// also see here: https://docs.google.com/presentation/d/1XcV1d1unRogclBpn0d-B22SxIKOVYsUwO98pqr9CPO4/edit#slide=id.g1256d3a3867_0_14
 	private static void removeStringLobs() throws Exception {
+
 		for (File file : FileUtils.listFiles(DOMAIN_DIR, false)) {
 			if (!file.isDirectory()) {
 				TextFileManipulator.searchAndReplace("(.*@Lob.*\\R)(.*@Column\\(name = \".*\"\\)\\R.*private String.*;\\R)", "// removed by EntityProcessor $1$2", file);

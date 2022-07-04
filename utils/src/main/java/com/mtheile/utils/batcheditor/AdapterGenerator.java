@@ -13,8 +13,9 @@ public class AdapterGenerator {
 
 	public static void main(String args[]) throws Exception {
 
-		String dtoName = "HeDataPointLithoDTO";
-		String dtoGetter = "\\.getHeDataPointDTO()";
+		String dtoName = "HeInSituDTO";
+		//String dtoGetter = "\\.getHeDataPointDTO()";
+		String dtoGetter = "";
 
 		for (Field field : getFields()) {
 
@@ -179,46 +180,51 @@ public class AdapterGenerator {
 	}
 
 	private static String fieldsAsTSV() {
-		return ""
-				+ "mineral	Material\r\n" +
-				"mountID	String\r\n" +
-				"datasetID	String\r\n" +
-				"referenceMaterial	ReferenceMaterial (shared across models)\r\n" +
-				"numAliquots	Integer\r\n" +
-				"grainDimensionEquations	LHeGrainDimensionEq\r\n" +
-				"alphaStopDistRef	LHeAlphaStopDistRef\r\n" +
-				"ftEquation	LHeFTEquation\r\n" +
-				"rSVequation	LHeRSVEq\r\n" +
-				"rFTequation	LHeRFTEq\r\n" +
-				"eUEquation	LHeeUEquation\r\n" +
-				"heAgeEquation	LHeAgeEquation\r\n" +
-				"correctedHeAgeMethod	LHeCorrectedAgeMethod\r\n" +
-				"uncertaintyComment	TextBlob\r\n" +
-				"meanUncorrectedHeAge	Float\r\n" +
-				"meanUncorrectedHeAgeError	Float\r\n" +
-				"meanUncorrectedHeAgeErrorType	LErrorType\r\n" +
-				"weightedMeanUncorrectedHeAge	Float\r\n" +
-				"weightedMeanUncorrectedHeAgeError	Float\r\n" +
-				"weightedMeanUncorrectedHeAgeErrorType	LErrorType\r\n" +
-				"mswdUncorrected	Float\r\n" +
-				"confidenceInterval95Uncorrected	Float\r\n" +
-				"chi2pctUncorrected	Float\r\n" +
-				"iqrUncorrected	Float\r\n" +
-				"meanCorrectedHeAge	Float\r\n" +
-				"meanCorrectedHeAgeError	Float\r\n" +
-				"meanCorrectedHeAgeErrorType	LErrorType\r\n" +
-				"weightedMeanCorrectedHeAge	Float\r\n" +
-				"weightedMeanCorrectedHeAgeError	Float\r\n" +
-				"weightedMeanCorrectedHeAgeErrorType	LErrorType\r\n" +
-				"mswdCorrected	Float\r\n" +
-				"confidenceInterval95Corrected	Float\r\n" +
-				"chi2pctCorrected	Float\r\n" +
-				"iqrCorrected	Float\r\n" +
-				"comment	TextBlob\r\n" +
-				"pitMeasuringTechnique	LHePitMeasuringTechnique\r\n" +
-				"pitVolumeSoftware	LHePitVolumeSoftware\r\n" +
-				"insituHeTechnique	LHeInSituMeasurementTechnique\r\n" +
-				"insituParentTechnique	LParentInSituMeasurementTechnique"
+		return "grainID	String\r\n" +
+				"pitID	String\r\n" +
+				"crysFrag	LHeCrysFrag\r\n" +
+				"pitVolume	Float\r\n" +
+				"pitVolumeUncertainty	Float\r\n" +
+				"pitVolumeUncertaintyType	LErrorType\r\n" +
+				"parentPitVolume	Float\r\n" +
+				"parentPitVolumeUncertainty	Float\r\n" +
+				"parentPitVolumeUncertaintyType	LErrorType\r\n" +
+				"he4Amount	Float\r\n" +
+				"he4AmountUncertainty	Float\r\n" +
+				"he4AmountUncertaintyType	LErrorType\r\n" +
+				"he4Concentraion	Float\r\n" +
+				"he4ConcentrationUncertainty	Float\r\n" +
+				"he4ConcentrationUncertaintyType	LErrorType\r\n" +
+				"uAmount	Float\r\n" +
+				"uAmountUncertainty	Float\r\n" +
+				"uAmountUncertaintyType	LErrorType\r\n" +
+				"uConcentration	Float\r\n" +
+				"uConcentrationUncertainty	Float\r\n" +
+				"uConcentrationUncertaintyType	LErrorType\r\n" +
+				"thAmount	Float\r\n" +
+				"thAmountUncertainty	Float\r\n" +
+				"thAmountUncertaintyType	LErrorType\r\n" +
+				"thConcentration	Float\r\n" +
+				"thConcentrationUncertainty	Float\r\n" +
+				"thConcentrationUncertaintyType	LErrorType\r\n" +
+				"smAmount	Float\r\n" +
+				"smAmountUncertainty	Float\r\n" +
+				"smAmountUncertaintyType	LErrorType\r\n" +
+				"smConcentration	Float\r\n" +
+				"smConcentrationUncertainty	Float\r\n" +
+				"smConcentrationUncertaintyType	LErrorType\r\n" +
+				"eU	Float\r\n" +
+				"eUUncertainty	Float\r\n" +
+				"eUUncertaintyType	LErrorType\r\n" +
+				"pitRelationship	LPitRelationship\r\n" +
+				"uncorrectedHeAge	Float\r\n" +
+				"uncorrectedHeAgeUncertainty	Float\r\n" +
+				"uncorrectedHeAgeUncertaintyType	LErrorType\r\n" +
+				"ageCalibrationFactor	Float\r\n" +
+				"correctedHeAge	Float\r\n" +
+				"tau	Float\r\n" +
+				"tauUncertaintyType	LErrorType\r\n" +
+				"comment	String"
 
 				//				+ "geochemAnalyticalType	LGCAnalyticalTechnique\r\n" +
 				//				"dataReductionSoftware	LDataReductionSoftware\r\n" +
