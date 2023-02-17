@@ -20,6 +20,7 @@ public class EntityProcessor {
 		makeCreateSpecificationPublic();
 		fixUpperLowerCaseButInMapper();
 		addChangedByInterfaceToDTOs();
+		makeEntityLazy("DataPackage.java");
 		makeEntityLazy("DataPoint.java");
 	}
 
