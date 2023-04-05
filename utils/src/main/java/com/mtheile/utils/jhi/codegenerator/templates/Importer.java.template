@@ -1,0 +1,80 @@
+package com.lithodat.app.litho.service.other.batch.tableimporter.lists;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.lithodat.app.litho.service.MODELNAME_TOKEN.ENTITYNAME_TOKENLithoService;
+import com.lithodat.app.litho.service.other.batch.AbstractImporter;
+import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO;
+import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO.TABLE;
+import com.lithodat.app.litho.service.util.LithoAuth;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
+
+import io.github.jhipster.service.filter.StringFilter;
+
+@Component
+public class ENTITYNAME_TOKENImporter extends AbstractImporter<ENTITYNAME_TOKENDTO, ENTITYNAME_TOKENLithoService, ENTITYNAME_TOKENCriteria> {
+
+	@Autowired
+	private ENTITYNAME_TOKENLithoService service;
+
+	@Autowired
+	private ENTITYNAME_TOKENImporter self;
+
+	public ENTITYNAME_TOKENImporter() {
+
+		super(TABLE.ENTITYNAME_TOKEN);
+
+	}
+
+	@Override
+	public ENTITYNAME_TOKENLithoService getService() {
+
+		return service;
+
+	}
+
+	@Override
+	public ENTITYNAME_TOKENCriteria getFindEntityCriteria(String term) {
+
+		ENTITYNAME_TOKENCriteria criteria = new ENTITYNAME_TOKENCriteria();
+
+		if (term != null && !term.isEmpty()) {
+			StringFilter stringFilter = new StringFilter();
+			stringFilter.setContains(term);
+			criteria.setName(stringFilter);
+		}
+
+		return criteria;
+
+	}
+
+	@Override
+	public ENTITYNAME_TOKENDTO getNewDTO() {
+		return new ENTITYNAME_TOKENDTO();
+	}
+
+	@Override
+	public String getEntityName(ENTITYNAME_TOKENDTO dto) {
+		return dto.getName();
+	}
+
+	@Override
+	public Long getEntityId(ENTITYNAME_TOKENDTO dto) {
+		return dto.getId();
+	}
+
+	@Override
+	public void postprocessEntity(LithoAuth lithoAuth, BatchTableDTO batchTableDTO, ENTITYNAME_TOKENDTO entityDTO) {
+
+		// nothing to postprocess here
+
+	}
+
+	@Override
+	public AbstractImporter<ENTITYNAME_TOKENDTO, ENTITYNAME_TOKENLithoService, ENTITYNAME_TOKENCriteria> getSelf() {
+		return self;
+	}
+
+}

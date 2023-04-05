@@ -12,7 +12,7 @@ public class FileProcessor {
 		BufferedReader bufferedReader = new BufferedReader(new StringReader(fieldsAsTSV()));
 
 		try {
-			System.out.println("db name");
+
 			for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
 				line = line.trim();
 				String technName = removeAdditionalText(line);
