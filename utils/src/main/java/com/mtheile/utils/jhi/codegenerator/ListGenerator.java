@@ -17,7 +17,9 @@ public class ListGenerator {
 
 		final String modelName = "ICPMS";
 		//final String entityName = "LAblationCellType";
-		final String entityName = "LCombinedMeasurement";
+		//final String entityName = "LCombinedMeasurement";
+		final String entityName = "LSampleIntroMethod";
+		
 		// --------------- START - JAVA ----------------------------
 
 		new AbstractTemplateProcessor("ListLithoService.java.template") {
@@ -207,7 +209,7 @@ public class ListGenerator {
 					if (!text.contains(element)) {
 						String replacement = //
 								element + "\n" + //
-										"        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
+										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
 
 						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
 					}
