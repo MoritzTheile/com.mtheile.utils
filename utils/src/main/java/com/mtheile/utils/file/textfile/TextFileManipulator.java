@@ -58,7 +58,6 @@ public class TextFileManipulator {
 	}
 
 	public static void replaceSection(File file, String sectionStart, String sectionMarker, String sectionEnd, String replacement) throws Exception {
-
 		String textFromFile = fileToString(file);
 
 		// interesting: https://www.rexegg.com/regex-quantifiers.html
@@ -69,7 +68,7 @@ public class TextFileManipulator {
 		Matcher matcher = pattern.matcher(textFromFile);
 
 		while (matcher.find()) {
-
+			
 			String section = matcher.group();
 
 			if (section.contains(sectionMarker)) {
@@ -155,4 +154,28 @@ public class TextFileManipulator {
 
 	}
 
+	public static String replaceSection(String textFromFile, String sectionStart, String sectionMarker, String sectionEnd, String replacement) throws Exception {
+		
+		// interesting: https://www.rexegg.com/regex-quantifiers.html
+		String fullRegex = "(?s)" + Pattern.quote(sectionStart) + ".*?" + Pattern.quote(sectionEnd);
+
+		Pattern pattern = Pattern.compile(fullRegex);
+
+		Matcher matcher = pattern.matcher(textFromFile);
+
+		while (matcher.find()) {
+			
+			String section = matcher.group();
+
+			if (section.contains(sectionMarker)) {
+				textFromFile = textFromFile.replaceAll(Pattern.quote(section), replacement);
+			}
+
+		}
+
+		
+		return textFromFile;
+
+	}
+	
 }
