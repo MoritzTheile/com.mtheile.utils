@@ -39,7 +39,8 @@ public abstract class AbstractTemplateProcessor {
 		
 		if (targetFile.exists()) {
 			
-			throw new Exception("File already exists: "+targetFilePath);
+			targetFile.delete();
+			targetFile.createNewFile();
 			
 		}
 		

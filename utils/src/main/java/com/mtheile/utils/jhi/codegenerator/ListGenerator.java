@@ -16,7 +16,8 @@ public class ListGenerator {
 	public static void main(String[] args) throws Exception {
 
 		final String modelName = "ICPMS";
-		final String entityName = "LAblationCellType";
+		//final String entityName = "LAblationCellType";
+		final String entityName = "LCombinedMeasurement";
 		// --------------- START - JAVA ----------------------------
 
 		new AbstractTemplateProcessor("ListLithoService.java.template") {
@@ -79,13 +80,13 @@ public class ListGenerator {
 				
 				{ // adding resource
 					String element = ", " + entityName ;
-
+					
 					if (!text.contains(element)) {
-						String replacement = //
-								element + "\n" + //
-										"        //<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES (don't remove) -->\n";
+						
+						String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES (don't remove) -->\n";
 
-						text = TextFileManipulator.replaceSection(text, "//<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES", "-->", replacement);
+						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES", "-->", replacement);
+						
 					}
 				}
 				return text;
@@ -206,9 +207,9 @@ public class ListGenerator {
 					if (!text.contains(element)) {
 						String replacement = //
 								element + "\n" + //
-										"        <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
+										"        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
 
-						text = TextFileManipulator.replaceSection(text, "<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
+						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
 					}
 				}
 				{ // adding resource
@@ -217,9 +218,9 @@ public class ListGenerator {
 					if (!text.contains(element)) {
 						String replacement = //
 								element + "\n" + //
-										"        <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_RESOURCES (don't remove) -->\n";
+										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_RESOURCES (don't remove) -->*/}\n";
 
-						text = TextFileManipulator.replaceSection(text, "<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_RESOURCES", "-->", replacement);
+						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_RESOURCES", "*/}", replacement);
 					}
 				}
 				return text;
