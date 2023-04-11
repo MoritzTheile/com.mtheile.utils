@@ -1,24 +1,93 @@
 package com.mtheile.utils.jhi.codegenerator;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.mtheile.utils.file.textfile.TextFileManipulator;
+import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
 
-public class ListGenerator {
+public class CodeGenerator {
 
 	private static final String PROJECT_HOME = "C:\\Users\\theil\\git\\com.lithodat.app\\";
-
+	private static final String modelName = "ICPMS";
+	//private static final String entityName = "LAblationCellType";
+	//private static final String entityName = "LCombinedMeasurement";
+	private static final String entityName = "LSampleIntroMethod";
+	
 	public static void main(String[] args) throws Exception {
+		
+//		generateListJavaCode();
+//		generateListJavaScriptCode();
+		generateListMenuEntries();
+	}
+	
+	private static void generateListMenuEntries() throws Exception{
+		
+		// 01. Create SubMenu file if not exists
+		
+		new AbstractTemplateProcessor("ts/GetSubMenu.template.tsx") {
 
-		final String modelName = "ICPMS";
-		//final String entityName = "LAblationCellType";
-		//final String entityName = "LCombinedMeasurement";
-		final String entityName = "LSampleIntroMethod";
+			@Override
+			public String getTargetFilePath() {
+
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\submenues\\GetSubMenu"+modelName+".tsx";
+
+			}
+
+			@Override
+			public String processTemplate(String template) {
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityName);
+				result = result.replaceAll("MODELNAME_TOKEN", modelName);
+				return result;
+			}
+
+		}.execute(MODE.SKIP_IF_FILE_EXISTS);
+		
+		// 02. Add SubMenu Code to main Menu if not already added.
+		
+		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\Menu.tsx") {
+
+			@Override
+			public String processFileText(String text) throws Exception {
+				{ // adding import
+					String element = "import { getSubMenu"+modelName+" } from 'app/litho-ui/mydata/layout/submenues/GetSubMenu"+modelName+"';";
+
+					if (!text.contains(element)) {
+						String replacement = //
+								element + "\n" + //
+										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
+
+						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
+					}
+				}
+				{ // adding resource
+					String element = "              <SubMenu\r\n"
+							+ "                handleToggle={() => handleToggle("+modelName+"')}\r\n"
+							+ "                isOpen={state."+modelName+"}\r\n"
+							+ "                sidebarIsOpen={open}\r\n"
+							+ "                isNested={true}\r\n"
+							+ "                name=\""+modelName+"\"\r\n"
+							+ "                icon={<ChevronRightIcon />}\r\n"
+							+ "                dense={dense}\r\n"
+							+ "                to={''}\r\n"
+							+ "              >\r\n"
+							+ "                {getSubMenu"+modelName+"(onMenuClick, open, dense)}\r\n"
+							+ "              </SubMenu>\r\n"
+							+ "";
+
+					if (!text.contains(element)) {
+						String replacement = //
+								element + "\n" + //
+										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES (don't remove) -->*/}\n";
+
+						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_RESOURCES", "*/}", replacement);
+					}
+				}
+				return text;
+			}
+		}.execute();
+		
+		// 03. Fill SubMenu file;
+	}
+
+	private static void generateListJavaCode() throws Exception{
 		
 		// --------------- START - JAVA ----------------------------
 
@@ -94,6 +163,8 @@ public class ListGenerator {
 				return text;
 			}
 		}.execute();
+	}
+	private static void generateListJavaScriptCode() throws Exception{
 
 		// --------------- START - JAVASCRIPT ----------------------------
 		new AbstractTemplateProcessor("ts/EntityCreateFields.tsx") {

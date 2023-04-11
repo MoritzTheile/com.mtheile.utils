@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import com.mtheile.utils.STATICUtils;
 
 public abstract class AbstractTemplateProcessor {
+	
+	public static enum MODE {SKIP_IF_FILE_EXISTS, DEFAULT}
 
 	private static final String EXAMPLE_FILE_RESOURCE = "/com/mtheile/utils/jhi/codegenerator/templates/";
 
@@ -26,9 +28,19 @@ public abstract class AbstractTemplateProcessor {
 	public abstract String getTargetFilePath();
 
 	public void execute() throws Exception {
+		execute(MODE.DEFAULT);
+	}
+	
+	public void execute(MODE mode) throws Exception {
+
+		if(new File(getTargetFilePath()).exists() && MODE.SKIP_IF_FILE_EXISTS.equals(mode)) {
+			return;
+		}
 
 		String template = new String(STATICUtils.getResourceAsByteArray(EXAMPLE_FILE_RESOURCE + templateName));
+		
 		String result = processTemplate(template);
+		
 		saveAsFile(getTargetFilePath(), result);
 
 	}
