@@ -85,6 +85,44 @@ public class CodeGenerator {
 		}.execute();
 		
 		// 03. Fill SubMenu file;
+		
+		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\submenues\\GetSubMenu"+modelName+".tsx") {
+
+			@Override
+			public String processFileText(String text) throws Exception {
+				{ // adding import
+					String element = "import { getSubMenu"+modelName+" } from 'app/litho-ui/mydata/layout/submenues/GetSubMenu"+modelName+"';";
+
+					if (!text.contains(element)) {
+						String replacement = //
+								element + "\n" + //
+										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
+
+						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
+					}
+				}
+				{ // adding resource
+					String element = ""
+							+ "<MenuItemLink\r\n"
+							+ "        to={'/"+modelName+"/"+entityName+"'}\r\n"
+							+ "        primaryText={`"+entityName+"`}\r\n"
+							+ "        leftIcon={<TocIcon />}\r\n"
+							+ "        onClick={onMenuClick}\r\n"
+							+ "        sidebarIsOpen={open}\r\n"
+							+ "        dense={dense}\r\n"
+							+ "      />";
+
+					if (!text.contains(element)) {
+						String replacement = //
+								element + "\n" + //
+										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES (don't remove) -->*/}\n";
+
+						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES", "*/}", replacement);
+					}
+				}
+				return text;
+			}
+		}.execute();
 	}
 
 	private static void generateListJavaCode() throws Exception{
