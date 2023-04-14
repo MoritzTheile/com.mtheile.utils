@@ -14,7 +14,7 @@ public class ChildGenerator {
 
 		List<EntityMetaInfo> entityMetaInfos = new ArrayList<>();
 
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LCombinedMeasurement"));
+		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LaserMetadata", "ICPMSMetadata"));
 
 		return entityMetaInfos;
 
@@ -24,9 +24,10 @@ public class ChildGenerator {
 
 		for (EntityMetaInfo entityMetaInfo : getEntityMetaInfos()) {
 
-			generateListJavaCode(entityMetaInfo);
-			generateListJavaScriptCode(entityMetaInfo);
-			generateListMenuEntries(entityMetaInfo);
+			generateServiceJavaCode(entityMetaInfo);
+			generateBatchJavaCode(entityMetaInfo);
+//			generateListJavaScriptCode(entityMetaInfo);
+//			generateListMenuEntries(entityMetaInfo);
 
 		}
 	}
@@ -34,10 +35,12 @@ public class ChildGenerator {
 	static class EntityMetaInfo {
 		public final String modelName;
 		public final String entityName;
+		public final String parentName;
 
-		public EntityMetaInfo(String modelName, String entityName) {
+		public EntityMetaInfo(String modelName, String entityName, String parentName) {
 			this.modelName = modelName;
 			this.entityName = entityName;
+			this.parentName = parentName;
 		}
 
 	}
@@ -129,22 +132,24 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateListJavaCode(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateServiceJavaCode(EntityMetaInfo entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVA ----------------------------
 
-		new AbstractTemplateProcessor("ListLithoService.java.template") {
+		new AbstractTemplateProcessor("ChildLithoService.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\icpms\\" + entityMetaInfo.entityName + "LithoService.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.modelName.toLowerCase() + "\\" + entityMetaInfo.entityName + "LithoService.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
+				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
 				return result;
 			}
 
@@ -163,17 +168,21 @@ public class ChildGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
+				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
 				return result;
 			}
 
 		}.execute();
+	}
 
-		new AbstractTemplateProcessor("Importer.java.template") {
+	private static void generateBatchJavaCode(EntityMetaInfo entityMetaInfo) throws Exception {
+
+		new AbstractTemplateProcessor("ChildImporter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\" + entityMetaInfo.entityName + "Importer.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.entityName + "Importer.java";
 
 			}
 
@@ -185,6 +194,25 @@ public class ChildGenerator {
 			}
 
 		}.execute();
+		
+		new AbstractTemplateProcessor("BatchAdapter.java.template") {
+
+			@Override
+			public String getTargetFilePath() {
+
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.entityName + "BatchAdapter.java";
+
+			}
+
+			@Override
+			public String processTemplate(String template) {
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
+				return result;
+			}
+
+		}.execute();
+
 
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\dto\\BatchTableDTO.java") {
 
@@ -201,7 +229,9 @@ public class ChildGenerator {
 						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES", "-->", replacement);
 
 					}
+					
 				}
+				
 				return text;
 			}
 		}.execute();
@@ -215,7 +245,7 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityCreateFields.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityCreateFields.tsx";
 
 			}
 
@@ -232,7 +262,7 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityCreateForm.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityCreateForm.tsx";
 
 			}
 
@@ -249,7 +279,7 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityEdit.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityEdit.tsx";
 
 			}
 
@@ -266,7 +296,7 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityList.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityList.tsx";
 
 			}
 
@@ -283,7 +313,7 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityPicker.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityPicker.tsx";
 
 			}
 
@@ -300,7 +330,7 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityResource.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityResource.tsx";
 
 			}
 
@@ -318,7 +348,7 @@ public class ChildGenerator {
 			@Override
 			public String processFileText(String text) throws Exception {
 				{ // adding import
-					String element = "import { " + entityMetaInfo.entityName + "RAResource } from 'app/litho-ui/mydata/resources/"+entityMetaInfo.modelName+"/" + entityMetaInfo.entityName + "/EntityResource';";
+					String element = "import { " + entityMetaInfo.entityName + "RAResource } from 'app/litho-ui/mydata/resources/" + entityMetaInfo.modelName + "/" + entityMetaInfo.entityName + "/EntityResource';";
 
 					if (!text.contains(element)) {
 						String replacement = //

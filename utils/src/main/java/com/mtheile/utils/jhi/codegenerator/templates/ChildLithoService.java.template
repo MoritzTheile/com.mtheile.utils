@@ -1,0 +1,239 @@
+package com.lithodat.app.litho.service.MODELNAME_TOKEN;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.lithodat.app.domain.DataPackage;
+import com.lithodat.app.domain.DataPackage_;
+import com.lithodat.app.domain.DataPoint;
+import com.lithodat.app.domain.DataPoint_;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN_;
+import com.lithodat.app.domain.PARENTNAME_TOKEN;
+import com.lithodat.app.domain.PARENTNAME_TOKEN_;
+import com.lithodat.app.litho.service.dto.ParamDTO;
+import com.lithodat.app.litho.service.util.Bouncer;
+import com.lithodat.app.litho.service.util.Bouncer.BounceDecision;
+import com.lithodat.app.litho.service.util.FindByNameService;
+import com.lithodat.app.litho.service.util.LithoAuth;
+import com.lithodat.app.litho.service.util.LithoCRUD;
+import com.lithodat.app.litho.service.util.ServiceSTATICS;
+import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
+import com.lithodat.app.repository.PARENTNAME_TOKENRepository;
+import com.lithodat.app.service.ENTITYNAME_TOKENQueryService;
+import com.lithodat.app.service.ENTITYNAME_TOKENService;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
+import com.lithodat.app.service.mapper.ENTITYNAME_TOKENMapper;
+
+@Service
+@Transactional
+public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENDTO, ENTITYNAME_TOKENCriteria> {
+
+	@Autowired
+	private Bouncer bouncer;
+
+	@Autowired
+	private ENTITYNAME_TOKENService service;
+
+	@Autowired
+	private ENTITYNAME_TOKENQueryService queryService;
+
+	@Autowired
+	private ENTITYNAME_TOKENRepository repository;
+
+	@Autowired
+	private ENTITYNAME_TOKENMapper mapper;
+
+	@Autowired
+	private PARENTNAME_TOKENRepository parentRepository;
+
+	@Autowired
+	public EntityManager em;
+
+	@Transactional
+	public ENTITYNAME_TOKENDTO create(LithoAuth lithoAuth, ENTITYNAME_TOKENDTO dto, ParamDTO params) throws Exception {
+
+		{ // bouncing
+
+			BounceDecision bounceDecision = bouncer.getDecisionFor(lithoAuth);
+
+			bounceDecision.allowEntryIf(bounceDecision.packageContentIsWriteableByUser(getTargetDataPackage(dto)));
+
+		}
+
+		ENTITYNAME_TOKENDTO resultDTO = service.save(dto);
+
+		return resultDTO;
+	}
+
+	public Optional<ENTITYNAME_TOKENDTO> findOne(LithoAuth lithoAuth, Long id) throws Exception {
+
+		{ // bouncing
+
+			BounceDecision bounceDecision = bouncer.getDecisionFor(lithoAuth);
+
+			// checking current package
+			Long currentDataPackage = getCurrentDataPackage(id);
+
+			bounceDecision.allowEntryIf(bounceDecision.packageContentIsViewableByUser(currentDataPackage));
+
+		}
+
+		Optional<ENTITYNAME_TOKENDTO> findOne = service.findOne(id);
+
+		return findOne;
+
+	}
+
+	public Long countByCriteria(LithoAuth lithoAuth, ENTITYNAME_TOKENCriteria criteria) throws Exception {
+
+		return findByCriteria(lithoAuth, criteria, PageRequest.of(0, 1)).getTotalElements();
+
+	}
+
+	public Page<ENTITYNAME_TOKENDTO> findByCriteria(LithoAuth lithoAuth, ENTITYNAME_TOKENCriteria criteria, Pageable pageable) throws Exception {
+
+		Specification<ENTITYNAME_TOKEN> jhSpecification = queryService.createSpecification(criteria);
+
+		{ // access control
+			
+			List<Long> dataPackageIds = bouncer.getPackageIdsWithViewableContent(lithoAuth.getAuthenticatedUser());
+
+			jhSpecification = ServiceSTATICS.<ENTITYNAME_TOKEN> emptyDistinctSpecification().and(jhSpecification.and(dataIsInPackage(dataPackageIds)));
+		}
+
+		Page<ENTITYNAME_TOKEN> entityPage = repository.findAll(jhSpecification, ServiceSTATICS.removePrefixFromSortPropName(pageable));
+
+		return new PageImpl<ENTITYNAME_TOKENDTO>(entityPage.getContent().stream().map(mapper::toDto).collect(Collectors.toList()), pageable, entityPage.getTotalElements());
+
+	}
+
+	public ENTITYNAME_TOKENDTO update(LithoAuth lithoAuth, ENTITYNAME_TOKENDTO dto) throws Exception {
+
+		{ // bouncing
+
+			BounceDecision bounceDecision = bouncer.getDecisionFor(lithoAuth);
+
+			// checking target package
+			bounceDecision.allowEntryIf(bounceDecision.packageContentIsWriteableByUser(getTargetDataPackage(dto)));
+
+			// checking source package
+			bounceDecision.allowEntryIf(bounceDecision.packageContentIsWriteableByUser(getCurrentDataPackage(dto.getId())));
+
+		}
+
+		return service.save(dto);
+
+	}
+
+	public void delete(LithoAuth lithoAuth, Long id) throws Exception {
+
+		{ // bouncing
+
+			BounceDecision bounceDecision = bouncer.getDecisionFor(lithoAuth);
+
+			// checking current package
+			bounceDecision.allowEntryIf(bounceDecision.packageContentIsWriteableByUser(getCurrentDataPackage(id)));
+
+		}
+
+		service.delete(id);
+
+	}
+
+	public ENTITYNAME_TOKENDTO save(LithoAuth lithoAuth, ENTITYNAME_TOKENDTO dto) throws Exception {
+
+		if (dto.getId() == null) {
+			return create(lithoAuth, dto, null);
+		} else {
+			return update(lithoAuth, dto);
+		}
+	}
+
+	public String getDatapointName(Long id) throws Exception {
+
+		return repository.getOne(id).getPARENTNAME_TOKEN().getDataPoint().getName();
+
+	}
+
+	private Long getTargetDataPackage(ENTITYNAME_TOKENDTO dto) throws Exception {
+
+		return parentRepository.getOne(dto.getPARENTNAME_TOKENId()).getDataPoint().getDataPackage().getId();
+
+	}
+
+	private Long getCurrentDataPackage(Long id) throws Exception {
+
+		Specification<DataPackage> specification = getDatapackageSpecification(id);
+
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+
+		CriteriaQuery<Long> criteriaQuery = cb.createQuery(Long.class);
+
+		{ // defining the criteriaQuery
+			// FROM
+			Root<DataPackage> root = criteriaQuery.from(DataPackage.class);
+
+			criteriaQuery = criteriaQuery.select(root.get(DataPackage_.id));
+
+			Predicate wherePredicate = specification.toPredicate(root, criteriaQuery, cb);
+
+			criteriaQuery = criteriaQuery.where(wherePredicate);
+
+		}
+
+		TypedQuery<Long> query = em.createQuery(criteriaQuery);
+
+		return FindByNameService.list2singleResult(query.getResultList());
+
+	}
+
+	private static Specification<DataPackage> getDatapackageSpecification(Long entityId) {
+
+		return (root, query, criteriaBuilder) -> {
+
+			Join<DataPackage, DataPoint> dataPointJoin = root.join(DataPackage_.dataPoints, JoinType.LEFT);
+
+			Join<DataPoint, PARENTNAME_TOKEN> gcDataPointJoin = dataPointJoin.join(DataPoint_.iCPMSMetadata, JoinType.LEFT);
+
+			Join<PARENTNAME_TOKEN, ENTITYNAME_TOKEN> elementalConcentrationDataPointJoin = gcDataPointJoin.join(PARENTNAME_TOKEN_.solutionOtherMetadata, JoinType.LEFT);
+
+			return criteriaBuilder.equal(elementalConcentrationDataPointJoin.get(ENTITYNAME_TOKEN_.id), entityId);
+
+		};
+	}
+
+	private static Specification<ENTITYNAME_TOKEN> dataIsInPackage(List<Long> packageIds) {
+		
+		return (root, query, criteriaBuilder) -> {
+
+			Join<ENTITYNAME_TOKEN, PARENTNAME_TOKEN> dataJoin = root.join(ENTITYNAME_TOKEN_.TODO_TOKEN, JoinType.LEFT);
+
+			Join<PARENTNAME_TOKEN, DataPoint> dataPointJoin = dataJoin.join(PARENTNAME_TOKEN_.dataPoint, JoinType.LEFT);
+			
+			return dataPointJoin.get(DataPoint_.dataPackage).get(DataPackage_.id).in(packageIds);
+
+		};
+	}
+
+}

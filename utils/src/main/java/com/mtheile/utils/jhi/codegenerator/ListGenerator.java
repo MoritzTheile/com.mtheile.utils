@@ -183,7 +183,7 @@ public class ListGenerator {
 
 		}.execute();
 
-		new AbstractTemplateProcessor("Importer.java.template") {
+		new AbstractTemplateProcessor("ListImporter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
