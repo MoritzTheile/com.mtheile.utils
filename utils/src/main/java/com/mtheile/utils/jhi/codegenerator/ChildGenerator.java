@@ -6,7 +6,7 @@ import java.util.List;
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
 
-public class CodeGenerator {
+public class ChildGenerator {
 
 	private static final String PROJECT_HOME = "C:\\Users\\theil\\git\\com.lithodat.app\\";
 
@@ -15,20 +15,6 @@ public class CodeGenerator {
 		List<EntityMetaInfo> entityMetaInfos = new ArrayList<>();
 
 		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LCombinedMeasurement"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LSampleIntroMethod"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LICPMSType"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LDataReductionPackage"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LSolutionIntroSystem"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserSystem"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserWaveLength"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserPulseWidthUnit"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserSamplingMode"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LAblationCellType"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LTubingMaterial"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LTubingMaterialInternalDiameter"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LInternalStandard"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LICPMSModel"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LZeroMCICPMS"));
 
 		return entityMetaInfos;
 
@@ -50,7 +36,6 @@ public class CodeGenerator {
 		public final String entityName;
 
 		public EntityMetaInfo(String modelName, String entityName) {
-			super();
 			this.modelName = modelName;
 			this.entityName = entityName;
 		}
@@ -165,7 +150,7 @@ public class CodeGenerator {
 
 		}.execute();
 
-		new AbstractTemplateProcessor("ListLithoResource.java.template") {
+		new AbstractTemplateProcessor("CRUDLithoResource.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
