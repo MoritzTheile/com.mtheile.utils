@@ -26,8 +26,8 @@ public class ChildGenerator {
 
 			generateServiceJavaCode(entityMetaInfo);
 			generateBatchJavaCode(entityMetaInfo);
-//			generateListJavaScriptCode(entityMetaInfo);
-//			generateListMenuEntries(entityMetaInfo);
+			generateJavaScriptCode(entityMetaInfo);
+			generateListMenuEntries(entityMetaInfo);
 
 		}
 	}
@@ -153,7 +153,7 @@ public class ChildGenerator {
 				return result;
 			}
 
-		}.execute();
+		}.execute(MODE.SKIP_IF_FILE_EXISTS);
 
 		new AbstractTemplateProcessor("CRUDLithoResource.java.template") {
 
@@ -237,15 +237,15 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateListJavaScriptCode(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateJavaScriptCode(EntityMetaInfo entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVASCRIPT ----------------------------
-		new AbstractTemplateProcessor("ts/EntityCreateFields.tsx") {
+		new AbstractTemplateProcessor("childts/EntityListRenderer.tsx") {
 
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityCreateFields.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\renderer\\EntityListRenderer.tsx";
 
 			}
 
@@ -257,75 +257,45 @@ public class ChildGenerator {
 			}
 
 		}.execute();
-		new AbstractTemplateProcessor("ts/EntityCreateForm.tsx") {
+
+		new AbstractTemplateProcessor("childts/EntityColumns.tsx") {
 
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityCreateForm.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityColumns.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
+				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
 
 		}.execute();
-		new AbstractTemplateProcessor("ts/EntityEdit.tsx") {
+
+
+		new AbstractTemplateProcessor("childts/EntityFields.tsx") {
 
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityEdit.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityFields.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
+				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
 
 		}.execute();
-		new AbstractTemplateProcessor("ts/EntityList.tsx") {
 
-			@Override
-			public String getTargetFilePath() {
-
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityList.tsx";
-
-			}
-
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
-				return result;
-			}
-
-		}.execute();
-		new AbstractTemplateProcessor("ts/EntityPicker.tsx") {
-
-			@Override
-			public String getTargetFilePath() {
-
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityPicker.tsx";
-
-			}
-
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
-				return result;
-			}
-
-		}.execute();
-		new AbstractTemplateProcessor("ts/EntityResource.tsx") {
+		new AbstractTemplateProcessor("childts/EntityResource.tsx") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -337,12 +307,15 @@ public class ChildGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
+				result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
 
 		}.execute();
 
+
+		
+		
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\mydata.tsx") {
 
 			@Override
