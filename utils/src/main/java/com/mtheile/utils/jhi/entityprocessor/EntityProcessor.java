@@ -50,6 +50,12 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace(" = \"gCDataPoint", " = \"GCDataPoint", file);
 				TextFileManipulator.searchAndReplace(" = \"lAICPMS", " = \"LAICPMS", file);
 
+				TextFileManipulator.searchAndReplace(" = \"qICPMSMetadata", " = \"QICPMSMetadata", file);
+				TextFileManipulator.searchAndReplace(" = \"mCICPMSMetadata", " = \"MCICPMSMetadata", file);
+				TextFileManipulator.searchAndReplace(" = \"iCPMSMSMetadata", " = \"ICPMSMSMetadata", file);
+				TextFileManipulator.searchAndReplace(" = \"hRICPMSMetadata", " = \"HRICPMSMetadata", file);
+				TextFileManipulator.searchAndReplace(" = \"iCPMSMetadata", " = \"ICPMSMetadata", file);
+
 			}
 		}
 
