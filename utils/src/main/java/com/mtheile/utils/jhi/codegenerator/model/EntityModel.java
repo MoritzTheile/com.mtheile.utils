@@ -9,8 +9,9 @@ public class EntityModel {
 	public String modelName;
 	
 	public List<FieldModel> fields;
-	static class FieldModel {
+	public static class FieldModel {
 		public String fieldName;
 		public String fieldType;
+		public String fieldTypeBlobContent;
 	}
 }

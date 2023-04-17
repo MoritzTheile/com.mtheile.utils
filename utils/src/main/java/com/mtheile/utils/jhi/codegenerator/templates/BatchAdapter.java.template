@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lithodat.app.litho.service.other.batch.AbstractBatchAdapter;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractFloatValueCellAdapter;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractIntegerValueCellAdapter;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractStringValueCellAdapter;
 import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO.TABLE;
 import com.lithodat.app.litho.service.other.batch.dto.RowDTO;
 import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
@@ -15,12 +18,11 @@ public class ENTITYNAME_TOKENBatchAdapter extends AbstractBatchAdapter<ENTITYNAM
 	@Autowired
 	private ENTITYNAME_TOKENRepository repository;
 
-
 	public ENTITYNAME_TOKENBatchAdapter() {
 
 		super(TABLE.ENTITYNAME_TOKEN);
 		
-        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES (don't remove) -->\n
+        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->\n
 
 	}
 

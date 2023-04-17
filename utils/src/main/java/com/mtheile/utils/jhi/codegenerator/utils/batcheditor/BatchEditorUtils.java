@@ -1,44 +1,44 @@
 package com.mtheile.utils.jhi.codegenerator.utils.batcheditor;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel.FieldModel;
 
 public class BatchEditorUtils {
+	
 	public static String DTONAME_TOKEN = "DTONAME_TOKEN";
 	public static String CNAME_TOKEN = "CNAME_TOKEN";
 	public static String GETSETPOSTFIX_TOKEN = "GETSETPOSTFIX_TOKEN";
 	public static String DTOGETTER_TOKEN = "DTOGETTER_TOKEN";
 
-	public static void main(String args[]) throws Exception {
-
-		String dtoName = "HeInSituDTO";
-		//String dtoGetter = "\\.getHeDataPointDTO()";
+	public static String getAdapterCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
+		
 		String dtoGetter = "";
 
-		for (Field field : getFields()) {
+			String cName = removeAdditionalText(fieldModel.fieldName);
+			String getSetPostfix = capitalizeGetSetPostfix(removeAdditionalText(fieldModel.fieldName));
+			String dtoName = entityModel.name+"DTO";
+			
+			if ("String".contentEquals(fieldModel.fieldType)) {
+				return replaceTokens(adapterTemplateString, dtoName, cName, getSetPostfix, dtoGetter);
 
-			String cName = removeAdditionalText(field.technName);
-			String getSetPostfix = capitalizeGetSetPostfix(removeAdditionalText(field.technName));
+			} else if ("byte[]".contentEquals(fieldModel.fieldType) && "text".contentEquals(fieldModel.fieldTypeBlobContent)) {
+				return replaceTokens(adapterTemplateString, dtoName, cName, getSetPostfix, dtoGetter);
 
-			if ("String".contentEquals(field.datatype)) {
-				String string = replaceTokens(adapterTemplateString, dtoName, cName, getSetPostfix, dtoGetter);
-				System.out.println(string);
-			} else if ("Integer".contentEquals(field.datatype)) {
-				String string = replaceTokens(adapterTemplateInteger, dtoName, cName, getSetPostfix, dtoGetter);
-				System.out.println(string);
-			} else if ("Float".contentEquals(field.datatype)) {
-				String string = replaceTokens(adapterTemplateFloat, dtoName, cName, getSetPostfix, dtoGetter);
-				System.out.println(string);
-			} else if ("Boolean".contentEquals(field.datatype)) {
-				String string = replaceTokens(adapterTemplateBoolean, dtoName, cName, getSetPostfix, dtoGetter);
-				System.out.println(string);
-			} else {
-				String string = replaceTokenInRefCellAdapter(field.datatype, dtoName, cName, getSetPostfix, dtoGetter);
-				System.out.println(string);
+			} else if ("Integer".contentEquals(fieldModel.fieldType)) {
+				return replaceTokens(adapterTemplateInteger, dtoName, cName, getSetPostfix, dtoGetter);
+
+			} else if ("Float".contentEquals(fieldModel.fieldType)) {
+				return replaceTokens(adapterTemplateFloat, dtoName, cName, getSetPostfix, dtoGetter);
+
+			} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
+				return replaceTokens(adapterTemplateBoolean, dtoName, cName, getSetPostfix, dtoGetter);
+
+			}else {
+				throw new Exception("Error: Field type '"+fieldModel.fieldType+"' not found.");
+
 			}
-		}
+
+
 	}
 
 	private static String removeAdditionalText(String technName) {
@@ -136,172 +136,8 @@ public class BatchEditorUtils {
 
 	}
 
-	static class Field {
 
-		public Field(String techName, String datatype) {
-			this.technName = techName;
-			this.datatype = datatype;
-		}
-
-		String technName;
-		String datatype;
-	}
-
-	private static List<Field> getFields() throws Exception {
-
-		List<Field> list = new ArrayList<>();
-
-		BufferedReader bufferedReader = new BufferedReader(new StringReader(fieldsAsTSV()));
-
-		try {
-
-			for (String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
-
-				line = line.trim();
-
-				String[] columns = line.split("\\t");
-
-				if (columns.length != 2) {
-
-					throw new Exception("line '" + line + "' does not have 2 columns");
-
-				}
-
-				list.add(new Field(columns[0], columns[1]));
-
-			}
-
-		} finally {
-			bufferedReader.close();
-		}
-
-		return list;
-
-	}
-
-	private static String fieldsAsTSV() {
-		return "grainID	String\r\n" +
-				"pitID	String\r\n" +
-				"crysFrag	LHeCrysFrag\r\n" +
-				"pitVolume	Float\r\n" +
-				"pitVolumeUncertainty	Float\r\n" +
-				"pitVolumeUncertaintyType	LErrorType\r\n" +
-				"parentPitVolume	Float\r\n" +
-				"parentPitVolumeUncertainty	Float\r\n" +
-				"parentPitVolumeUncertaintyType	LErrorType\r\n" +
-				"he4Amount	Float\r\n" +
-				"he4AmountUncertainty	Float\r\n" +
-				"he4AmountUncertaintyType	LErrorType\r\n" +
-				"he4Concentraion	Float\r\n" +
-				"he4ConcentrationUncertainty	Float\r\n" +
-				"he4ConcentrationUncertaintyType	LErrorType\r\n" +
-				"uAmount	Float\r\n" +
-				"uAmountUncertainty	Float\r\n" +
-				"uAmountUncertaintyType	LErrorType\r\n" +
-				"uConcentration	Float\r\n" +
-				"uConcentrationUncertainty	Float\r\n" +
-				"uConcentrationUncertaintyType	LErrorType\r\n" +
-				"thAmount	Float\r\n" +
-				"thAmountUncertainty	Float\r\n" +
-				"thAmountUncertaintyType	LErrorType\r\n" +
-				"thConcentration	Float\r\n" +
-				"thConcentrationUncertainty	Float\r\n" +
-				"thConcentrationUncertaintyType	LErrorType\r\n" +
-				"smAmount	Float\r\n" +
-				"smAmountUncertainty	Float\r\n" +
-				"smAmountUncertaintyType	LErrorType\r\n" +
-				"smConcentration	Float\r\n" +
-				"smConcentrationUncertainty	Float\r\n" +
-				"smConcentrationUncertaintyType	LErrorType\r\n" +
-				"eU	Float\r\n" +
-				"eUUncertainty	Float\r\n" +
-				"eUUncertaintyType	LErrorType\r\n" +
-				"pitRelationship	LPitRelationship\r\n" +
-				"uncorrectedHeAge	Float\r\n" +
-				"uncorrectedHeAgeUncertainty	Float\r\n" +
-				"uncorrectedHeAgeUncertaintyType	LErrorType\r\n" +
-				"ageCalibrationFactor	Float\r\n" +
-				"correctedHeAge	Float\r\n" +
-				"tau	Float\r\n" +
-				"tauUncertaintyType	LErrorType\r\n" +
-				"comment	String"
-
-				//				+ "geochemAnalyticalType	LGCAnalyticalTechnique\r\n" +
-				//				"dataReductionSoftware	LDataReductionSoftware\r\n" +
-				//				"analyticalSessionID	String\r\n" +
-				//				"mountID	String\r\n" +
-				//				"analysisScale	LGCAnalysisScale\r\n" +
-				//				"mineral	Material (filtered for mineral)\r\n" +
-				//				"referenceMaterial	ReferenceMaterial (shared across models)\r\n" +
-				//				"oxideErrorType	LErrorType\r\n" +
-				//				"elementErrorType	LErrorType"
-
-				//				+ "mountIDCount	String\r\n" +
-				//				"analyticalSessionID	String\r\n" +
-				//				"mountIDLength	String\r\n" +
-				//				"ftCharacterisationMethod	LFTCharacterisationMethod \r\n" +
-				//				"ftUDeterminationTechnique	LFTUDeterminationTechnique\r\n" +
-				//				"noOfGrains	Integer\r\n" +
-				//				"area	Float\r\n" +
-				//				"rhod	Float\r\n" +
-				//				"nd	Integer\r\n" +
-				//				"rhoS	Float\r\n" +
-				//				"ns	Integer\r\n" +
-				//				"rhoi	Float\r\n" +
-				//				"ni	Integer\r\n" +
-				//				"dosimeter	LDosimeter\r\n" +
-				//				"uCont	Float\r\n" +
-				//				"uStandardError	Float\r\n" +
-				//				"dPar	Float\r\n" +
-				//				"dParStandardError	Float\r\n" +
-				//				"dPer	Float\r\n" +
-				//				"dPerStandardError	Float\r\n" +
-				//				"rmr0	Float\r\n" +
-				//				"rmr0StandardError	Float\r\n" +
-				//				"kParameter	Float\r\n" +
-				//				"kParameterStandardError	Float\r\n" +
-				//				"rmr0Equation	LRmr0Equation\r\n" +
-				//				"chi2pct	Float\r\n" +
-				//				"dispersion	Float\r\n" +
-				//				"ftAgeType	LFTAgeType\r\n" +
-				//				"ftAgeEquation	LFTAgeEquation\r\n" +
-				//				"meanAgeMa	Float\r\n" +
-				//				"meanErrorMa	Float\r\n" +
-				//				"centralAgeMa	Float\r\n" +
-				//				"centralErrorMa	Float\r\n" +
-				//				"pooledAgeMa	Float\r\n" +
-				//				"pooledErrorMa	Float\r\n" +
-				//				"popAgeMa	Float\r\n" +
-				//				"popErrorMa	Float\r\n" +
-				//				"ageComment	String\r\n" +
-				//				"ageErrorType	LErrorType\r\n" +
-				//				"mtl	Float\r\n" +
-				//				"mtl1se	Float\r\n" +
-				//				"nTracks	Integer\r\n" +
-				//				"stdDevMu	Float\r\n" +
-				//				"etchant	LEtchant\r\n" +
-				//				"etchingTime	Float\r\n" +
-				//				"etchingTemp	Float\r\n" +
-				//				"zetaCalibration	Float\r\n" +
-				//				"zetaError	Float\r\n" +
-				//				"zetaErrorType	LErrorType\r\n" +
-				//				"range (ok, instead of r?)	Float\r\n" +
-				//				"lambda	LLambda\r\n" +
-				//				"lambdaF	LLambdaF\r\n" +
-				//				"qEfficiencyFactor	Float\r\n" +
-				//				"irradiationReactor	IrradiationReactor\r\n" +
-				//				"comment	Text\r\n" +
-				//				"neutronDose	Integer\r\n" +
-				//				"uCaRatio	Float\r\n" +
-				//				"uCaRatioError	Float\r\n" +
-				//				"dParNumTotal	Integer\r\n" +
-				//				"dPerNumTotal	Integer\r\n" +
-				//				"ftAnalyticalSoftware	LFTAnalyticalSoftware\r\n" +
-				//				"ftAnalyticalAlgorithm	LFTAnalyticalAlgorithm\r\n" +
-				//				"cfIrradiation	boolean"
-				+ "";
-	}
-
+	
 	private static String adapterTemplateString = ""
 			+ "addCellAdapter(new AbstractStringValueCellAdapter<" + DTONAME_TOKEN + ">(\"" + CNAME_TOKEN + "\", false) {\r\n" +
 			"\r\n" +

@@ -7,6 +7,7 @@ import java.util.List;
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
+import com.mtheile.utils.jhi.codegenerator.utils.batcheditor.BatchEditorUtils;
 
 public class FieldGenerator {
 
@@ -17,11 +18,11 @@ public class FieldGenerator {
 		List<EntityModel> entityModels = new ArrayList<>();
 
 		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
-				new File(PROJECT_HOME), //
+				new File(PROJECT_HOME+".jhipster\\"), //
 				"icpms", //
 				"ICPMSMetadata", //
 				"LaserMetadata"//
-				));
+		));
 
 		return entityModels;
 
@@ -30,6 +31,7 @@ public class FieldGenerator {
 	public static void main(String[] args) throws Exception {
 
 		for (EntityModel entityModel : getEntityMetaInfos()) {
+			
 			addBatchEditorFields(entityModel);
 
 		}
@@ -37,27 +39,33 @@ public class FieldGenerator {
 
 	private static void addBatchEditorFields(EntityModel entityModel) throws Exception {
 		
-		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\dto\\BatchTableDTO.java") {
+		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
+			
+			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\"+entityModel.name+"BatchAdapter.java") {
 
-			@Override
-			public String processFileText(String text) throws Exception {
+				@Override
+				public String processFileText(String text) throws Exception {
 
-				{ // adding resource
-					String element = ", " + entityModel.name;
+					{ // adding resource
+						String element = "\t\t"+BatchEditorUtils.getAdapterCode(entityModel, fieldModel);
 
-					if (!text.contains(element)) {
+						if (!text.contains(element)) {
 
-						String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES (don't remove) -->\n";
+							String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
 
-						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES", "-->", replacement);
+							text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
+
+						}
 
 					}
 
+					return text;
+					
 				}
-
-				return text;
-			}
-		}.execute();
+				
+			}.execute();
+			
+		}
 	}
 
 }
