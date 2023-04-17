@@ -19,6 +19,8 @@ public class ENTITYNAME_TOKENBatchAdapter extends AbstractBatchAdapter<ENTITYNAM
 	public ENTITYNAME_TOKENBatchAdapter() {
 
 		super(TABLE.ENTITYNAME_TOKEN);
+		
+        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES (don't remove) -->\n
 
 	}
 

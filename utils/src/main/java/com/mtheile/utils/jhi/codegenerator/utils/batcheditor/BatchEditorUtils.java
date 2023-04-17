@@ -1,11 +1,11 @@
-package com.mtheile.utils.batcheditor;
+package com.mtheile.utils.jhi.codegenerator.utils.batcheditor;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterGenerator {
+public class BatchEditorUtils {
 	public static String DTONAME_TOKEN = "DTONAME_TOKEN";
 	public static String CNAME_TOKEN = "CNAME_TOKEN";
 	public static String GETSETPOSTFIX_TOKEN = "GETSETPOSTFIX_TOKEN";
