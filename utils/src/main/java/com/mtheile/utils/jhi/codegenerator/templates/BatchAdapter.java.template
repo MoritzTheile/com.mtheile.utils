@@ -17,6 +17,10 @@ public class ENTITYNAME_TOKENBatchAdapter extends AbstractBatchAdapter<ENTITYNAM
 
 	@Autowired
 	private ENTITYNAME_TOKENRepository repository;
+	
+	@Autowired
+	private PARENTNAME_TOKENRepository parentRepository;
+	
 
 	public ENTITYNAME_TOKENBatchAdapter() {
 

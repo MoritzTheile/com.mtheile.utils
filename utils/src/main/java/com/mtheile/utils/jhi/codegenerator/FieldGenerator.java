@@ -18,7 +18,7 @@ public class FieldGenerator {
 		List<EntityModel> entityModels = new ArrayList<>();
 
 		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
-				new File(PROJECT_HOME+".jhipster\\"), //
+				new File(PROJECT_HOME + ".jhipster\\"), //
 				"icpms", //
 				"ICPMSMetadata", //
 				"LaserMetadata"//
@@ -31,23 +31,23 @@ public class FieldGenerator {
 	public static void main(String[] args) throws Exception {
 
 		for (EntityModel entityModel : getEntityMetaInfos()) {
-			
+
 			addBatchEditorFields(entityModel);
 
 		}
 	}
 
 	private static void addBatchEditorFields(EntityModel entityModel) throws Exception {
-		
+
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
-			
-			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\"+entityModel.name+"BatchAdapter.java") {
+
+			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityModel.name + "BatchAdapter.java") {
 
 				@Override
 				public String processFileText(String text) throws Exception {
 
 					{ // adding resource
-						String element = "\t\t"+BatchEditorUtils.getAdapterCode(entityModel, fieldModel);
+						String element = "\t\t" + BatchEditorUtils.getAdapterFieldCode(entityModel, fieldModel);
 
 						if (!text.contains(element)) {
 
@@ -60,11 +60,39 @@ public class FieldGenerator {
 					}
 
 					return text;
-					
+
 				}
-				
+
 			}.execute();
-			
+
+		}
+
+		for (EntityModel.Relationship relationship : entityModel.relationships) {
+
+			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityModel.name + "BatchAdapter.java") {
+
+				@Override
+				public String processFileText(String text) throws Exception {
+
+					{ // adding resource
+						String element =  BatchEditorUtils.getAdapterRef(entityModel, relationship);
+
+						if (!text.contains(element)) {
+
+							String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
+
+							text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
+
+						}
+
+					}
+
+					return text;
+
+				}
+
+			}.execute();
+
 		}
 	}
 

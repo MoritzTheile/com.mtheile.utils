@@ -1,5 +1,6 @@
 package com.mtheile.utils.jhi.codegenerator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityModel {
@@ -13,5 +14,15 @@ public class EntityModel {
 		public String fieldName;
 		public String fieldType;
 		public String fieldTypeBlobContent;
+	}
+	
+	public List<Relationship> relationships = new ArrayList<>();
+	public static class Relationship {
+		public String relationshipType;
+        public String otherEntityName;
+        public String otherEntityRelationshipName;
+        public String relationshipName;
+        public String otherEntityField;
+        public String ownerSide;
 	}
 }
