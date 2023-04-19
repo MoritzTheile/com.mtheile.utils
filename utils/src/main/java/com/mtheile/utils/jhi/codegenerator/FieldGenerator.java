@@ -119,9 +119,9 @@ public class FieldGenerator {
 
 						if (!text.contains(element)) {
 
-							String replacement = element + "\n" + "  {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->*/}";
+							String replacement = element + "\n" + "  // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
 
-							text = TextFileManipulator.replaceSection(text, "  {/*<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->*/}", replacement);
+							text = TextFileManipulator.replaceSection(text, "  // <!-- ", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
 
 						}
 

@@ -17,11 +17,17 @@ public class ChildGenerator {
 
 		List<EntityModel> entityModels = new ArrayList<>();
 
+//		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
+//				new File(PROJECT_HOME + ".jhipster\\"), //
+//				"ICPMS", //
+//				"ICPMSMetadata", //
+//				"LaserMetadata" //
+//		));
 		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
 				new File(PROJECT_HOME + ".jhipster\\"), //
 				"ICPMS", //
-				"ICPMSMetadata", //
-				"LaserMetadata" //
+				"DataPoint", //
+				"ICPMSMetadata" //
 		));
 		
 		return entityModels;
