@@ -5,30 +5,31 @@ import java.util.List;
 
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 
 public class ListGenerator {
 
 	private static final String PROJECT_HOME = "C:\\Users\\theil\\git\\com.lithodat.app\\";
 
-	private static List<EntityMetaInfo> getEntityMetaInfos() {
+	private static List<EntityModel> getEntityMetaInfos() {
 
-		List<EntityMetaInfo> entityMetaInfos = new ArrayList<>();
+		List<EntityModel> entityMetaInfos = new ArrayList<>();
 
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LCombinedMeasurement"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LSampleIntroMethod"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LICPMSType"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LDataReductionPackage"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LSolutionIntroSystem"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserSystem"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserWaveLength"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserPulseWidthUnit"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LLaserSamplingMode"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LAblationCellType"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LTubingMaterial"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LTubingMaterialInternalDiameter"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LInternalStandard"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LICPMSModel"));
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LZeroMCICPMS"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LCombinedMeasurement", null, null));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LSampleIntroMethod"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LICPMSType"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LDataReductionPackage"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LSolutionIntroSystem"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LLaserSystem"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LLaserWaveLength"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LLaserPulseWidthUnit"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LLaserSamplingMode"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LAblationCellType"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LTubingMaterial"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LTubingMaterialInternalDiameter"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LInternalStandard"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LICPMSModel"));
+//		entityMetaInfos.add(new EntityModel("ICPMS", "LZeroMCICPMS"));
 
 		return entityMetaInfos;
 
@@ -36,7 +37,7 @@ public class ListGenerator {
 
 	public static void main(String[] args) throws Exception {
 
-		for (EntityMetaInfo entityMetaInfo : getEntityMetaInfos()) {
+		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
 			generateListJavaCode(entityMetaInfo);
 			generateListJavaScriptCode(entityMetaInfo);
@@ -45,19 +46,9 @@ public class ListGenerator {
 		}
 	}
 
-	static class EntityMetaInfo {
-		public final String modelName;
-		public final String entityName;
+	
 
-		public EntityMetaInfo(String modelName, String entityName) {
-			super();
-			this.modelName = modelName;
-			this.entityName = entityName;
-		}
-
-	}
-
-	private static void generateListMenuEntries(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateListMenuEntries(EntityModel entityMetaInfo) throws Exception {
 
 		// 01. Create SubMenu file if not exists
 
@@ -72,7 +63,7 @@ public class ListGenerator {
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
@@ -129,7 +120,7 @@ public class ListGenerator {
 					}
 				}
 				{ // adding resource
-					String element = "" + "<MenuItemLink\r\n" + "        to={'/" + entityMetaInfo.modelName.toLowerCase() + "/" + entityMetaInfo.entityName + "'}\r\n" + "        primaryText={`" + entityMetaInfo.entityName + "`}\r\n" + "        leftIcon={<TocIcon />}\r\n" + "        onClick={onMenuClick}\r\n" + "        sidebarIsOpen={open}\r\n" + "        dense={dense}\r\n" + "      />";
+					String element = "" + "<MenuItemLink\r\n" + "        to={'/" + entityMetaInfo.modelName.toLowerCase() + "/" + entityMetaInfo.name + "'}\r\n" + "        primaryText={`" + entityMetaInfo.name + "`}\r\n" + "        leftIcon={<TocIcon />}\r\n" + "        onClick={onMenuClick}\r\n" + "        sidebarIsOpen={open}\r\n" + "        dense={dense}\r\n" + "      />";
 
 					if (!text.contains(element)) {
 						String replacement = //
@@ -144,7 +135,7 @@ public class ListGenerator {
 		}.execute();
 	}
 
-	private static void generateListJavaCode(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateListJavaCode(EntityModel entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVA ----------------------------
 
@@ -153,13 +144,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\icpms\\" + entityMetaInfo.entityName + "LithoService.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\icpms\\" + entityMetaInfo.name + "LithoService.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				return result;
 			}
 
@@ -170,13 +161,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.modelName.toLowerCase() + "\\" + entityMetaInfo.entityName + "LithoResource.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.modelName.toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -188,13 +179,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\" + entityMetaInfo.entityName + "Importer.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\" + entityMetaInfo.name + "Importer.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -207,7 +198,7 @@ public class ListGenerator {
 			public String processFileText(String text) throws Exception {
 
 				{ // adding resource
-					String element = ", " + entityMetaInfo.entityName;
+					String element = ", " + entityMetaInfo.name;
 
 					if (!text.contains(element)) {
 
@@ -222,7 +213,7 @@ public class ListGenerator {
 		}.execute();
 	}
 
-	private static void generateListJavaScriptCode(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateListJavaScriptCode(EntityModel entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVASCRIPT ----------------------------
 		new AbstractTemplateProcessor("ts/EntityCreateFields.tsx") {
@@ -230,13 +221,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityCreateFields.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.name + "\\EntityCreateFields.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
@@ -247,13 +238,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityCreateForm.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.name + "\\EntityCreateForm.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -264,13 +255,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityEdit.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.name + "\\EntityEdit.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -281,13 +272,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityList.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.name + "\\EntityList.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -298,13 +289,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityPicker.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.name + "\\EntityPicker.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -315,13 +306,13 @@ public class ListGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.entityName + "\\EntityResource.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityMetaInfo.modelName+"\\" + entityMetaInfo.name + "\\EntityResource.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -333,7 +324,7 @@ public class ListGenerator {
 			@Override
 			public String processFileText(String text) throws Exception {
 				{ // adding import
-					String element = "import { " + entityMetaInfo.entityName + "RAResource } from 'app/litho-ui/mydata/resources/"+entityMetaInfo.modelName+"/" + entityMetaInfo.entityName + "/EntityResource';";
+					String element = "import { " + entityMetaInfo.name + "RAResource } from 'app/litho-ui/mydata/resources/"+entityMetaInfo.modelName+"/" + entityMetaInfo.name + "/EntityResource';";
 
 					if (!text.contains(element)) {
 						String replacement = //
@@ -344,7 +335,7 @@ public class ListGenerator {
 					}
 				}
 				{ // adding resource
-					String element = "{" + entityMetaInfo.entityName + "RAResource}";
+					String element = "{" + entityMetaInfo.name + "RAResource}";
 
 					if (!text.contains(element)) {
 						String replacement = //

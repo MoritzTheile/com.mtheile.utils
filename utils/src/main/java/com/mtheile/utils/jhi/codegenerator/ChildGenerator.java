@@ -1,51 +1,49 @@
 package com.mtheile.utils.jhi.codegenerator;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 
 public class ChildGenerator {
 
 	private static final String PROJECT_HOME = "C:\\Users\\theil\\git\\com.lithodat.app\\";
 
-	private static List<EntityMetaInfo> getEntityMetaInfos() {
+	private	static List<EntityModel> getEntityMetaInfos() throws Exception {
 
-		List<EntityMetaInfo> entityMetaInfos = new ArrayList<>();
+		List<EntityModel> entityModels = new ArrayList<>();
 
-		entityMetaInfos.add(new EntityMetaInfo("ICPMS", "LaserMetadata", "ICPMSMetadata"));
-
-		return entityMetaInfos;
+		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
+				new File(PROJECT_HOME + ".jhipster\\"), //
+				"ICPMS", //
+				"ICPMSMetadata", //
+				"LaserMetadata" //
+		));
+		
+		return entityModels;
 
 	}
 
 	public static void main(String[] args) throws Exception {
 
-		for (EntityMetaInfo entityMetaInfo : getEntityMetaInfos()) {
+		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
 			generateServiceJavaCode(entityMetaInfo);
 			generateBatchJavaCode(entityMetaInfo);
 			generateJavaScriptCode(entityMetaInfo);
 			generateListMenuEntries(entityMetaInfo);
-
+			
+			FieldGenerator.generate(entityMetaInfo);
 		}
 	}
 
-	static class EntityMetaInfo {
-		public final String modelName;
-		public final String entityName;
-		public final String parentName;
+	
 
-		public EntityMetaInfo(String modelName, String entityName, String parentName) {
-			this.modelName = modelName;
-			this.entityName = entityName;
-			this.parentName = parentName;
-		}
-
-	}
-
-	private static void generateListMenuEntries(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateListMenuEntries(EntityModel entityMetaInfo) throws Exception {
 
 		// 01. Create SubMenu file if not exists
 
@@ -60,7 +58,7 @@ public class ChildGenerator {
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
@@ -117,7 +115,7 @@ public class ChildGenerator {
 					}
 				}
 				{ // adding resource
-					String element = "" + "<MenuItemLink\r\n" + "        to={'/" + entityMetaInfo.modelName.toLowerCase() + "/" + entityMetaInfo.entityName + "'}\r\n" + "        primaryText={`" + entityMetaInfo.entityName + "`}\r\n" + "        leftIcon={<TocIcon />}\r\n" + "        onClick={onMenuClick}\r\n" + "        sidebarIsOpen={open}\r\n" + "        dense={dense}\r\n" + "      />";
+					String element = "" + "<MenuItemLink\r\n" + "        to={'/" + entityMetaInfo.modelName.toLowerCase() + "/" + entityMetaInfo.name + "'}\r\n" + "        primaryText={`" + entityMetaInfo.name + "`}\r\n" + "        leftIcon={<TocIcon />}\r\n" + "        onClick={onMenuClick}\r\n" + "        sidebarIsOpen={open}\r\n" + "        dense={dense}\r\n" + "      />";
 
 					if (!text.contains(element)) {
 						String replacement = //
@@ -132,7 +130,7 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateServiceJavaCode(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateServiceJavaCode(EntityModel entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVA ----------------------------
 
@@ -141,13 +139,13 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.modelName.toLowerCase() + "\\" + entityMetaInfo.entityName + "LithoService.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.modelName.toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
 				return result;
@@ -160,13 +158,13 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.modelName.toLowerCase() + "\\" + entityMetaInfo.entityName + "LithoResource.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.modelName.toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
 				return result;
@@ -175,20 +173,20 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateBatchJavaCode(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateBatchJavaCode(EntityModel entityMetaInfo) throws Exception {
 
 		new AbstractTemplateProcessor("ChildImporter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.entityName + "Importer.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -200,13 +198,13 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.entityName + "BatchAdapter.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
 				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
 				return result;
@@ -221,7 +219,7 @@ public class ChildGenerator {
 			public String processFileText(String text) throws Exception {
 
 				{ // adding resource
-					String element = ", " + entityMetaInfo.entityName;
+					String element = ", " + entityMetaInfo.name;
 
 					if (!text.contains(element)) {
 
@@ -238,7 +236,7 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateJavaScriptCode(EntityMetaInfo entityMetaInfo) throws Exception {
+	private static void generateJavaScriptCode(EntityModel entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVASCRIPT ----------------------------
 		new AbstractTemplateProcessor("childts/EntityListRenderer.tsx") {
@@ -246,13 +244,13 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\renderer\\EntityListRenderer.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.name + "\\renderer\\EntityListRenderer.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
@@ -264,13 +262,13 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityColumns.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.name + "\\EntityColumns.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
@@ -283,13 +281,13 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityFields.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.name + "\\EntityFields.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName);
 				return result;
 			}
@@ -301,13 +299,13 @@ public class ChildGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.entityName + "\\EntityResource.tsx";
+				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.modelName + "\\" + entityMetaInfo.name + "\\EntityResource.tsx";
 
 			}
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityMetaInfo.modelName.toLowerCase());
 				return result;
 			}
@@ -322,7 +320,7 @@ public class ChildGenerator {
 			@Override
 			public String processFileText(String text) throws Exception {
 				{ // adding import
-					String element = "import { " + entityMetaInfo.entityName + "RAResource } from 'app/litho-ui/mydata/resources/" + entityMetaInfo.modelName + "/" + entityMetaInfo.entityName + "/EntityResource';";
+					String element = "import { " + entityMetaInfo.name + "RAResource } from 'app/litho-ui/mydata/resources/" + entityMetaInfo.modelName + "/" + entityMetaInfo.name + "/EntityResource';";
 
 					if (!text.contains(element)) {
 						String replacement = //
@@ -333,7 +331,7 @@ public class ChildGenerator {
 					}
 				}
 				{ // adding resource
-					String element = "{" + entityMetaInfo.entityName + "RAResource}";
+					String element = "{" + entityMetaInfo.name + "RAResource}";
 
 					if (!text.contains(element)) {
 						String replacement = //

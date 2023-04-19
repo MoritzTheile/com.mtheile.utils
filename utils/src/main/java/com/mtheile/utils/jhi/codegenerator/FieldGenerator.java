@@ -14,28 +14,9 @@ public class FieldGenerator {
 
 	private static final String PROJECT_HOME = "C:\\Users\\theil\\git\\com.lithodat.app\\";
 
-	private static List<EntityModel> getEntityMetaInfos() throws Exception {
-
-		List<EntityModel> entityModels = new ArrayList<>();
-
-		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
-				new File(PROJECT_HOME + ".jhipster\\"), //
-				"icpms", //
-				"ICPMSMetadata", //
-				"LaserMetadata" //
-		));
-
-		return entityModels;
-
-	}
-
-	public static void main(String[] args) throws Exception {
-
-		for (EntityModel entityModel : getEntityMetaInfos()) {
-
-			addBatchEditorFields(entityModel);
-			addTSEntityFields(entityModel);
-		}
+	public static void generate(EntityModel entityModel) throws Exception {
+		addBatchEditorFields(entityModel);
+		addTSEntityFields(entityModel);
 	}
 
 	private static void addBatchEditorFields(EntityModel entityModel) throws Exception {
@@ -76,7 +57,7 @@ public class FieldGenerator {
 				public String processFileText(String text) throws Exception {
 
 					{ // adding resource
-						String element =  BatchEditorUtils.getAdapterRef(entityModel, relationship);
+						String element = BatchEditorUtils.getAdapterRef(entityModel, relationship);
 
 						if (!text.contains(element)) {
 
@@ -96,12 +77,12 @@ public class FieldGenerator {
 
 		}
 	}
-	
+
 	private static void addTSEntityFields(EntityModel entityModel) throws Exception {
 
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
 
-			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityModel.modelName+"\\"+entityModel.name+"\\EntityFields.tsx") {
+			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityModel.modelName + "\\" + entityModel.name + "\\EntityFields.tsx") {
 
 				@Override
 				public String processFileText(String text) throws Exception {
@@ -113,7 +94,7 @@ public class FieldGenerator {
 
 							String replacement = element + "\n" + "			{/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}";
 
-							text = TextFileManipulator.replaceSection(text, "/*{<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->}*/}", replacement);
+							text = TextFileManipulator.replaceSection(text, "{/*{<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->}*/}", replacement);
 
 						}
 
@@ -123,13 +104,12 @@ public class FieldGenerator {
 
 				}
 
-
 			}.execute();
 
 		}
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
 
-			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\"+entityModel.modelName+"\\"+entityModel.name+"\\EntityColumns.tsx") {
+			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityModel.modelName + "\\" + entityModel.name + "\\EntityColumns.tsx") {
 
 				@Override
 				public String processFileText(String text) throws Exception {
@@ -139,9 +119,9 @@ public class FieldGenerator {
 
 						if (!text.contains(element)) {
 
-							String replacement = element + "\n" + "  <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
+							String replacement = element + "\n" + "  {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->*/}";
 
-							text = TextFileManipulator.replaceSection(text, "  <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
+							text = TextFileManipulator.replaceSection(text, "  {/*<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->*/}", replacement);
 
 						}
 
@@ -150,7 +130,6 @@ public class FieldGenerator {
 					return text;
 
 				}
-
 
 			}.execute();
 
@@ -184,43 +163,22 @@ public class FieldGenerator {
 //
 //		}
 	}
-	private static String getInputFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception{
+
+	private static String getInputFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
 		if ("String".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\""+fieldModel.fieldName+"\" />";
+			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
 
 		} else if ("byte[]".contentEquals(fieldModel.fieldType) && "text".contentEquals(fieldModel.fieldTypeBlobContent)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\""+fieldModel.fieldName+"\" />";
+			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
 
 		} else if ("Integer".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\""+fieldModel.fieldName+"\" />";
+			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
 
 		} else if ("Float".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\""+fieldModel.fieldName+"\" />";
+			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
 
 		} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\""+fieldModel.fieldName+"\" />";
-
-		} else {
-			throw new Exception("Error: Field type '" + fieldModel.fieldType + "' not found.");
-
-		}
-	}
-	
-	private static String getFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception{
-		if ("String".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\""+fieldModel.fieldName+"\" source=\""+fieldModel.fieldName+"\" />,";
-
-		} else if ("byte[]".contentEquals(fieldModel.fieldType) && "text".contentEquals(fieldModel.fieldTypeBlobContent)) {
-			return "  <TextField label=\""+fieldModel.fieldName+"\" source=\""+fieldModel.fieldName+"\" />,";
-
-		} else if ("Integer".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\""+fieldModel.fieldName+"\" source=\""+fieldModel.fieldName+"\" />,";
-
-		} else if ("Float".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\""+fieldModel.fieldName+"\" source=\""+fieldModel.fieldName+"\" />,";
-
-		} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\""+fieldModel.fieldName+"\" source=\""+fieldModel.fieldName+"\" />,";
+			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
 
 		} else {
 			throw new Exception("Error: Field type '" + fieldModel.fieldType + "' not found.");
@@ -228,5 +186,26 @@ public class FieldGenerator {
 		}
 	}
 
+	private static String getFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
+		if ("String".contentEquals(fieldModel.fieldType)) {
+			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
+
+		} else if ("byte[]".contentEquals(fieldModel.fieldType) && "text".contentEquals(fieldModel.fieldTypeBlobContent)) {
+			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
+
+		} else if ("Integer".contentEquals(fieldModel.fieldType)) {
+			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
+
+		} else if ("Float".contentEquals(fieldModel.fieldType)) {
+			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
+
+		} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
+			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
+
+		} else {
+			throw new Exception("Error: Field type '" + fieldModel.fieldType + "' not found.");
+
+		}
+	}
 
 }
