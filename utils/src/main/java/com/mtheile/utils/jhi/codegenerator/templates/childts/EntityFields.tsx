@@ -11,7 +11,7 @@ export const composeEntityFields = (createMode: boolean): FC<EntityFieldsProps> 
   return (
     <>
       <TextInput variant="outlined" inputProps={{ autocomplete: 'off' }} source="description" />
-      <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->
+			{/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}
      
     </>
   );
