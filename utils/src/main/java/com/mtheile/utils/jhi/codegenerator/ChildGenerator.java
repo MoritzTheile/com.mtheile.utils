@@ -208,6 +208,7 @@ public class ChildGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.entityName);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.modelName.toLowerCase());
+				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
 				return result;
 			}
 

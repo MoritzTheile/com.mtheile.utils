@@ -111,7 +111,7 @@ public class BatchEditorUtils {
 	private static String adapterTemplateBoolean = "" + "addCellAdapter(new AbstractBooleanValueCellAdapter<" + DTONAME_TOKEN + ">(\"" + CNAME_TOKEN + "\", false) {\r\n" + "\r\n" + "			@Override\r\n" + "			public Boolean getValueFromEntity(" + DTONAME_TOKEN + " entityDTO) {\r\n" + "				return entityDTO" + DTOGETTER_TOKEN + ".get" + GETSETPOSTFIX_TOKEN + "();\r\n" + "			}\r\n" + "\r\n" + "			@Override\r\n" + "			public void setValueOnEntity(Boolean value, " + DTONAME_TOKEN + " entityDTO) {\r\n" + "				entityDTO" + DTOGETTER_TOKEN + ".set" + GETSETPOSTFIX_TOKEN + "(value);\r\n" + "			}\r\n" + "		});";
 
 	private static String adapterTemplateRef = ""
-			+ "		addCellAdapter(new AbstractRefCellAdapter<ENTITYNAME_TOKENDTO>(\"PARENTNAME_TOKEN\", false, TABLE.GCDataPoint) {\r\n"
+			+ "		addCellAdapter(new AbstractRefCellAdapter<ENTITYNAME_TOKENDTO>(\"PARENTNAME_TOKEN\", false, TABLE.PARENTNAME_TOKEN) {\r\n"
 			+ "\r\n"
 			+ "			@Override\r\n"
 			+ "			public Long getRefIdFromEntity(ENTITYNAME_TOKENDTO entityDTO) {\r\n"

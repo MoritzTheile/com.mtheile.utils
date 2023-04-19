@@ -3,12 +3,16 @@ package com.lithodat.app.litho.service.other.batch.adapters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.lithodat.app.domain.PARENTNAME_TOKEN;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN;
 import com.lithodat.app.litho.service.other.batch.AbstractBatchAdapter;
 import com.lithodat.app.litho.service.other.batch.celladapters.AbstractFloatValueCellAdapter;
 import com.lithodat.app.litho.service.other.batch.celladapters.AbstractIntegerValueCellAdapter;
 import com.lithodat.app.litho.service.other.batch.celladapters.AbstractStringValueCellAdapter;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractRefCellAdapter;
 import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO.TABLE;
 import com.lithodat.app.litho.service.other.batch.dto.RowDTO;
+import com.lithodat.app.repository.PARENTNAME_TOKENRepository;
 import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
 
