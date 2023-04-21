@@ -5,6 +5,7 @@ import { AutocompleteInputWrapper } from 'app/litho-ui/mydata/crudentities/_shar
 import { makeStyles } from '@material-ui/core/styles';
 import { EntityFieldsProps } from 'app/litho-ui/mydata/resources/_shared/EntityFieldsProps';
 import resources from 'app/litho-ui/mydata/resources/resources';
+// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->
 
 export const composeEntityFields = (createMode: boolean): FC<EntityFieldsProps> => (props: EntityFieldsProps) => {
   const classes = useStyles();

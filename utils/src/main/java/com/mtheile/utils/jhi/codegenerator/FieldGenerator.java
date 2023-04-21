@@ -1,13 +1,8 @@
 package com.mtheile.utils.jhi.codegenerator;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel.FieldModel;
-import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 import com.mtheile.utils.jhi.codegenerator.utils.batcheditor.BatchEditorUtils;
 
 public class FieldGenerator {
@@ -17,6 +12,7 @@ public class FieldGenerator {
 	public static void generate(EntityModel entityModel) throws Exception {
 		addBatchEditorFields(entityModel);
 		addTSEntityFields(entityModel);
+		addTSListAssos(entityModel);
 	}
 
 	private static void addBatchEditorFields(EntityModel entityModel) throws Exception {
@@ -135,33 +131,70 @@ public class FieldGenerator {
 
 		}
 
-//		for (EntityModel.Relationship relationship : entityModel.relationships) {
-//
-//			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityModel.name + "BatchAdapter.java") {
-//
-//				@Override
-//				public String processFileText(String text) throws Exception {
-//
-//					{ // adding resource
-//						String element =  BatchEditorUtils.getAdapterRef(entityModel, relationship);
-//
-//						if (!text.contains(element)) {
-//
-//							String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
-//
-//							text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
-//
-//						}
-//
-//					}
-//
-//					return text;
-//
-//				}
-//
-//			}.execute();
-//
-//		}
+
+	}
+
+	private static void addTSListAssos(EntityModel entityModel) throws Exception {
+		
+
+		for (EntityModel.Relationship relationship : entityModel.relationships) {
+
+//			if (!"many-to-one".equals(relationship.relationshipType)) {
+//				continue;
+//			}
+
+			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityModel.modelName + "\\" + entityModel.name + "\\EntityFields.tsx") {
+
+				@Override
+				public String processFileText(String text) throws Exception {
+
+					{ // adding import
+						String element = "import {EntityPicker as " + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker} from \"app/litho-ui/mydata/resources/" + entityModel.modelName + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityPicker\";";
+
+						if (!text.contains(element)) {
+							String replacement = //
+									element + "\n" + //
+											"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->";
+
+							text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
+						}
+
+					}
+
+					{ // adding resource
+						String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker dtoIdPath={'" + relationship.relationshipName + "'}/>";
+
+						if (!text.contains(element)) {
+
+							String replacement = element + "\n" + "        {/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}";
+
+							text = TextFileManipulator.replaceSection(text, "{/*{<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->}*/}", replacement);
+
+						}
+
+					}
+
+					return text;
+
+				}
+
+			}.execute();
+
+		}
+	}
+
+	private static String firstLetterToUpperCase(String input) {
+
+		if (input == null) {
+			return null;
+		}
+
+		if (input.isEmpty()) {
+			return input;
+		}
+
+		return input.substring(0, 1).toUpperCase() + input.substring(1);
+
 	}
 
 	private static String getInputFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {

@@ -16,19 +16,9 @@ public class ChildGenerator {
 	private	static List<EntityModel> getEntityMetaInfos() throws Exception {
 
 		List<EntityModel> entityModels = new ArrayList<>();
-
-//		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
-//				new File(PROJECT_HOME + ".jhipster\\"), //
-//				"ICPMS", //
-//				"ICPMSMetadata", //
-//				"LaserMetadata" //
-//		));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster( //
-				new File(PROJECT_HOME + ".jhipster\\"), //
-				"ICPMS", //
-				"DataPoint", //
-				"ICPMSMetadata" //
-		));
+		
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "DataPoint", "ICPMSMetadata"));
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "LaserMetadata"));
 		
 		return entityModels;
 
