@@ -1,15 +1,18 @@
-package com.mtheile.utils.jhi.codegenerator;
+package com.mtheile.utils.jhi.codegenerator.profiles.entity;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mtheile.utils.file.textfile.TextFileManipulator;
+import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor;
+import com.mtheile.utils.jhi.codegenerator.AbstractTextFileProcessor;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel.MODEL_PROFILE;
 
-public class ChildGenerator {
+public class EntityGenerator {
 
 	private static final String PROJECT_HOME = "C:\\Users\\theil\\git\\com.lithodat.app\\";
 
@@ -17,35 +20,14 @@ public class ChildGenerator {
 
 		List<EntityModel> entityModels = new ArrayList<>();
 		
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "DataPoint", "ICPMSMetadata"));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "LaserMetadata"));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "SolutionOtherMetadata"));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "LaserMetadata"));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "QICPMSMetadata"));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "MCICPMSMetadata"));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "ICPMSMSMetadata"));
-		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "HRICPMSMetadata"));
 
 		return entityModels;
 
 	}
 
-	public static void main(String[] args) throws Exception {
-
-		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
-
-			generateServiceJavaCode(entityMetaInfo);
-			generateBatchJavaCode(entityMetaInfo);
-			generateJavaScriptCode(entityMetaInfo);
-			generateListMenuEntries(entityMetaInfo);
-			
-			FieldGenerator.generate(entityMetaInfo);
-		}
-	}
-
 	
 
-	private static void generateListMenuEntries(EntityModel entityMetaInfo) throws Exception {
+	public static void generateListMenuEntries(EntityModel entityMetaInfo) throws Exception {
 
 		// 01. Create SubMenu file if not exists
 
@@ -132,7 +114,7 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateServiceJavaCode(EntityModel entityMetaInfo) throws Exception {
+	public static void generateServiceJavaCode(EntityModel entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVA ----------------------------
 
@@ -175,7 +157,7 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateBatchJavaCode(EntityModel entityMetaInfo) throws Exception {
+	public static void generateBatchJavaCode(EntityModel entityMetaInfo) throws Exception {
 
 		new AbstractTemplateProcessor("ChildImporter.java.template") {
 
@@ -238,7 +220,7 @@ public class ChildGenerator {
 		}.execute();
 	}
 
-	private static void generateJavaScriptCode(EntityModel entityMetaInfo) throws Exception {
+	public static void generateJavaScriptCode(EntityModel entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVASCRIPT ----------------------------
 		new AbstractTemplateProcessor("childts/EntityListRenderer.tsx") {

@@ -5,6 +5,10 @@ import java.util.List;
 
 public class EntityModel {
 	
+	public static enum MODEL_PROFILE {LIST, ENTITY};
+	
+	public MODEL_PROFILE modelProfile;
+	
 	public String name;
 	public String parentName;
 	public String modelName;

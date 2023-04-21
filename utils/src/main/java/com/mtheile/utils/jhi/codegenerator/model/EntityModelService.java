@@ -10,17 +10,19 @@ import java.nio.file.Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel.MODEL_PROFILE;
 
 public class EntityModelService {
 
 
-	public static EntityModel getModelInfosFromJHipster(File jsonDir, String modelName, String parentName, String entityName) throws Exception {
+	public static EntityModel getModelInfosFromJHipster(File jsonDir,MODEL_PROFILE modelProfile, String modelName, String parentName, String entityName) throws Exception {
 
 		File jsonFile = new File(jsonDir.getAbsolutePath() + "\\" + entityName + ".json");
 
 		String json = fileToString(jsonFile);
 
 		EntityModel entityModel = jsonToEntityModelObject(json);
+		entityModel.modelProfile = modelProfile;
 		entityModel.parentName = parentName;
 		entityModel.modelName = modelName;
 		return entityModel;
@@ -36,15 +38,6 @@ public class EntityModelService {
 		return entityMetaInfo;
 	}
 
-	public static void main(String[] args) throws Exception {
-		
-		String modelName = "icpms";
-		String parentName = "";
-		String entityName = "LaserMetadata";
-		EntityModel entityModel = getModelInfosFromJHipster(new File("C:\\Users\\theil\\git\\com.lithodat.app\\.jhipster\\"), modelName,  parentName, entityName);
-		System.out.println("name="+entityModel.name);
-		printDTO(entityModel);
-	}
 	
 	private static String fileToString(File file) throws IOException {
 

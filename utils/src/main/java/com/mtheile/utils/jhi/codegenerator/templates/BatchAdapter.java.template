@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import com.lithodat.app.domain.PARENTNAME_TOKEN;
 import com.lithodat.app.domain.ENTITYNAME_TOKEN;
 import com.lithodat.app.litho.service.other.batch.AbstractBatchAdapter;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractBooleanValueCellAdapter;
 import com.lithodat.app.litho.service.other.batch.celladapters.AbstractFloatValueCellAdapter;
 import com.lithodat.app.litho.service.other.batch.celladapters.AbstractIntegerValueCellAdapter;
 import com.lithodat.app.litho.service.other.batch.celladapters.AbstractStringValueCellAdapter;
