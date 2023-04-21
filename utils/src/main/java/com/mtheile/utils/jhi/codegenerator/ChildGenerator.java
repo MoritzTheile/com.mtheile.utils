@@ -19,7 +19,13 @@ public class ChildGenerator {
 		
 		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "DataPoint", "ICPMSMetadata"));
 		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "LaserMetadata"));
-		
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "SolutionOtherMetadata"));
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "LaserMetadata"));
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "QICPMSMetadata"));
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "MCICPMSMetadata"));
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "ICPMSMSMetadata"));
+		entityModels.add(EntityModelService.getModelInfosFromJHipster(new File(PROJECT_HOME + ".jhipster\\"), "ICPMS", "ICPMSMetadata", "HRICPMSMetadata"));
+
 		return entityModels;
 
 	}
