@@ -149,7 +149,8 @@ public class FieldGenerator {
 				public String processFileText(String text) throws Exception {
 
 					{ // adding import
-						String element = "import {EntityPicker as " + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker} from \"app/litho-ui/mydata/resources/" + entityModel.modelName + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityPicker\";";
+						//String element = "import {EntityPicker as " + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker} from \"app/litho-ui/mydata/resources/" + entityModel.modelName + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityPicker\";";
+						String element = "import {EntityPickerPlus"+ firstLetterToUpperCase(relationship.otherEntityName) + "} from \"app/litho-ui/mydata/resources/"+ entityModel.modelName +"/"+ firstLetterToUpperCase(relationship.otherEntityName) +"/EntityResource\";";
 
 						if (!text.contains(element)) {
 							String replacement = //
@@ -162,7 +163,8 @@ public class FieldGenerator {
 					}
 
 					{ // adding resource
-						String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker dtoIdPath={'" + relationship.relationshipName + "'}/>";
+						// String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker dtoIdPath={'" + relationship.relationshipName + "'}/>";
+						String element = "<EntityPickerPlus" + firstLetterToUpperCase(relationship.otherEntityName) + " dtoIdPath={'" + relationship.relationshipName + "Id'}/>";
 
 						if (!text.contains(element)) {
 

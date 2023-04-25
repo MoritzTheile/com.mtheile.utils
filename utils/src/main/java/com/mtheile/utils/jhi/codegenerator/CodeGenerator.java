@@ -58,7 +58,8 @@ public class CodeGenerator {
 				continue;
 			}
 			ListGenerator.generateListJavaCode(entityMetaInfo);
-			ListGenerator.generateListJavaScriptCode(entityMetaInfo);
+//			ListGenerator.generateListJavaScriptCode(entityMetaInfo);
+			EntityGenerator.generateJavaScriptCode(entityMetaInfo);
 			ListGenerator.generateListMenuEntries(entityMetaInfo);
 
 		}
