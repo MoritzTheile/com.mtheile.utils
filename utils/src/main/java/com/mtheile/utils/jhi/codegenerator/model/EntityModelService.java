@@ -10,22 +10,21 @@ import java.nio.file.Paths;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.mtheile.utils.jhi.codegenerator.model.EntityModel.MODEL_PROFILE;
+import com.mtheile.utils.jhi.codegenerator.CodeGenerator;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel.FieldModel;
 
 public class EntityModelService {
 
 
-	public static EntityModel getModelInfosFromJHipster(File jsonDir,MODEL_PROFILE modelProfile, String modelName, String parentName, String entityName) throws Exception {
+	public static EntityModel getModelInfosFromJHipster(File jsonDir,  String entityName) throws Exception {
 
 		File jsonFile = new File(jsonDir.getAbsolutePath() + "\\" + entityName + ".json");
 
 		String json = fileToString(jsonFile);
 
-		EntityModel entityModel = jsonToEntityModelObject(json);
-		entityModel.modelProfile = modelProfile;
-		entityModel.parentName = parentName;
-		entityModel.modelName = modelName;
-		return entityModel;
+//		entityModel.parentName = parentName;
+
+		return jsonToEntityModelObject(json);
 		
 	}
 
@@ -49,6 +48,7 @@ public class EntityModelService {
 
 	}
 	
+	@SuppressWarnings("unused")
 	private static void printDTO(Object dto) throws Exception {
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -57,4 +57,14 @@ public class EntityModelService {
 
 	}
 
+	public static void main(String[] args) throws Exception {
+		File jHipsterDir = new File(CodeGenerator.PROJECT_HOME + ".jhipster\\");
+		
+		EntityModel entityModel = EntityModelService.getModelInfosFromJHipster(jHipsterDir, "Sample");
+		
+		for(FieldModel field: entityModel.fields) {
+			System.out.println(field.javadoc);
+			System.out.println(field.getLithoDocumentation());
+		}
+	}
 }

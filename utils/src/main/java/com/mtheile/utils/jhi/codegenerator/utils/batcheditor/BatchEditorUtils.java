@@ -46,7 +46,7 @@ public class BatchEditorUtils {
 		String template = adapterTemplateRef;
 		
 		template = template.replaceAll("ENTITYNAME_TOKEN", entityModel.name);
-		template = template.replaceAll("PARENTNAME_TOKEN", entityModel.parentName);
+		// template = template.replaceAll("PARENTNAME_TOKEN", entityModel.parentName);
 
 		return template;
 

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
-import com.mtheile.utils.jhi.codegenerator.model.EntityModel.MODEL_PROFILE;
-import com.mtheile.utils.jhi.codegenerator.profiles.entity.EntityGenerator;
-import com.mtheile.utils.jhi.codegenerator.profiles.list.ListGenerator;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel.LITHO_PROFILE;
+import com.mtheile.utils.jhi.codegenerator.profiles.entity.ServerCodeGenerator;
+import com.mtheile.utils.jhi.codegenerator.profiles.list.ClientCodeGenerator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 
 public class CodeGenerator {
@@ -20,31 +20,31 @@ public class CodeGenerator {
 
 		File jHipsterDir = new File(PROJECT_HOME + ".jhipster\\");
 		
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LCombinedMeasurement"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LSampleIntroMethod"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LICPMSType"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LDataReductionPackage"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LSolutionIntroSystem"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LLaserSystem"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LLaserWaveLength"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LLaserPulseWidthUnit"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LLaserSamplingMode"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LAblationCellType"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LTubingMaterial"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LTubingMaterialInternalDiameter"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LInternalStandard"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LICPMSModel"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,MODEL_PROFILE.LIST, "ICPMS", null, "LZeroMCICPMS"));
-
-		
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY, "ICPMS", "DataPoint", "ICPMSMetadata"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY,"ICPMS", "ICPMSMetadata", "LaserMetadata"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY,"ICPMS", "ICPMSMetadata", "SolutionOtherMetadata"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY,"ICPMS", "ICPMSMetadata", "LaserMetadata"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY,"ICPMS", "ICPMSMetadata", "QICPMSMetadata"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY,"ICPMS", "ICPMSMetadata", "MCICPMSMetadata"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY,"ICPMS", "ICPMSMetadata", "ICPMSMSMetadata"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, MODEL_PROFILE.ENTITY,"ICPMS", "ICPMSMetadata", "HRICPMSMetadata"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LCombinedMeasurement"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LSampleIntroMethod"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LICPMSType"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LDataReductionPackage"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LSolutionIntroSystem"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LLaserSystem"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LLaserWaveLength"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LLaserPulseWidthUnit"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LLaserSamplingMode"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LAblationCellType"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LTubingMaterial"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LTubingMaterialInternalDiameter"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LInternalStandard"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LICPMSModel"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LZeroMCICPMS"));
+//
+//		
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "ICPMSMetadata"));          // parent: "DataPoint",    
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "SolutionOtherMetadata"));  // parent: "ICPMSMetadata",
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "QICPMSMetadata"));         // parent: "ICPMSMetadata",
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "MCICPMSMetadata"));        // parent: "ICPMSMetadata",
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "ICPMSMSMetadata"));        // parent: "ICPMSMetadata",
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "HRICPMSMetadata"));        // parent: "ICPMSMetadata",
 
 		return entityMetaInfos;
 
@@ -52,30 +52,36 @@ public class CodeGenerator {
 
 	public static void main(String[] args) throws Exception {
 
+		// server code
 		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
-			if(!MODEL_PROFILE.LIST.equals(entityMetaInfo.modelProfile)) {
-				continue;
+			if(LITHO_PROFILE.LIST.equals(entityMetaInfo.lithoProfile)) {
+				
+				ServerCodeGenerator.generateListJavaCode(entityMetaInfo);
 			}
-			ListGenerator.generateListJavaCode(entityMetaInfo);
-//			ListGenerator.generateListJavaScriptCode(entityMetaInfo);
-			EntityGenerator.generateJavaScriptCode(entityMetaInfo);
-			ListGenerator.generateListMenuEntries(entityMetaInfo);
+
+			if(LITHO_PROFILE.ENTITY.equals(entityMetaInfo.lithoProfile)) {
+
+				ServerCodeGenerator.generateEntityJavaCode(entityMetaInfo);
+				ServerCodeGenerator.generateBatchJavaCode(entityMetaInfo);
+				
+			}
 
 		}
 		
+		// client code
 		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
-			if(!MODEL_PROFILE.ENTITY.equals(entityMetaInfo.modelProfile)) {
-				continue;
-			}
+			ClientCodeGenerator.generateCRUDCode(entityMetaInfo);
 
-			EntityGenerator.generateServiceJavaCode(entityMetaInfo);
-			EntityGenerator.generateBatchJavaCode(entityMetaInfo);
-			EntityGenerator.generateJavaScriptCode(entityMetaInfo);
-			EntityGenerator.generateListMenuEntries(entityMetaInfo);
+			ClientCodeGenerator.generateListMenuEntries(entityMetaInfo);
 			
-			FieldGenerator.generate(entityMetaInfo);
+
+			if(LITHO_PROFILE.ENTITY.equals(entityMetaInfo.lithoProfile)) {
+				
+				ClientCodeGenerator.generateFields(entityMetaInfo);
+				
+			}
 
 		}
 
