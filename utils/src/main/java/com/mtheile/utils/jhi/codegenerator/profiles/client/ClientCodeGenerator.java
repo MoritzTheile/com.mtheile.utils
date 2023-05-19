@@ -1,4 +1,4 @@
-package com.mtheile.utils.jhi.codegenerator.profiles.list;
+package com.mtheile.utils.jhi.codegenerator.profiles.client;
 
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor;

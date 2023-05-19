@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel.LITHO_PROFILE;
-import com.mtheile.utils.jhi.codegenerator.profiles.entity.ServerCodeGenerator;
-import com.mtheile.utils.jhi.codegenerator.profiles.list.ClientCodeGenerator;
+import com.mtheile.utils.jhi.codegenerator.profiles.client.ClientCodeGenerator;
+import com.mtheile.utils.jhi.codegenerator.profiles.server.ServerCodeGenerator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 
 public class CodeGenerator {

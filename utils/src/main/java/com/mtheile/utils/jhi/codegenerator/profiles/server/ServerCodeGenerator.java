@@ -1,4 +1,4 @@
-package com.mtheile.utils.jhi.codegenerator.profiles.entity;
+package com.mtheile.utils.jhi.codegenerator.profiles.server;
 
 import java.io.File;
 import java.util.ArrayList;
