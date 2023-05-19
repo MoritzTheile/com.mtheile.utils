@@ -27,7 +27,7 @@ public class ServerCodeGenerator {
 
 	
 
-	public static void generateEntityJavaCode(EntityModel entityMetaInfo) throws Exception {
+	public static void generateEntityServiceCode(EntityModel entityMetaInfo) throws Exception {
 
 		// --------------- START - JAVA ----------------------------
 
@@ -70,7 +70,7 @@ public class ServerCodeGenerator {
 		}.execute();
 	}
 
-	public static void generateBatchJavaCode(EntityModel entityMetaInfo) throws Exception {
+	public static void generateEntityBatchCode(EntityModel entityMetaInfo) throws Exception {
 
 		new AbstractTemplateProcessor("ChildImporter.java.template") {
 
@@ -133,7 +133,7 @@ public class ServerCodeGenerator {
 		}.execute();
 	}
 
-	public static void generateListJavaCode(EntityModel entityMetaInfo) throws Exception {
+	public static void generateListServiceCode(EntityModel entityMetaInfo) throws Exception {
 	
 		new AbstractTemplateProcessor("ListLithoService.java.template") {
 	
@@ -170,6 +170,9 @@ public class ServerCodeGenerator {
 	
 		}.execute();
 	
+	}
+	
+	public static void generateListBatchCode(EntityModel entityMetaInfo) throws Exception {
 		new AbstractTemplateProcessor("ListImporter.java.template") {
 	
 			@Override

@@ -13,96 +13,10 @@ public class ClientCodeGenerator {
 	
 	private static String PROJECT_HOME = CodeGenerator.PROJECT_HOME;
 
-	public static void generateListMenuEntries(EntityModel entityMetaInfo) throws Exception {
-	
-		// 01. Create SubMenu file if not exists
-	
-		new AbstractTemplateProcessor("ts/GetSubMenu.template.tsx") {
-	
-			@Override
-			public String getTargetFilePath() {
-	
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\submenues\\GetSubMenu" + entityMetaInfo.getLithoModule() + ".tsx";
-	
-			}
-	
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
-				return result;
-			}
-	
-		}.execute(MODE.SKIP_IF_FILE_EXISTS);
-	
-		// 02. Add SubMenu Code to main Menu if not already added.
-	
-		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\Menu.tsx") {
-	
-			@Override
-			public String processFileText(String text) throws Exception {
-				{ // adding import
-					String element = "import { getSubMenu" + entityMetaInfo.getLithoModule() + " } from 'app/litho-ui/mydata/layout/submenues/GetSubMenu" + entityMetaInfo.getLithoModule() + "';";
-	
-					if (!text.contains(element)) {
-						String replacement = //
-								element + "\n" + //
-										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
-	
-						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
-					}
-				}
-				{ // adding resource
-					String element = "              <SubMenu\r\n" + "                handleToggle={() => handleToggle('" + entityMetaInfo.getLithoModule() + "')}\r\n" + "                isOpen={state." + entityMetaInfo.getLithoModule() + "}\r\n" + "                sidebarIsOpen={open}\r\n" + "                isNested={true}\r\n" + "                name=\"" + entityMetaInfo.getLithoModule() + "\"\r\n" + "                icon={<ChevronRightIcon />}\r\n" + "                dense={dense}\r\n" + "                to={''}\r\n" + "              >\r\n" + "                {getSubMenu" + entityMetaInfo.getLithoModule() + "(onMenuClick, open, dense)}\r\n" + "              </SubMenu>\r\n" + "";
-	
-					if (!text.contains("isOpen={state." + entityMetaInfo.getLithoModule() + "}")) {
-						String replacement = //
-								element + "\n" + //
-										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES (don't remove) -->*/}\n";
-	
-						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES", "*/}", replacement);
-					}
-				}
-				return text;
-			}
-		}.execute();
-	
-		// 03. Fill SubMenu file;
-	
-		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\submenues\\GetSubMenu" + entityMetaInfo.getLithoModule() + ".tsx") {
-	
-			@Override
-			public String processFileText(String text) throws Exception {
-				{ // adding import
-					String element = "import { getSubMenu" + entityMetaInfo.getLithoModule() + " } from 'app/litho-ui/mydata/layout/submenues/GetSubMenu" + entityMetaInfo.getLithoModule() + "';";
-	
-					if (!text.contains("import { getSubMenu" + entityMetaInfo.getLithoModule() + " }")) {
-						String replacement = //
-								element + "\n" + //
-										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
-	
-						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
-					}
-				}
-				{ // adding resource
-					String element = "" + "<MenuItemLink\r\n" + "        to={'/" + entityMetaInfo.getLithoModule().toLowerCase() + "/" + entityMetaInfo.name + "'}\r\n" + "        primaryText={`" + entityMetaInfo.name + "`}\r\n" + "        leftIcon={<TocIcon />}\r\n" + "        onClick={onMenuClick}\r\n" + "        sidebarIsOpen={open}\r\n" + "        dense={dense}\r\n" + "      />";
-	
-					if (!text.contains(element)) {
-						String replacement = //
-								element + "\n" + //
-										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES (don't remove) -->*/}\n";
-	
-						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES", "*/}", replacement);
-					}
-				}
-				return text;
-			}
-		}.execute();
-	}
+
 
 	public static void generateCRUDCode(EntityModel entityMetaInfo) throws Exception {
 	
-		// --------------- START - JAVASCRIPT ----------------------------
 		new AbstractTemplateProcessor("childts/EntityListRenderer.tsx") {
 	
 			@Override
@@ -211,7 +125,7 @@ public class ClientCodeGenerator {
 	
 	}
 
-	public static void generateListMenuEntries(EntityModel entityMetaInfo) throws Exception {
+	public static void generateListMenuEntry(EntityModel entityMetaInfo) throws Exception {
 	
 		// 01. Create SubMenu file if not exists
 	

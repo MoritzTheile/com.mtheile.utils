@@ -57,13 +57,17 @@ public class CodeGenerator {
 
 			if(LITHO_PROFILE.LIST.equals(entityMetaInfo.lithoProfile)) {
 				
-				ServerCodeGenerator.generateListJavaCode(entityMetaInfo);
+				ServerCodeGenerator.generateListServiceCode(entityMetaInfo);
+				
+				ServerCodeGenerator.generateListBatchCode(entityMetaInfo);
+				
 			}
 
 			if(LITHO_PROFILE.ENTITY.equals(entityMetaInfo.lithoProfile)) {
 
-				ServerCodeGenerator.generateEntityJavaCode(entityMetaInfo);
-				ServerCodeGenerator.generateBatchJavaCode(entityMetaInfo);
+				ServerCodeGenerator.generateEntityServiceCode(entityMetaInfo);
+				
+				ServerCodeGenerator.generateEntityBatchCode(entityMetaInfo);
 				
 			}
 
@@ -74,8 +78,7 @@ public class CodeGenerator {
 
 			ClientCodeGenerator.generateCRUDCode(entityMetaInfo);
 
-			ClientCodeGenerator.generateListMenuEntries(entityMetaInfo);
-			
+			ClientCodeGenerator.generateListMenuEntry(entityMetaInfo);
 
 			if(LITHO_PROFILE.ENTITY.equals(entityMetaInfo.lithoProfile)) {
 				
