@@ -7,18 +7,22 @@ import java.util.regex.Pattern;
 
 public class EntityModel {
 	
-	public static enum LITHO_PROFILE {LIST, ENTITY, UNKNOWN};
+	public static enum LITHO_PROFILE {LIST, CHILD, UNKNOWN};
 	
 	public String name;
-//	public String parentName;
 	public String javadoc;
-
 
 	public String getLithoModule(){
 		
 		return getLithoAnnotation(javadoc, "lithoModule");
 				
 	}
+	public String getLithoParent(){
+		
+		return getLithoAnnotation(javadoc, "lithoParent");
+				
+	}
+
 
 	public LITHO_PROFILE getLithoProfile(){
 		

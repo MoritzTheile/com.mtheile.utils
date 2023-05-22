@@ -214,9 +214,9 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 
 			Join<DataPackage, DataPoint> dataPointJoin = root.join(DataPackage_.dataPoints, JoinType.LEFT);
 
-			Join<DataPoint, PARENTNAME_TOKEN> gcDataPointJoin = dataPointJoin.join(DataPoint_.iCPMSMetadata, JoinType.LEFT);
+			Join<DataPoint, PARENTNAME_TOKEN> gcDataPointJoin = dataPointJoin.join(DataPoint_.PARENTNAME_FIRSTLETTER_LOWER_CASE_TOKEN, JoinType.LEFT);
 
-			Join<PARENTNAME_TOKEN, ENTITYNAME_TOKEN> elementalConcentrationDataPointJoin = gcDataPointJoin.join(PARENTNAME_TOKEN_.solutionOtherMetadata, JoinType.LEFT);
+			Join<PARENTNAME_TOKEN, ENTITYNAME_TOKEN> elementalConcentrationDataPointJoin = gcDataPointJoin.join(PARENTNAME_TOKEN_.ENTITYNAME_FIRSTLETTER_LOWER_CASE_TOKEN, JoinType.LEFT);
 
 			return criteriaBuilder.equal(elementalConcentrationDataPointJoin.get(ENTITYNAME_TOKEN_.id), entityId);
 
@@ -227,7 +227,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 		
 		return (root, query, criteriaBuilder) -> {
 
-			Join<ENTITYNAME_TOKEN, PARENTNAME_TOKEN> dataJoin = root.join(ENTITYNAME_TOKEN_.TODO_TOKEN, JoinType.LEFT);
+			Join<ENTITYNAME_TOKEN, PARENTNAME_TOKEN> dataJoin = root.join(ENTITYNAME_TOKEN_.PARENTNAME_FIRSTLETTER_LOWER_CASE_TOKEN, JoinType.LEFT);
 
 			Join<PARENTNAME_TOKEN, DataPoint> dataPointJoin = dataJoin.join(PARENTNAME_TOKEN_.dataPoint, JoinType.LEFT);
 			

@@ -20,7 +20,7 @@ public class ClientCodeGenerator {
 		 */
 		ClientCodeGenerator.generateCRUDCode(entityMetaInfo);
 
-		if (LITHO_PROFILE.ENTITY.equals(entityMetaInfo.getLithoProfile())) {
+		if (LITHO_PROFILE.CHILD.equals(entityMetaInfo.getLithoProfile())) {
 
 			/**
 			 * no templates used
@@ -377,6 +377,7 @@ public class ClientCodeGenerator {
 		return input.substring(0, 1).toUpperCase() + input.substring(1);
 	
 	}
+
 
 
 	private static String getFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {

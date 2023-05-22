@@ -1,8 +1,5 @@
 package com.mtheile.utils.jhi.codegenerator.profiles.server;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
@@ -33,7 +30,7 @@ public class ServerCodeGenerator {
 			 */
 			ServerCodeGenerator.generateResourceCode(entityMetaInfo);
 
-			if (LITHO_PROFILE.ENTITY.equals(entityMetaInfo.getLithoProfile())) {
+			if (LITHO_PROFILE.CHILD.equals(entityMetaInfo.getLithoProfile())) {
 
 				/**
 				 * "ChildLithoService.java.template"
@@ -55,7 +52,7 @@ public class ServerCodeGenerator {
 			
 			ServerCodeGenerator.registerToBatch(entityMetaInfo);
 
-			if (LITHO_PROFILE.ENTITY.equals(entityMetaInfo.getLithoProfile())) {
+			if (LITHO_PROFILE.CHILD.equals(entityMetaInfo.getLithoProfile())) {
 
 				/**
 				 * "ChildImporter.java.template" "BatchAdapter.java.template"
@@ -87,14 +84,31 @@ public class ServerCodeGenerator {
 
 			@Override
 			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				// result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
-				return result;
+				
+				template = template.replaceAll("ENTITYNAME_FIRSTLETTER_LOWER_CASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.name));
+				template = template.replaceAll("PARENTNAME_FIRSTLETTER_LOWER_CASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.getLithoParent()));
+				template = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
+				template = template.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
+				template = template.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				
+				return template;
 			}
 
-		}.execute(MODE.SKIP_IF_FILE_EXISTS);
+		}.execute();
 
+	}
+	public static String firstLetterToLowerCase(String input) {
+		
+		if (input == null) {
+			return null;
+		}
+	
+		if (input.isEmpty()) {
+			return input;
+		}
+	
+		return input.substring(0, 1).toLowerCase() + input.substring(1);
+	
 	}
 
 	private static void generateResourceCode(EntityModel entityMetaInfo) throws Exception {
@@ -111,7 +125,7 @@ public class ServerCodeGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				// result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
+				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
 				return result;
 			}
 
@@ -155,7 +169,7 @@ public class ServerCodeGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				// result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.parentName);
+				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
 				return result;
 			}
 
