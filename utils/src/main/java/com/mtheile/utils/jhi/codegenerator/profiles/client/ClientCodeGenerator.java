@@ -212,64 +212,6 @@ public class ClientCodeGenerator {
 		}.execute();
 	}
 
-	private static void addBatchEditorFields(EntityModel entityModel) throws Exception {
-	
-		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
-	
-			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityModel.name + "BatchAdapter.java") {
-	
-				@Override
-				public String processFileText(String text) throws Exception {
-	
-					{ // adding resource
-						String element = BatchEditorUtils.getAdapterFieldCode(entityModel, fieldModel);
-	
-						if (!text.contains(element)) {
-	
-							String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
-	
-							text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
-	
-						}
-	
-					}
-	
-					return text;
-	
-				}
-	
-			}.execute();
-	
-		}
-	
-		for (EntityModel.Relationship relationship : entityModel.relationships) {
-	
-			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityModel.name + "BatchAdapter.java") {
-	
-				@Override
-				public String processFileText(String text) throws Exception {
-	
-					{ // adding resource
-						String element = BatchEditorUtils.getAdapterRef(entityModel, relationship);
-	
-						if (!text.contains(element)) {
-	
-							String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
-	
-							text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
-	
-						}
-	
-					}
-	
-					return text;
-	
-				}
-	
-			}.execute();
-	
-		}
-	}
 
 	private static void addTSEntityFields(EntityModel entityModel) throws Exception {
 	
@@ -397,7 +339,7 @@ public class ClientCodeGenerator {
 	}
 
 	public static void generateFields(EntityModel entityModel) throws Exception {
-		addBatchEditorFields(entityModel);
+		
 		addTSEntityFields(entityModel);
 		addTSListAssos(entityModel);
 	}

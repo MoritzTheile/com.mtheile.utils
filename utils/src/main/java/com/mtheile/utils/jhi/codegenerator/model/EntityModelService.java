@@ -22,8 +22,6 @@ public class EntityModelService {
 
 		String json = fileToString(jsonFile);
 
-//		entityModel.parentName = parentName;
-
 		return jsonToEntityModelObject(json);
 		
 	}
@@ -36,7 +34,6 @@ public class EntityModelService {
 
 		return entityMetaInfo;
 	}
-
 	
 	private static String fileToString(File file) throws IOException {
 

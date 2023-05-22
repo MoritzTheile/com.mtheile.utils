@@ -69,6 +69,7 @@ public class CodeGenerator {
 				
 				ServerCodeGenerator.generateEntityBatchCode(entityMetaInfo);
 				
+				ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
 			}
 
 		}
