@@ -85,11 +85,11 @@ public class ServerCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				
-				template = template.replaceAll("ENTITYNAME_FIRSTLETTER_LOWER_CASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.name));
-				template = template.replaceAll("PARENTNAME_FIRSTLETTER_LOWER_CASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.getLithoParent()));
+				template = template.replaceAll("ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.name));
+				template = template.replaceAll("PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.getLithoParent()));
 				template = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				template = template.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
-				template = template.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				template = template.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return template;
 			}
