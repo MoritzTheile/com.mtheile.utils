@@ -7,17 +7,48 @@ import com.mtheile.utils.jhi.codegenerator.AbstractTextFileProcessor;
 import com.mtheile.utils.jhi.codegenerator.CodeGenerator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel.FieldModel;
-import com.mtheile.utils.jhi.codegenerator.utils.batcheditor.BatchEditorUtils;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModel.LITHO_PROFILE;
 
 public class ClientCodeGenerator {
 	
 	private static String PROJECT_HOME = CodeGenerator.PROJECT_HOME;
 
+	public static void generate(EntityModel entityMetaInfo) throws Exception {
+		/**
+		 * "childts/EntityListRenderer.tsx" "childts/EntityColumns.tsx"
+		 * "childts/EntityFields.tsx" "childts/EntityResource.tsx"
+		 */
+		ClientCodeGenerator.generateCRUDCode(entityMetaInfo);
+
+		if (LITHO_PROFILE.ENTITY.equals(entityMetaInfo.getLithoProfile())) {
+
+			/**
+			 * no templates used
+			 */
+			ClientCodeGenerator.addTSEntityFields(entityMetaInfo);
+			/**
+			 * no templates used
+			 */
+			ClientCodeGenerator.addTSListAssos(entityMetaInfo);
+
+		}
+		
+		/**
+		 * "ts/GetSubMenu.template.tsx"
+		 */
+		ClientCodeGenerator.generateListMenuEntry(entityMetaInfo);
+	}
 
 
-	public static void generateCRUDCode(EntityModel entityMetaInfo) throws Exception {
+	/**
+	 * "childts/EntityListRenderer.tsx"
+	 * "childts/EntityColumns.tsx"
+	 * "childts/EntityFields.tsx"
+	 * "childts/EntityResource.tsx"
+	 */
+	private static void generateCRUDCode(EntityModel entityMetaInfo) throws Exception {
 	
-		new AbstractTemplateProcessor("childts/EntityListRenderer.tsx") {
+		new AbstractTemplateProcessor("client/templates/EntityListRenderer.tsx") {
 	
 			@Override
 			public String getTargetFilePath() {
@@ -35,7 +66,7 @@ public class ClientCodeGenerator {
 	
 		}.execute();
 	
-		new AbstractTemplateProcessor("childts/EntityColumns.tsx") {
+		new AbstractTemplateProcessor("client/templates/EntityColumns.tsx") {
 	
 			@Override
 			public String getTargetFilePath() {
@@ -54,7 +85,7 @@ public class ClientCodeGenerator {
 		}.execute();
 	
 	
-		new AbstractTemplateProcessor("childts/EntityFields.tsx") {
+		new AbstractTemplateProcessor("client/templates/EntityFields.tsx") {
 	
 			@Override
 			public String getTargetFilePath() {
@@ -72,7 +103,7 @@ public class ClientCodeGenerator {
 	
 		}.execute();
 	
-		new AbstractTemplateProcessor("childts/EntityResource.tsx") {
+		new AbstractTemplateProcessor("client/templates/EntityResource.tsx") {
 	
 			@Override
 			public String getTargetFilePath() {
@@ -125,11 +156,14 @@ public class ClientCodeGenerator {
 	
 	}
 
-	public static void generateListMenuEntry(EntityModel entityMetaInfo) throws Exception {
+	/**
+	 * "ts/GetSubMenu.template.tsx" 
+	 */
+	private static void generateListMenuEntry(EntityModel entityMetaInfo) throws Exception {
 	
 		// 01. Create SubMenu file if not exists
 	
-		new AbstractTemplateProcessor("ts/GetSubMenu.template.tsx") {
+		new AbstractTemplateProcessor("client/templates/GetSubMenu.template.tsx") {
 	
 			@Override
 			public String getTargetFilePath() {
@@ -213,6 +247,9 @@ public class ClientCodeGenerator {
 	}
 
 
+	/**
+	 *	no templates used 
+	 */
 	private static void addTSEntityFields(EntityModel entityModel) throws Exception {
 	
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
@@ -273,6 +310,9 @@ public class ClientCodeGenerator {
 	
 	}
 
+	/**
+	 *	no templates used 
+	 */
 	private static void addTSListAssos(EntityModel entityModel) throws Exception {
 			
 	
@@ -338,11 +378,6 @@ public class ClientCodeGenerator {
 	
 	}
 
-	public static void generateFields(EntityModel entityModel) throws Exception {
-		
-		addTSEntityFields(entityModel);
-		addTSListAssos(entityModel);
-	}
 
 	private static String getFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
 		if ("String".contentEquals(fieldModel.fieldType)) {

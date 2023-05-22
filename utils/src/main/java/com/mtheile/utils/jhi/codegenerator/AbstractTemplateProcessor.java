@@ -11,7 +11,7 @@ public abstract class AbstractTemplateProcessor {
 	
 	public static enum MODE {SKIP_IF_FILE_EXISTS, DEFAULT}
 
-	private static final String EXAMPLE_FILE_RESOURCE = "/com/mtheile/utils/jhi/codegenerator/templates/";
+	private static final String EXAMPLE_FILE_RESOURCE = "/com/mtheile/utils/jhi/codegenerator/profiles/";
 
 	private String templateName;
 

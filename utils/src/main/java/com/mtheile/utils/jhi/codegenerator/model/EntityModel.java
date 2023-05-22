@@ -13,7 +13,6 @@ public class EntityModel {
 //	public String parentName;
 	public String javadoc;
 
-	public LITHO_PROFILE lithoProfile;
 
 	public String getLithoModule(){
 		
@@ -94,7 +93,7 @@ public class EntityModel {
 	
 
 	public static String getLithoAnnotation(String text, String javadocAnnotationName){
-		
+		System.out.println("huhu javadoc "+ text);
 		if(text == null) {
 			return "";
 		}

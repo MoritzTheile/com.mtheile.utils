@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
-import com.mtheile.utils.jhi.codegenerator.model.EntityModel.LITHO_PROFILE;
+import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 import com.mtheile.utils.jhi.codegenerator.profiles.client.ClientCodeGenerator;
 import com.mtheile.utils.jhi.codegenerator.profiles.server.ServerCodeGenerator;
-import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 
 public class CodeGenerator {
 
@@ -19,7 +18,7 @@ public class CodeGenerator {
 		List<EntityModel> entityMetaInfos = new ArrayList<>();
 
 		File jHipsterDir = new File(PROJECT_HOME + ".jhipster\\");
-		
+
 		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LCombinedMeasurement"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LSampleIntroMethod"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LICPMSType"));
@@ -38,7 +37,7 @@ public class CodeGenerator {
 //
 //		
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "ICPMSMetadata"));          // parent: "DataPoint",    
-//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "SolutionOtherMetadata"));  // parent: "ICPMSMetadata",
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "QICPMSMetadata"));         // parent: "ICPMSMetadata",
@@ -51,44 +50,19 @@ public class CodeGenerator {
 	}
 
 	public static void main(String[] args) throws Exception {
-
+		
 		// server code
 		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
-			if(LITHO_PROFILE.LIST.equals(entityMetaInfo.lithoProfile)) {
-				
-				ServerCodeGenerator.generateListServiceCode(entityMetaInfo);
-				
-				ServerCodeGenerator.generateListBatchCode(entityMetaInfo);
-				
-			}
+			ServerCodeGenerator.generate(entityMetaInfo);
 
-			if(LITHO_PROFILE.ENTITY.equals(entityMetaInfo.lithoProfile)) {
-
-				ServerCodeGenerator.generateEntityServiceCode(entityMetaInfo);
-				
-				ServerCodeGenerator.generateEntityBatchCode(entityMetaInfo);
-				
-				ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
-			}
-
-		}
-		
-		// client code
-		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
-
-			ClientCodeGenerator.generateCRUDCode(entityMetaInfo);
-
-			ClientCodeGenerator.generateListMenuEntry(entityMetaInfo);
-
-			if(LITHO_PROFILE.ENTITY.equals(entityMetaInfo.lithoProfile)) {
-				
-				ClientCodeGenerator.generateFields(entityMetaInfo);
-				
-			}
+			// ClientCodeGenerator.generate(entityMetaInfo);
 
 		}
 
 	}
+
+	
+	
 
 }

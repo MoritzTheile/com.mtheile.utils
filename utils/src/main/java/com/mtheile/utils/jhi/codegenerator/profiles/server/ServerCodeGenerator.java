@@ -1,33 +1,82 @@
 package com.mtheile.utils.jhi.codegenerator.profiles.server;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor;
-import com.mtheile.utils.jhi.codegenerator.AbstractTextFileProcessor;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
+import com.mtheile.utils.jhi.codegenerator.AbstractTextFileProcessor;
+import com.mtheile.utils.jhi.codegenerator.CodeGenerator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
-import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel.LITHO_PROFILE;
 import com.mtheile.utils.jhi.codegenerator.utils.batcheditor.BatchEditorUtils;
 
 public class ServerCodeGenerator {
 
-	private static final String PROJECT_HOME = "C:\\Users\\theil\\git\\com.lithodat.app\\";
+	private static final String PROJECT_HOME = CodeGenerator.PROJECT_HOME;
 
-	private static List<EntityModel> getEntityMetaInfos() throws Exception {
+	public static void generate(EntityModel entityMetaInfo) throws Exception {
 
-		List<EntityModel> entityModels = new ArrayList<>();
+		{ // SERVICE CODE
+			if (LITHO_PROFILE.LIST.equals(entityMetaInfo.getLithoProfile())) {
 
-		return entityModels;
+				/**
+				 * "ListLithoService.java.template"
+				 */
+				ServerCodeGenerator.generateListServiceCode(entityMetaInfo);
+				
+			}
+			
+			/**
+			 * "CRUDLithoResource.java.template"
+			 */
+			ServerCodeGenerator.generateResourceCode(entityMetaInfo);
 
+			if (LITHO_PROFILE.ENTITY.equals(entityMetaInfo.getLithoProfile())) {
+
+				/**
+				 * "ChildLithoService.java.template"
+				 */
+				ServerCodeGenerator.generateChildServiceCode(entityMetaInfo);
+
+			}
+		}
+		{ // BATCH CODE
+
+			if (LITHO_PROFILE.LIST.equals(entityMetaInfo.getLithoProfile())) {
+
+				/**
+				 * "ListImporter.java.template"
+				 */
+				ServerCodeGenerator.generateListBatchCode(entityMetaInfo);
+
+			}
+			
+			ServerCodeGenerator.registerToBatch(entityMetaInfo);
+
+			if (LITHO_PROFILE.ENTITY.equals(entityMetaInfo.getLithoProfile())) {
+
+				/**
+				 * "ChildImporter.java.template" "BatchAdapter.java.template"
+				 */
+				ServerCodeGenerator.generateEntityBatchCode(entityMetaInfo);
+
+				/**
+				 * no templates used
+				 */
+				ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
+			}
+		}
 	}
+	
 
-	public static void generateEntityServiceCode(EntityModel entityMetaInfo) throws Exception {
+	/**
+	 * "ChildLithoService.java.template"
+	 */
+	private static void generateChildServiceCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("ChildLithoService.java.template") {
+		new AbstractTemplateProcessor("server/templates/service/ChildLithoService.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -46,7 +95,10 @@ public class ServerCodeGenerator {
 
 		}.execute(MODE.SKIP_IF_FILE_EXISTS);
 
-		new AbstractTemplateProcessor("CRUDLithoResource.java.template") {
+	}
+
+	private static void generateResourceCode(EntityModel entityMetaInfo) throws Exception {
+		new AbstractTemplateProcessor("server/templates/service/CRUDLithoResource.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -66,9 +118,13 @@ public class ServerCodeGenerator {
 		}.execute();
 	}
 
-	public static void generateEntityBatchCode(EntityModel entityMetaInfo) throws Exception {
+	/**
+	 * "ChildImporter.java.template" 
+	 * "BatchAdapter.java.template"
+	 */
+	private static void generateEntityBatchCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("ChildImporter.java.template") {
+		new AbstractTemplateProcessor("server/templates/batch/ChildImporter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -86,7 +142,7 @@ public class ServerCodeGenerator {
 
 		}.execute();
 
-		new AbstractTemplateProcessor("BatchAdapter.java.template") {
+		new AbstractTemplateProcessor("server/templates/batch/BatchAdapter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -105,32 +161,14 @@ public class ServerCodeGenerator {
 
 		}.execute();
 
-		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\dto\\BatchTableDTO.java") {
-
-			@Override
-			public String processFileText(String text) throws Exception {
-
-				{ // adding resource
-					String element = ", " + entityMetaInfo.name;
-
-					if (!text.contains(element)) {
-
-						String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES (don't remove) -->\n";
-
-						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_TABLES", "-->", replacement);
-
-					}
-
-				}
-
-				return text;
-			}
-		}.execute();
 	}
 
-	public static void generateListServiceCode(EntityModel entityMetaInfo) throws Exception {
+	/**
+	 * "ListLithoService.java.template"
+	 */
+	private static void generateListServiceCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("ListLithoService.java.template") {
+		new AbstractTemplateProcessor("server/templates/service/ListLithoService.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -147,28 +185,14 @@ public class ServerCodeGenerator {
 
 		}.execute();
 
-		new AbstractTemplateProcessor("CRUDLithoResource.java.template") {
-
-			@Override
-			public String getTargetFilePath() {
-
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java";
-
-			}
-
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				return result;
-			}
-
-		}.execute();
-
 	}
 
-	public static void generateListBatchCode(EntityModel entityMetaInfo) throws Exception {
-		new AbstractTemplateProcessor("ListImporter.java.template") {
+	/**
+	 *  "ListImporter.java.template"
+	 *  
+	 */
+	private static void generateListBatchCode(EntityModel entityMetaInfo) throws Exception {
+		new AbstractTemplateProcessor("server/templates/batch/ListImporter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -186,6 +210,9 @@ public class ServerCodeGenerator {
 
 		}.execute();
 
+	}
+
+	private static void registerToBatch(EntityModel entityMetaInfo) throws Exception {
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\dto\\BatchTableDTO.java") {
 
 			@Override
@@ -205,10 +232,12 @@ public class ServerCodeGenerator {
 				return text;
 			}
 		}.execute();
-
 	}
 
-	public static void addBatchEditorFields(EntityModel entityModel) throws Exception {
+	/**
+	 *	no templates used 
+	 */
+	private static void addBatchEditorFields(EntityModel entityModel) throws Exception {
 
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
 
