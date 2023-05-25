@@ -1,4 +1,4 @@
-package com.lithodat.app.litho.web.rest.MODELNAME_TOKEN_LOWERCASE;
+package com.lithodat.app.litho.web.rest.MODELNAME_LOWERCASE_TOKEN;
 
 import java.net.URI;
 import java.util.List;

@@ -47,7 +47,7 @@ public class BatchEditorUtils {
 		
 		result = result.replaceAll("ENTITYNAME_TOKEN", entityModel.name);
 		result = result.replaceAll("PARENTNAME_TOKEN", entityModel.getLithoParent());
-		result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityModel.getLithoModule().toLowerCase());
+		result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityModel.getLithoModule().toLowerCase());
 
 		return result;
 

@@ -1,4 +1,4 @@
-package com.lithodat.app.litho.service.MODELNAME_TOKEN_LOWERCASE;
+package com.lithodat.app.litho.service.MODELNAME_LOWERCASE_TOKEN;
 
 import java.util.Optional;
 
