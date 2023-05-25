@@ -70,7 +70,7 @@ public class CodeGenerator {
 		// server code
 		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
-			ServerCodeGenerator.generate(entityMetaInfo);
+			// ServerCodeGenerator.generate(entityMetaInfo);
 
 			ClientCodeGenerator.generate(entityMetaInfo);
 
