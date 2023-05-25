@@ -97,12 +97,21 @@ public class EntityModel {
 	
 
 	public static String getLithoAnnotation(String text, String javadocAnnotationName){
-		System.out.println("huhu javadoc "+ text);
+
 		if(text == null) {
 			return "";
 		}
+		/*
+		 * Note:
+		 * 
+		 * 'AbcAbc' matches 'A.*c' --> AbcAbc
+		 * 'AbcAbc' matches 'A.+' --> AbcAbc 
+		 * 'AbcAbc' matches 'A.*?c' --> Abc  
+		 * 'AbcAbc' matches 'A.+?' --> Ab    
+		 * 
+		 */
 		
-		String fullRegex = "@"+javadocAnnotationName+".*\\[(.*)\\]";
+		String fullRegex = "@"+javadocAnnotationName+"\\s*\\[(.*)?\\]";
 
 		Pattern pattern = Pattern.compile(fullRegex);
 

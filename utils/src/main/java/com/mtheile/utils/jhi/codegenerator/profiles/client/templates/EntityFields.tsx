@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { AutocompleteInput, ReferenceInput, TextInput } from 'react-admin';
 import { Grid } from '@material-ui/core';
-import { AutocompleteInputWrapper } from 'app/litho-ui/mydata/crudentities/_shared/FieldWrapper';
+import { AutocompleteInputWrapper, LithoReadOnlyField, LithoTextInput, LithoTextMultilineInput, LithoBooleanInput } from 'app/litho-ui/mydata/crudentities/_shared/FieldWrapper';
 import { makeStyles } from '@material-ui/core/styles';
 import { EntityFieldsProps } from 'app/litho-ui/mydata/resources/_shared/EntityFieldsProps';
 import resources from 'app/litho-ui/mydata/resources/resources';

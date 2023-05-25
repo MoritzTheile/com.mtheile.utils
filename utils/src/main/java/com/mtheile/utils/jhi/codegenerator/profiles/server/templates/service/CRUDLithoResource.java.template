@@ -1,4 +1,4 @@
-package com.lithodat.app.litho.web.rest.icpms;
+package com.lithodat.app.litho.web.rest.MODELNAME_TOKEN_LOWERCASE;
 
 import java.net.URI;
 import java.util.List;

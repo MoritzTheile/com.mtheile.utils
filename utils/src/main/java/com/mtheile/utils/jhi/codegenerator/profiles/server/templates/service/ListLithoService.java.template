@@ -1,4 +1,4 @@
-package com.lithodat.app.litho.service.icpms;
+package com.lithodat.app.litho.service.MODELNAME_TOKEN_LOWERCASE;
 
 import java.util.Optional;
 

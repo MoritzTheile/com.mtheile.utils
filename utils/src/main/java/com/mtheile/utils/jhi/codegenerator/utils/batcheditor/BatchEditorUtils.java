@@ -35,20 +35,21 @@ public class BatchEditorUtils {
 			return replaceTokens(adapterTemplateBoolean, dtoName, cName, getSetPostfix, dtoGetter);
 
 		} else {
-			throw new Exception("Error: Field type '" + fieldModel.fieldType + "' not found.");
-
+			System.out.println("Warning: Field type '" + fieldModel.fieldType + "' not found.");
+			return "// Warning: Field type '\" + fieldModel.fieldType + \"' not found. (Codemarker=f7aw4tabhif)";
 		}
 
 	}
 
 	public static String getAdapterRef(EntityModel entityModel, Relationship relationship) throws Exception {
 
-		String template = adapterTemplateRef;
+		String result = adapterTemplateRef;
 		
-		template = template.replaceAll("ENTITYNAME_TOKEN", entityModel.name);
-		template = template.replaceAll("PARENTNAME_TOKEN", entityModel.getLithoParent());
+		result = result.replaceAll("ENTITYNAME_TOKEN", entityModel.name);
+		result = result.replaceAll("PARENTNAME_TOKEN", entityModel.getLithoParent());
+		result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityModel.getLithoModule().toLowerCase());
 
-		return template;
+		return result;
 
 	}
 

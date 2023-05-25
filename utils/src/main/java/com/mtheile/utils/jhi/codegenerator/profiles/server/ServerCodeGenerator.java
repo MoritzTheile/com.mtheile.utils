@@ -2,7 +2,6 @@ package com.mtheile.utils.jhi.codegenerator.profiles.server;
 
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor;
-import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
 import com.mtheile.utils.jhi.codegenerator.AbstractTextFileProcessor;
 import com.mtheile.utils.jhi.codegenerator.CodeGenerator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
@@ -187,7 +186,7 @@ public class ServerCodeGenerator {
 			@Override
 			public String getTargetFilePath() {
 
-				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\icpms\\" + entityMetaInfo.name + "LithoService.java";
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() +"\\" + entityMetaInfo.name + "LithoService.java";
 
 			}
 

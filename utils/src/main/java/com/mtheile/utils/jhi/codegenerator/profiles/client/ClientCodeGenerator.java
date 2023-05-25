@@ -7,10 +7,9 @@ import com.mtheile.utils.jhi.codegenerator.AbstractTextFileProcessor;
 import com.mtheile.utils.jhi.codegenerator.CodeGenerator;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel.FieldModel;
-import com.mtheile.utils.jhi.codegenerator.model.EntityModel.LITHO_PROFILE;
 
 public class ClientCodeGenerator {
-	
+
 	private static String PROJECT_HOME = CodeGenerator.PROJECT_HOME;
 
 	public static void generate(EntityModel entityMetaInfo) throws Exception {
@@ -20,224 +19,223 @@ public class ClientCodeGenerator {
 		 */
 		ClientCodeGenerator.generateCRUDCode(entityMetaInfo);
 
-		if (LITHO_PROFILE.CHILD.equals(entityMetaInfo.getLithoProfile())) {
+		/**
+		 * no templates used
+		 */
+		ClientCodeGenerator.addSimpleFields(entityMetaInfo);
 
-			/**
-			 * no templates used
-			 */
-			ClientCodeGenerator.addTSEntityFields(entityMetaInfo);
-			/**
-			 * no templates used
-			 */
-			ClientCodeGenerator.addTSListAssos(entityMetaInfo);
+		/**
+		 * no templates used
+		 */
+		ClientCodeGenerator.addReferenceFields(entityMetaInfo);
 
-		}
-		
+		/**
+		 * no templates used
+		 */
+		ClientCodeGenerator.addSimpleColumns(entityMetaInfo);
+
 		/**
 		 * "ts/GetSubMenu.template.tsx"
 		 */
 		ClientCodeGenerator.generateListMenuEntry(entityMetaInfo);
 	}
 
-
 	/**
-	 * "childts/EntityListRenderer.tsx"
-	 * "childts/EntityColumns.tsx"
-	 * "childts/EntityFields.tsx"
-	 * "childts/EntityResource.tsx"
+	 * "childts/EntityListRenderer.tsx" "childts/EntityColumns.tsx"
+	 * "childts/EntityFields.tsx" "childts/EntityResource.tsx"
 	 */
 	private static void generateCRUDCode(EntityModel entityMetaInfo) throws Exception {
-	
+
 		new AbstractTemplateProcessor("client/templates/EntityListRenderer.tsx") {
-	
+
 			@Override
 			public String getTargetFilePath() {
-	
+
 				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\renderer\\EntityListRenderer.tsx";
-	
+
 			}
-	
+
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
 				return result;
 			}
-	
+
 		}.execute();
-	
+
 		new AbstractTemplateProcessor("client/templates/EntityColumns.tsx") {
-	
+
 			@Override
 			public String getTargetFilePath() {
-	
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityColumns.tsx";
-	
+
+				return getPathToEntityColumns_tsx(entityMetaInfo);
+
 			}
-	
+
+
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
 				return result;
 			}
-	
+
 		}.execute();
-	
-	
+
 		new AbstractTemplateProcessor("client/templates/EntityFields.tsx") {
-	
+
 			@Override
 			public String getTargetFilePath() {
-	
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityFields.tsx";
-	
+
+				return getPathToEntityField_tsx(entityMetaInfo);
+
 			}
-	
+
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
 				return result;
 			}
-	
+
 		}.execute();
-	
+
 		new AbstractTemplateProcessor("client/templates/EntityResource.tsx") {
-	
+
 			@Override
 			public String getTargetFilePath() {
-	
+
 				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityResource.tsx";
-	
+
 			}
-	
+
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityMetaInfo.getLithoModule().toLowerCase());
 				return result;
 			}
-	
+
 		}.execute();
-	
-	
-		
-		
+
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\mydata.tsx") {
-	
+
 			@Override
 			public String processFileText(String text) throws Exception {
 				{ // adding import
 					String element = "import { " + entityMetaInfo.name + "RAResource } from 'app/litho-ui/mydata/resources/" + entityMetaInfo.getLithoModule() + "/" + entityMetaInfo.name + "/EntityResource';";
-	
+
 					if (!text.contains(element)) {
 						String replacement = //
 								element + "\n" + //
 										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
-	
+
 						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
 					}
 				}
 				{ // adding resource
 					String element = "{" + entityMetaInfo.name + "RAResource}";
-	
+
 					if (!text.contains(element)) {
 						String replacement = //
 								element + "\n" + //
 										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_RESOURCES (don't remove) -->*/}\n";
-	
+
 						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_RESOURCES", "*/}", replacement);
 					}
 				}
 				return text;
 			}
 		}.execute();
-	
+
+	}
+	private static String getPathToEntityColumns_tsx(EntityModel entityMetaInfo) {
+		return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityColumns.tsx";
 	}
 
 	/**
-	 * "ts/GetSubMenu.template.tsx" 
+	 * "ts/GetSubMenu.template.tsx"
 	 */
 	private static void generateListMenuEntry(EntityModel entityMetaInfo) throws Exception {
-	
+
 		// 01. Create SubMenu file if not exists
-	
+
 		new AbstractTemplateProcessor("client/templates/GetSubMenu.template.tsx") {
-	
+
 			@Override
 			public String getTargetFilePath() {
-	
+
 				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\submenues\\GetSubMenu" + entityMetaInfo.getLithoModule() + ".tsx";
-	
+
 			}
-	
+
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
 				return result;
 			}
-	
+
 		}.execute(MODE.SKIP_IF_FILE_EXISTS);
-	
+
 		// 02. Add SubMenu Code to main Menu if not already added.
-	
+
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\Menu.tsx") {
-	
+
 			@Override
 			public String processFileText(String text) throws Exception {
 				{ // adding import
 					String element = "import { getSubMenu" + entityMetaInfo.getLithoModule() + " } from 'app/litho-ui/mydata/layout/submenues/GetSubMenu" + entityMetaInfo.getLithoModule() + "';";
-	
+
 					if (!text.contains(element)) {
 						String replacement = //
 								element + "\n" + //
 										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
-	
+
 						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
 					}
 				}
 				{ // adding resource
 					String element = "              <SubMenu\r\n" + "                handleToggle={() => handleToggle('" + entityMetaInfo.getLithoModule() + "')}\r\n" + "                isOpen={state." + entityMetaInfo.getLithoModule() + "}\r\n" + "                sidebarIsOpen={open}\r\n" + "                isNested={true}\r\n" + "                name=\"" + entityMetaInfo.getLithoModule() + "\"\r\n" + "                icon={<ChevronRightIcon />}\r\n" + "                dense={dense}\r\n" + "                to={''}\r\n" + "              >\r\n" + "                {getSubMenu" + entityMetaInfo.getLithoModule() + "(onMenuClick, open, dense)}\r\n" + "              </SubMenu>\r\n" + "";
-	
+
 					if (!text.contains("isOpen={state." + entityMetaInfo.getLithoModule() + "}")) {
 						String replacement = //
 								element + "\n" + //
 										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES (don't remove) -->*/}\n";
-	
+
 						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES", "*/}", replacement);
 					}
 				}
 				return text;
 			}
 		}.execute();
-	
+
 		// 03. Fill SubMenu file;
-	
+
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\layout\\submenues\\GetSubMenu" + entityMetaInfo.getLithoModule() + ".tsx") {
-	
+
 			@Override
 			public String processFileText(String text) throws Exception {
 				{ // adding import
 					String element = "import { getSubMenu" + entityMetaInfo.getLithoModule() + " } from 'app/litho-ui/mydata/layout/submenues/GetSubMenu" + entityMetaInfo.getLithoModule() + "';";
-	
+
 					if (!text.contains("import { getSubMenu" + entityMetaInfo.getLithoModule() + " }")) {
 						String replacement = //
 								element + "\n" + //
 										"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->\n";
-	
+
 						text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
 					}
 				}
 				{ // adding resource
 					String element = "" + "<MenuItemLink\r\n" + "        to={'/" + entityMetaInfo.getLithoModule().toLowerCase() + "/" + entityMetaInfo.name + "'}\r\n" + "        primaryText={`" + entityMetaInfo.name + "`}\r\n" + "        leftIcon={<TocIcon />}\r\n" + "        onClick={onMenuClick}\r\n" + "        sidebarIsOpen={open}\r\n" + "        dense={dense}\r\n" + "      />";
-	
+
 					if (!text.contains(element)) {
 						String replacement = //
 								element + "\n" + //
 										"        {/*<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES (don't remove) -->*/}\n";
-	
+
 						text = TextFileManipulator.replaceSection(text, "{/*", "CODEGENERATOR_NEEDLE_FOR_ADDING_MENU_ENTRIES", "*/}", replacement);
 					}
 				}
@@ -246,181 +244,193 @@ public class ClientCodeGenerator {
 		}.execute();
 	}
 
-
 	/**
-	 *	no templates used 
+	 * no templates used
 	 */
-	private static void addTSEntityFields(EntityModel entityModel) throws Exception {
-	
+	private static void addSimpleFields(EntityModel entityModel) throws Exception {
+
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
-	
-			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityModel.getLithoModule() + "\\" + entityModel.name + "\\EntityFields.tsx") {
-	
+
+			new AbstractTextFileProcessor(getPathToEntityField_tsx(entityModel)) {
+
 				@Override
 				public String processFileText(String text) throws Exception {
-	
+
 					{ // adding resource
 						String element = getInputFieldCode(entityModel, fieldModel);
-	
+
 						if (!text.contains(element)) {
-	
+
 							String replacement = element + "\n" + "			{/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}";
-	
+
 							text = TextFileManipulator.replaceSection(text, "{/*{<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->}*/}", replacement);
-	
+
 						}
-	
+
 					}
-	
+
 					return text;
-	
+
 				}
-	
+
 			}.execute();
-	
+
 		}
+	}
+	private static void addSimpleColumns(EntityModel entityModel) throws Exception {
+
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
-	
-			new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityModel.getLithoModule() + "\\" + entityModel.name + "\\EntityColumns.tsx") {
-	
+
+			new AbstractTextFileProcessor(getPathToEntityColumns_tsx(entityModel)) {
+
 				@Override
 				public String processFileText(String text) throws Exception {
-	
+
 					{ // adding resource
 						String element = getFieldCode(entityModel, fieldModel);
-	
+
 						if (!text.contains(element)) {
-	
+
 							String replacement = element + "\n" + "  // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
-	
+
 							text = TextFileManipulator.replaceSection(text, "  // <!-- ", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
-	
+
 						}
-	
+
 					}
-	
+
 					return text;
-	
+
 				}
-	
+
 			}.execute();
-	
+
 		}
-	
-	
+
 	}
 
 	/**
-	 *	no templates used 
+	 * no templates used
 	 */
-	private static void addTSListAssos(EntityModel entityModel) throws Exception {
-			
-	
-			for (EntityModel.Relationship relationship : entityModel.relationships) {
-	
-	//			if (!"many-to-one".equals(relationship.relationshipType)) {
-	//				continue;
-	//			}
-	
-				new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityModel.getLithoModule() + "\\" + entityModel.name + "\\EntityFields.tsx") {
-	
-					@Override
-					public String processFileText(String text) throws Exception {
-	
-						{ // adding import
-							//String element = "import {EntityPicker as " + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker} from \"app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityPicker\";";
-							String element = "import { EntityPickerPlus"+ firstLetterToUpperCase(relationship.otherEntityName) + " } from 'app/litho-ui/mydata/resources/"+ entityModel.getLithoModule() +"/"+ firstLetterToUpperCase(relationship.otherEntityName) +"/EntityResource';";
-	
-							if (!text.contains(element)) {
-								String replacement = //
-										element + "\n" + //
-												"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->";
-	
-								text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
-							}
-	
+	private static void addReferenceFields(EntityModel entityModel) throws Exception {
+
+		for (EntityModel.Relationship relationship : entityModel.relationships) {
+
+			// if (!"many-to-one".equals(relationship.relationshipType)) {
+			// continue;
+			// }
+
+			new AbstractTextFileProcessor(getPathToEntityField_tsx(entityModel)) {
+
+				@Override
+				public String processFileText(String text) throws Exception {
+
+					{ // adding import
+						// String element = "import {EntityPicker as " +
+						// firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker} from
+						// \"app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" +
+						// firstLetterToUpperCase(relationship.otherEntityName) + "/EntityPicker\";";
+						String element = "import { EntityPickerPlus" + firstLetterToUpperCase(relationship.otherEntityName) + " } from 'app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityResource';";
+
+						if (!text.contains(element)) {
+							String replacement = //
+									element + "\n" + //
+											"// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS (don't remove) -->";
+
+							text = TextFileManipulator.replaceSection(text, "// <!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_IMPORTS", "-->", replacement);
 						}
-	
-						{ // adding resource
-							// String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker dtoIdPath={'" + relationship.relationshipName + "'}/>";
-							String element = "<EntityPickerPlus" + firstLetterToUpperCase(relationship.otherEntityName) + " dtoIdPath={'" + relationship.relationshipName + "Id'}/>";
-	
-							if (!text.contains(element)) {
-	
-								String replacement = element + "\n" + "        {/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}";
-	
-								text = TextFileManipulator.replaceSection(text, "{/*{<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->}*/}", replacement);
-	
-							}
-	
-						}
-	
-						return text;
-	
+
 					}
-	
-				}.execute();
-	
-			}
+
+					{ // adding resource
+						// String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) +
+						// "EntityPicker dtoIdPath={'" + relationship.relationshipName + "'}/>";
+						String element = "<EntityPickerPlus" + firstLetterToUpperCase(relationship.otherEntityName) + " dtoIdPath={'" + relationship.relationshipName + "Id'}/>";
+
+						if (!text.contains(element)) {
+
+							String replacement = element + "\n" + "        {/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}";
+
+							text = TextFileManipulator.replaceSection(text, "{/*{<!--", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->}*/}", replacement);
+
+						}
+
+					}
+
+					return text;
+
+				}
+
+			}.execute();
+
 		}
+	}
+
+	private static String getPathToEntityField_tsx(EntityModel entityModel) {
+		return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityModel.getLithoModule() + "\\" + entityModel.name + "\\EntityFields.tsx";
+	}
 
 	private static String firstLetterToUpperCase(String input) {
-	
+
 		if (input == null) {
 			return null;
 		}
-	
+
 		if (input.isEmpty()) {
 			return input;
 		}
-	
+
 		return input.substring(0, 1).toUpperCase() + input.substring(1);
-	
+
 	}
-
-
 
 	private static String getFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
 		if ("String".contentEquals(fieldModel.fieldType)) {
 			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-	
+
 		} else if ("byte[]".contentEquals(fieldModel.fieldType) && "text".contentEquals(fieldModel.fieldTypeBlobContent)) {
 			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-	
+
 		} else if ("Integer".contentEquals(fieldModel.fieldType)) {
 			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-	
+
 		} else if ("Float".contentEquals(fieldModel.fieldType)) {
 			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-	
+
 		} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
 			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-	
+
 		} else {
-			throw new Exception("Error: Field type '" + fieldModel.fieldType + "' not found.");
-	
+			System.out.println("Warning: Field type '" + fieldModel.fieldType + "' not found.");
+			return "<div>"+fieldModel.fieldType+" not generated (codemarker=wzwsezw)</div>";
+
 		}
 	}
 
 	private static String getInputFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
 		if ("String".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
-	
-		} else if ("byte[]".contentEquals(fieldModel.fieldType) && "text".contentEquals(fieldModel.fieldTypeBlobContent)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
-	
+
+			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+
 		} else if ("Integer".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
-	
+
+			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+
 		} else if ("Float".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
-	
+
+			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+
 		} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
-			return "<TextInput variant=\"outlined\" inputProps={{ autocomplete: 'off' }} source=\"" + fieldModel.fieldName + "\" />";
-	
+
+			return "<LithoBooleanInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+
+		} else if (fieldModel.fieldTypeBlobContent!=null && "text".contentEquals(fieldModel.fieldTypeBlobContent) ) {
+
+			return "<LithoTextMultilineInput source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+
 		} else {
-			throw new Exception("Error: Field type '" + fieldModel.fieldType + "' not found.");
-	
+			System.out.println("Warning: Field type '" + fieldModel.fieldType + "' not found.");
+			return "<div>"+fieldModel.fieldType+" not generated (codemarker=qe7r6gqaerg)</div>";
 		}
 	}
 

@@ -19,7 +19,7 @@ public class CodeGenerator {
 
 		File jHipsterDir = new File(PROJECT_HOME + ".jhipster\\");
 
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LCombinedMeasurement"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LCombinedMeasurement"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LSampleIntroMethod"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LICPMSType"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LDataReductionPackage"));
@@ -37,7 +37,7 @@ public class CodeGenerator {
 //
 //		
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "ICPMSMetadata"));          // parent: "DataPoint",    
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "SolutionOtherMetadata"));  // parent: "ICPMSMetadata",
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "LaserMetadata"));          // parent: "ICPMSMetadata",
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "QICPMSMetadata"));         // parent: "ICPMSMetadata",
@@ -45,6 +45,22 @@ public class CodeGenerator {
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "ICPMSMSMetadata"));        // parent: "ICPMSMetadata",
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir,  "HRICPMSMetadata"));        // parent: "ICPMSMetadata",
 
+		
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "UPbDataPoint"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "UPbSpotData"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "UPbAgeGroup"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbGrainDomain"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbGroup"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbDetectorIntensityUnit"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUncertainty"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbCommonPbCorrection"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbPreferredAgeTypeSingleSpot"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbAgeGroupCalcType"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbDataInterpretationTool"));
+	
+	
+		
+		
 		return entityMetaInfos;
 
 	}
@@ -56,7 +72,7 @@ public class CodeGenerator {
 
 			ServerCodeGenerator.generate(entityMetaInfo);
 
-			// ClientCodeGenerator.generate(entityMetaInfo);
+			ClientCodeGenerator.generate(entityMetaInfo);
 
 		}
 
