@@ -59,6 +59,8 @@ public class ClientCodeGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityMetaInfo.getLithoModule().toLowerCase());
+				
 				return result;
 			}
 
@@ -78,6 +80,8 @@ public class ClientCodeGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityMetaInfo.getLithoModule().toLowerCase());
+				
 				return result;
 			}
 
@@ -96,6 +100,8 @@ public class ClientCodeGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityMetaInfo.getLithoModule().toLowerCase());
+				
 				return result;
 			}
 
@@ -174,6 +180,8 @@ public class ClientCodeGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODELNAME_TOKEN_LOWERCASE", entityMetaInfo.getLithoModule().toLowerCase());
+				
 				return result;
 			}
 
