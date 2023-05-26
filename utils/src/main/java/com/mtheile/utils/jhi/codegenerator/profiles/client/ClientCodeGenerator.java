@@ -393,6 +393,7 @@ public class ClientCodeGenerator {
 	}
 
 	private static String getFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
+		
 		if ("String".contentEquals(fieldModel.fieldType)) {
 			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
 
@@ -416,30 +417,40 @@ public class ClientCodeGenerator {
 	}
 
 	private static String getInputFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
+		
+		String labelAttrib = createLabelAttrib(fieldModel.getLithoLabel());
+		
 		if ("String".contentEquals(fieldModel.fieldType)) {
 
-			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" "+labelAttrib+" helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
 
 		} else if ("Integer".contentEquals(fieldModel.fieldType)) {
 
-			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" "+labelAttrib+" helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
 
 		} else if ("Float".contentEquals(fieldModel.fieldType)) {
 
-			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+			return "<LithoTextInput  source=\"" + fieldModel.fieldName + "\" "+labelAttrib+" helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
 
 		} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
 
-			return "<LithoBooleanInput  source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+			return "<LithoBooleanInput  source=\"" + fieldModel.fieldName + "\" "+labelAttrib+" helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
 
 		} else if (fieldModel.fieldTypeBlobContent!=null && "text".contentEquals(fieldModel.fieldTypeBlobContent) ) {
 
-			return "<LithoTextMultilineInput source=\"" + fieldModel.fieldName + "\" label={'"+fieldModel.getLithoLabel()+"'} helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
+			return "<LithoTextMultilineInput source=\"" + fieldModel.fieldName + "\" "+labelAttrib+" helpText={'"+fieldModel.getLithoDocumentation()+"'} />";
 
 		} else {
 			System.out.println("Warning: Field type '" + fieldModel.fieldType + "' not found.");
 			return "<div>"+fieldModel.fieldType+" not generated (codemarker=qe7r6gqaerg)</div>";
 		}
+	}
+
+	private static String createLabelAttrib(String lithoLabel) {
+		if(lithoLabel==null || lithoLabel.trim().isEmpty()) {
+			return "";
+		}
+		return "label={'"+lithoLabel+"'}";
 	}
 
 }

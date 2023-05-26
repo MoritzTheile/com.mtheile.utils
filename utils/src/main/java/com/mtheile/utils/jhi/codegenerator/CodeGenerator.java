@@ -67,7 +67,6 @@ public class CodeGenerator {
 
 	public static void main(String[] args) throws Exception {
 		
-		// server code
 		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
 			// ServerCodeGenerator.generate(entityMetaInfo);

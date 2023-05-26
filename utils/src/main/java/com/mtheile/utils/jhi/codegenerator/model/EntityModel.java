@@ -111,7 +111,7 @@ public class EntityModel {
 		 * 
 		 */
 		
-		String fullRegex = "@"+javadocAnnotationName+"\\s*\\[(.*)?\\]";
+		String fullRegex = "@"+javadocAnnotationName+"\\s*\\[(.*?)\\]";
 
 		Pattern pattern = Pattern.compile(fullRegex);
 
