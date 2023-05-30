@@ -67,6 +67,7 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace(" = \"lUPbPreferredAgeTypeSingleSpot", " = \"LUPbPreferredAgeTypeSingleSpot", file);
 				TextFileManipulator.searchAndReplace(" = \"lUPbAgeGroupCalcType          ", " = \"LUPbAgeGroupCalcType          ", file);
 				TextFileManipulator.searchAndReplace(" = \"lUPbDataInterpretationTool    ", " = \"LUPbDataInterpretationTool    ", file);
+				TextFileManipulator.searchAndReplace(" = \"uPbDataPoint    ", " = \"UPbDataPoint    ", file);
 			
 
 			}

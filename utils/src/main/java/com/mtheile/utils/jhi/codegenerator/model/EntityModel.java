@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class EntityModel {
 	
-	public static enum LITHO_PROFILE {LIST, CHILD, UNKNOWN};
+	public static enum LITHO_PROFILE {LIST, CHILD, DATAPOINT, UNKNOWN};
 	
 	public String name;
 	public String javadoc;
