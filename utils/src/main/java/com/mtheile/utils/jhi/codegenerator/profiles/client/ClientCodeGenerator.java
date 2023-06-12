@@ -120,6 +120,8 @@ public class ClientCodeGenerator {
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
+
 				return result;
 			}
 
@@ -338,7 +340,7 @@ public class ClientCodeGenerator {
 						// firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker} from
 						// \"app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" +
 						// firstLetterToUpperCase(relationship.otherEntityName) + "/EntityPicker\";";
-						String element = "import { EntityPickerPlus" + firstLetterToUpperCase(relationship.otherEntityName) + " } from 'app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityResource';";
+						String element = "import { EntityPicker" + firstLetterToUpperCase(relationship.otherEntityName) + " } from 'app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityResource';";
 
 						if (!text.contains(element)) {
 							String replacement = //
@@ -353,7 +355,7 @@ public class ClientCodeGenerator {
 					{ // adding resource
 						// String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) +
 						// "EntityPicker dtoIdPath={'" + relationship.relationshipName + "'}/>";
-						String element = "<EntityPickerPlus" + firstLetterToUpperCase(relationship.otherEntityName) + " dtoIdPath={'" + relationship.relationshipName + "Id'}/>";
+						String element = "<EntityPicker" + firstLetterToUpperCase(relationship.otherEntityName) + " dtoIdPath={'" + relationship.relationshipName + "Id'}  label={'"+relationship.getLithoLabel()+"'}  description={'"+relationship.getLithoDocumentation()+"'}/>";
 
 						if (!text.contains(element)) {
 
@@ -411,7 +413,7 @@ public class ClientCodeGenerator {
 
 		} else {
 			System.out.println("Warning: Field type '" + fieldModel.fieldType + "' not found.");
-			return "<div>"+fieldModel.fieldType+" not generated (codemarker=wzwsezw)</div>";
+			return "<div>"+fieldModel.fieldType+" not generated (codemarker=wzwsezw)</div>,";
 
 		}
 	}

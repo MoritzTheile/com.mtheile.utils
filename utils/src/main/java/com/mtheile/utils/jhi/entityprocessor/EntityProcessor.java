@@ -56,18 +56,17 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace(" = \"hRICPMSMetadata", " = \"HRICPMSMetadata", file);
 				TextFileManipulator.searchAndReplace(" = \"iCPMSMetadata", " = \"ICPMSMetadata", file);
 				
-				TextFileManipulator.searchAndReplace(" = \"uPbDataPoint                  ", " = \"UPbDataPoint                  ", file);
-				TextFileManipulator.searchAndReplace(" = \"uPbSpotData                   ", " = \"UPbSpotData                   ", file);
-				TextFileManipulator.searchAndReplace(" = \"uPbAgeGroup                   ", " = \"UPbAgeGroup                   ", file);
-				TextFileManipulator.searchAndReplace(" = \"lUPbGrainDomain               ", " = \"LUPbGrainDomain               ", file);
-				TextFileManipulator.searchAndReplace(" = \"lUPbGroup                     ", " = \"LUPbGroup                     ", file);
-				TextFileManipulator.searchAndReplace(" = \"lUPbDetectorIntensityUnit     ", " = \"LUPbDetectorIntensityUnit     ", file);
-				TextFileManipulator.searchAndReplace(" = \"lUncertainty                  ", " = \"LUncertainty                  ", file);
-				TextFileManipulator.searchAndReplace(" = \"lUPbCommonPbCorrection        ", " = \"LUPbCommonPbCorrection        ", file);
+				TextFileManipulator.searchAndReplace(" = \"uPbDataPoint", " = \"UPbDataPoint", file);
+				TextFileManipulator.searchAndReplace(" = \"uPbSpotData", " = \"UPbSpotData", file);
+				TextFileManipulator.searchAndReplace(" = \"uPbAgeGroup", " = \"UPbAgeGroup", file);
+				TextFileManipulator.searchAndReplace(" = \"lUPbGrainDomain", " = \"LUPbGrainDomain", file);
+				TextFileManipulator.searchAndReplace(" = \"lUPbGroup", " = \"LUPbGroup", file);
+				TextFileManipulator.searchAndReplace(" = \"lUPbDetectorIntensityUnit", " = \"LUPbDetectorIntensityUnit", file);
+				TextFileManipulator.searchAndReplace(" = \"lUncertainty", " = \"LUncertainty", file);
+				TextFileManipulator.searchAndReplace(" = \"lUPbCommonPbCorrection", " = \"LUPbCommonPbCorrection", file);
 				TextFileManipulator.searchAndReplace(" = \"lUPbPreferredAgeTypeSingleSpot", " = \"LUPbPreferredAgeTypeSingleSpot", file);
-				TextFileManipulator.searchAndReplace(" = \"lUPbAgeGroupCalcType          ", " = \"LUPbAgeGroupCalcType          ", file);
-				TextFileManipulator.searchAndReplace(" = \"lUPbDataInterpretationTool    ", " = \"LUPbDataInterpretationTool    ", file);
-				TextFileManipulator.searchAndReplace(" = \"uPbDataPoint    ", " = \"UPbDataPoint    ", file);
+				TextFileManipulator.searchAndReplace(" = \"lUPbAgeGroupCalcType", " = \"LUPbAgeGroupCalcType", file);
+				TextFileManipulator.searchAndReplace(" = \"lUPbDataInterpretationTool", " = \"LUPbDataInterpretationTool", file);
 			
 
 			}

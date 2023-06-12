@@ -17,6 +17,7 @@ import { composeEntityFields } from './EntityFields';
 import { entityColumnArray } from './EntityColumns';
 import { composeEntityListRenderer } from './renderer/EntityListRenderer';
 import { composeEntityRAFilter } from 'app/litho-ui/mydata/resources/_shared/composer/ComposeEntityRAFilter';
+import { composeRAListFiltered } from 'app/litho-ui/mydata/crudentities/_base/ComposeListFiltered';
 
 function getEntity2Shortname() {
   return entity => (entity ? entity.name : '');
@@ -27,6 +28,7 @@ export const entityConfig: EntityConfigInterface = {
   entityLabel: 'ENTITYNAME_TOKEN',
   // batchEditorName: '',
   entity2Shortname: getEntity2Shortname(),
+  id2filter: parentId => ({ equal: { PARENTNAME_TOKENId: parentId } }),
   string2filter: q => ({ name: q }),
   entityListRenderer: composeEntityListRenderer(getEntity2Shortname())
 };
@@ -46,11 +48,17 @@ export const EntityPickerENTITYNAME_TOKEN: FC<EntityPickerProps> = composeEntity
 
 export const EntityEditDialogENTITYNAME_TOKEN: FC<EntityEditDialogProps> = composeEntityEditDialog(entityConfig, composeEntityFields(false));
 
-export const EntityCreateDialogENTITYNAME_TOKEN: FC<EntityCreateDialogProps> = composeEntityCreateDialog(entityConfig, composeEntityFields(true));
-
+export const EntityCreateDialogENTITYNAME_TOKEN: FC<EntityCreateDialogProps>  = composeEntityCreateDialog(
+  entityConfig,
+  composeEntityFields(true)
+);
 export const EntityPickerPlusENTITYNAME_TOKEN: FC<EntityPickerPlusProps> = composeEntityPickerPlus(
   entityConfig,
   EntityPickerENTITYNAME_TOKEN,
   EntityEditDialogENTITYNAME_TOKEN,
   EntityCreateDialogENTITYNAME_TOKEN
 );
+
+export const getEntityListFiltered: FC<any> = (parentId: string) =>
+	composeRAListFiltered(entityConfig, parentId, () => entityColumnArray, EntityEditDialogUPbAgeGroup);
+
