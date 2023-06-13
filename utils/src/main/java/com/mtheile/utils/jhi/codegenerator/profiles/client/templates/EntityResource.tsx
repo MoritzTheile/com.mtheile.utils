@@ -60,5 +60,5 @@ export const EntityPickerPlusENTITYNAME_TOKEN: FC<EntityPickerPlusProps> = compo
 );
 
 export const getEntityListFiltered: FC<any> = (parentId: string) =>
-	composeRAListFiltered(entityConfig, parentId, () => entityColumnArray, EntityEditDialogUPbAgeGroup);
+	composeRAListFiltered(entityConfig, parentId, () => entityColumnArray, EntityEditDialogENTITYNAME_TOKEN);
 

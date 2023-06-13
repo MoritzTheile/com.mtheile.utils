@@ -33,6 +33,7 @@ public class ClientCodeGenerator {
 		 * no templates used
 		 */
 		ClientCodeGenerator.addSimpleColumns(entityMetaInfo);
+		ClientCodeGenerator.addReferenceColumns(entityMetaInfo);
 
 		/**
 		 * "ts/GetSubMenu.template.tsx"
@@ -297,7 +298,7 @@ public class ClientCodeGenerator {
 				public String processFileText(String text) throws Exception {
 
 					{ // adding resource
-						String element = getFieldCode(entityModel, fieldModel);
+						String element = getFieldCode(entityModel, fieldModel.fieldName, fieldModel.getLithoLabel());
 
 						if (!text.contains(element)) {
 
@@ -318,7 +319,38 @@ public class ClientCodeGenerator {
 		}
 
 	}
+	/**
+	 * no templates used
+	 */
+	private static void addReferenceColumns(EntityModel entityModel) throws Exception {
 
+		for (EntityModel.Relationship relationship : entityModel.relationships) {
+			
+			new AbstractTextFileProcessor(getPathToEntityColumns_tsx(entityModel)) {
+
+				@Override
+				public String processFileText(String text) throws Exception {
+
+					{ // adding resource
+						String element = getFieldCode(entityModel, relationship.otherEntityName, relationship.getLithoLabel());
+
+						if (!text.contains(element)) {
+
+							String replacement = element + "\n" + "  // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
+
+							text = TextFileManipulator.replaceSection(text, "  // <!-- ", "CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS", "-->", replacement);
+
+						}
+
+					}
+
+					return text;
+
+				}
+
+			}.execute();
+		}
+	}
 	/**
 	 * no templates used
 	 */
@@ -394,33 +426,23 @@ public class ClientCodeGenerator {
 
 	}
 
-	private static String getFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
-		
-		if ("String".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-
-		} else if ("byte[]".contentEquals(fieldModel.fieldType) && "text".contentEquals(fieldModel.fieldTypeBlobContent)) {
-			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-
-		} else if ("Integer".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-
-		} else if ("Float".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-
-		} else if ("Boolean".contentEquals(fieldModel.fieldType)) {
-			return "  <TextField label=\"" + fieldModel.fieldName + "\" source=\"" + fieldModel.fieldName + "\" />,";
-
-		} else {
-			System.out.println("Warning: Field type '" + fieldModel.fieldType + "' not found.");
-			return "<div>"+fieldModel.fieldType+" not generated (codemarker=wzwsezw)</div>,";
-
+	private static String getFieldCode(EntityModel entityModel, String fieldName, String fieldLabel) throws Exception {
+		if(fieldLabel== null || fieldLabel.isEmpty()) {
+			fieldLabel = fieldName;
 		}
+		
+			return "  <TextField label=\"" + fieldLabel + "\" source=\"" + fieldName + "\" />,";
 	}
 
 	private static String getInputFieldCode(EntityModel entityModel, FieldModel fieldModel) throws Exception {
 		
-		String labelAttrib = createLabelAttrib(fieldModel.getLithoLabel());
+		String fieldLabel = fieldModel.getLithoLabel();
+		
+		if(fieldLabel== null || fieldLabel.isEmpty()) {
+			fieldLabel = fieldModel.fieldName;
+		}
+		
+		String labelAttrib = createLabelAttrib(fieldLabel);
 		
 		if ("String".contentEquals(fieldModel.fieldType)) {
 
