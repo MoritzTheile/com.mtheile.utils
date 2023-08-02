@@ -70,7 +70,7 @@ public class CodeGenerator {
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LModelType"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LModelSoftware"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LPathType"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THDataPoint"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THDataPoint"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THist"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THistInput"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THistNickpoint"));
@@ -86,9 +86,9 @@ public class CodeGenerator {
 		
 		for (EntityModel entityMetaInfo : getEntityMetaInfos()) {
 
-			ServerCodeGenerator.generate(entityMetaInfo);
+			//ServerCodeGenerator.generate(entityMetaInfo);
 
-			//ClientCodeGenerator.generate(entityMetaInfo);
+			ClientCodeGenerator.generate(entityMetaInfo);
 
 		}
 
