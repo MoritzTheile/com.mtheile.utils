@@ -15,6 +15,26 @@ public class ServerCodeGenerator {
 	public static void generate(EntityModel entityMetaInfo) throws Exception {
 
 		{ // SERVICE CODE
+			
+			if (LITHO_PROFILE.DATAPOINT.equals(entityMetaInfo.getLithoProfile())) {
+
+				/**
+				 * "CLithoService.java.template"
+				 */
+				ServerCodeGenerator.generateDataPointServiceCode(entityMetaInfo);
+
+			}
+
+
+			if (LITHO_PROFILE.CHILD.equals(entityMetaInfo.getLithoProfile())) {
+
+				/**
+				 * "ChildLithoService.java.template"
+				 */
+				ServerCodeGenerator.generateChildServiceCode(entityMetaInfo);
+
+			}
+			
 			if (LITHO_PROFILE.LIST.equals(entityMetaInfo.getLithoProfile())) {
 
 				/**
@@ -29,14 +49,7 @@ public class ServerCodeGenerator {
 			 */
 			ServerCodeGenerator.generateResourceCode(entityMetaInfo);
 
-			if (LITHO_PROFILE.CHILD.equals(entityMetaInfo.getLithoProfile())) {
-
-				/**
-				 * "ChildLithoService.java.template"
-				 */
-				ServerCodeGenerator.generateChildServiceCode(entityMetaInfo);
-
-			}
+			
 		}
 		{ // BATCH CODE
 
@@ -63,6 +76,19 @@ public class ServerCodeGenerator {
 				 */
 				ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
 			}
+			
+			if (LITHO_PROFILE.DATAPOINT.equals(entityMetaInfo.getLithoProfile())) {
+
+				/**
+				 * "ChildImporter.java.template" "BatchAdapter.java.template"
+				 */
+				ServerCodeGenerator.generateEntityBatchCode(entityMetaInfo);
+
+				/**
+				 * no templates used
+				 */
+				ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
+			}
 		}
 	}
 	
@@ -73,6 +99,36 @@ public class ServerCodeGenerator {
 	private static void generateChildServiceCode(EntityModel entityMetaInfo) throws Exception {
 
 		new AbstractTemplateProcessor("server/templates/service/ChildLithoService.java.template") {
+
+			@Override
+			public String getTargetFilePath() {
+
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java";
+
+			}
+
+			@Override
+			public String processTemplate(String template) {
+				
+				template = template.replaceAll("ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.name));
+				template = template.replaceAll("PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.getLithoParent()));
+				template = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
+				template = template.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
+				template = template.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				
+				return template;
+			}
+
+		}.execute();
+
+	}
+	
+	/**
+	 * "DataPointLithoService.java.template"
+	 */
+	private static void generateDataPointServiceCode(EntityModel entityMetaInfo) throws Exception {
+
+		new AbstractTemplateProcessor("server/templates/service/DataPointLithoService.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
