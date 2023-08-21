@@ -30,7 +30,8 @@ export const entityConfig: EntityConfigInterface = {
   entity2Shortname: getEntity2Shortname(),
   id2filter: parentId => ({ equal: { PARENTNAME_TOKENId: parentId } }),
   string2filter: q => ({ name: q }),
-  entityListRenderer: composeEntityListRenderer(getEntity2Shortname())
+  entityListRenderer: composeEntityListRenderer(getEntity2Shortname()),
+  batchEditorName: 'ENTITYNAME_TOKEN'
 };
 
 export const EntityRAFilterENTITYNAME_TOKEN = composeEntityRAFilter(entityConfig);

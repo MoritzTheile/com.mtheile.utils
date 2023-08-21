@@ -55,8 +55,9 @@ public class CodeGenerator {
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbPreferredAgeTypeSingleSpot"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbAgeGroupCalcType"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUPbDataInterpretationTool"));
-//	
-	
+
+
+		
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LDataType"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LPredictedParameter"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LConstraintType"));
@@ -70,6 +71,7 @@ public class CodeGenerator {
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LModelType"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LModelSoftware"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LPathType"));
+		
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THDataPoint"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THist"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THistInput"));
