@@ -78,6 +78,8 @@ public class CodeGenerator {
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THistNickpoint"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THPredResult"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "THModelConstraint"));
+		
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "Tag"));
 
 		
 		return entityMetaInfos;
