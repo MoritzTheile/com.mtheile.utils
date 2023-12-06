@@ -2,6 +2,8 @@ package com.mtheile.utils.jhi.entityprocessor;
 
 import java.io.File;
 
+import org.mapstruct.Mapping;
+
 import com.mtheile.utils.STATICUtils;
 import com.mtheile.utils.file.directory.FileUtils;
 import com.mtheile.utils.file.textfile.TextFileManipulator;
@@ -76,6 +78,12 @@ public class EntityProcessor {
 		}
 
 	}
+	
+	/*	   This:
+	 *     -> @Mapping(source = "lab.name", target = "labName")
+	 *     becomes this:
+	 *     -> @Mapping(expression= "java(com.lithodat.app.litho.service.coremodel.LabLithoService.getCalcName(labMapper.toDto( lab2DataPoint.getLab()) ))", target = "labName")
+	 */
 	private static void useExpressionForCalcNameInMapper(String mapperName, String entityName) throws Exception {
 		
 		String entityNameLC = STATICUtils.firstCharToLowerCase(entityName);
