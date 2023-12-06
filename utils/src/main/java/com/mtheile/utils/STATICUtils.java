@@ -29,5 +29,18 @@ public class STATICUtils {
 			throw new Exception("Could not get resource: "+resourceName);
 		}
 	}
+	
+	public static String firstCharToLowerCase(String string)  {
+		
+		if(string.isEmpty()) {
+			return string;
+		}
+
+		String firstChar = string.substring(0, 1);
+		String	trailingChars = string.substring(1, string.length());
+		
+		return firstChar.toLowerCase()+trailingChars;
+	}
+	
 
 }

@@ -2,6 +2,7 @@ package com.mtheile.utils.jhi.entityprocessor;
 
 import java.io.File;
 
+import com.mtheile.utils.STATICUtils;
 import com.mtheile.utils.file.directory.FileUtils;
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 
@@ -19,6 +20,7 @@ public class EntityProcessor {
 		addCascadingRemoves();
 		makeCreateSpecificationPublic();
 		fixUpperLowerCaseButInMapper();
+		useExpressionForCalcNameInMapper("Lab2DataPointMapper", "Lab");
 		addChangedByInterfaceToDTOs();
 		makeEntityLazy("DataPackage.java");
 		makeEntityLazy("DataPoint.java");
@@ -71,6 +73,24 @@ public class EntityProcessor {
 			
 
 			}
+		}
+
+	}
+	private static void useExpressionForCalcNameInMapper(String mapperName, String entityName) throws Exception {
+		
+		String entityNameLC = STATICUtils.firstCharToLowerCase(entityName);
+		String mapperNameLC = STATICUtils.firstCharToLowerCase(mapperName);
+		
+		File file = new File(MAPPER_DIR+"\\"+mapperName+".java");
+		
+		if(file.exists()) {
+			
+			TextFileManipulator.searchAndReplace("source = \""+entityNameLC+".name\"", "expression= \"java(com.lithodat.app.litho.service.coremodel."+entityName+"LithoService.getCalcName("+entityNameLC+"Mapper.toDto( "+mapperNameLC+".get"+entityName+"()) ))\"", file);
+			
+		}else {
+			
+			System.out.println("Mapper '"+mapperName+"' not found.");
+			
 		}
 
 	}
