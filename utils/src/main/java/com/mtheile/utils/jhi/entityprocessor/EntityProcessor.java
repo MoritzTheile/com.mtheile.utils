@@ -2,8 +2,6 @@ package com.mtheile.utils.jhi.entityprocessor;
 
 import java.io.File;
 
-import org.mapstruct.Mapping;
-
 import com.mtheile.utils.STATICUtils;
 import com.mtheile.utils.file.directory.FileUtils;
 import com.mtheile.utils.file.textfile.TextFileManipulator;
@@ -22,7 +20,7 @@ public class EntityProcessor {
 		addCascadingRemoves();
 		makeCreateSpecificationPublic();
 		fixUpperLowerCaseButInMapper();
-		useExpressionForCalcNameInMapper("Lab2DataPointMapper", "Lab");
+		useExpressionForCalcNameInMapper("Lab2DataPoint", "Lab");
 		addChangedByInterfaceToDTOs();
 		makeEntityLazy("DataPackage.java");
 		makeEntityLazy("DataPoint.java");
@@ -170,6 +168,7 @@ public class EntityProcessor {
 		addChangedByInterfaceToDTO("MaterialDTO.java");
 		addChangedByInterfaceToDTO("MachineDTO.java");
 		addChangedByInterfaceToDTO("SnapshotDTO.java");
+		addChangedByInterfaceToDTO("JobDTO.java");
 	}
 
 	private static void addChangedByInterfaceToDTO(String entityFile) throws Exception {
