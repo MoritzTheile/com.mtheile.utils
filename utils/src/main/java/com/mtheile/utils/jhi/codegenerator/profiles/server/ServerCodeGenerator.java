@@ -22,6 +22,12 @@ public class ServerCodeGenerator {
 				 * "CLithoService.java.template"
 				 */
 				ServerCodeGenerator.generateDataPointServiceCode(entityMetaInfo);
+				
+				/**
+				 * "CRUDLithoResource.java.template"
+				 */
+				ServerCodeGenerator.generateDataPointResourceCode(entityMetaInfo);
+				
 
 			}
 
@@ -33,6 +39,11 @@ public class ServerCodeGenerator {
 				 */
 				ServerCodeGenerator.generateChildServiceCode(entityMetaInfo);
 
+				/**
+				 * "CRUDLithoResource.java.template"
+				 */
+				ServerCodeGenerator.generateCRUDResourceCode(entityMetaInfo);
+				
 			}
 			
 			if (LITHO_PROFILE.LIST.equals(entityMetaInfo.getLithoProfile())) {
@@ -42,12 +53,12 @@ public class ServerCodeGenerator {
 				 */
 				ServerCodeGenerator.generateListServiceCode(entityMetaInfo);
 				
+				/**
+				 * "CRUDLithoResource.java.template"
+				 */
+				ServerCodeGenerator.generateCRUDResourceCode(entityMetaInfo);
 			}
 			
-			/**
-			 * "CRUDLithoResource.java.template"
-			 */
-			ServerCodeGenerator.generateResourceCode(entityMetaInfo);
 
 			
 		}
@@ -98,7 +109,7 @@ public class ServerCodeGenerator {
 	 */
 	private static void generateChildServiceCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("server/templates/service/ChildLithoService.java.template") {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"server/templates/service/ChildLithoService.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -114,7 +125,7 @@ public class ServerCodeGenerator {
 				template = template.replaceAll("PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.getLithoParent()));
 				template = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				template = template.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
-				template = template.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				template = template.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return template;
 			}
@@ -128,7 +139,7 @@ public class ServerCodeGenerator {
 	 */
 	private static void generateDataPointServiceCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("server/templates/service/DataPointLithoService.java.template") {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"server/templates/service/DataPointLithoService.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -144,7 +155,7 @@ public class ServerCodeGenerator {
 				template = template.replaceAll("PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN", firstLetterToLowerCase(entityMetaInfo.getLithoParent()));
 				template = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
 				template = template.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
-				template = template.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				template = template.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return template;
 			}
@@ -166,8 +177,8 @@ public class ServerCodeGenerator {
 	
 	}
 
-	private static void generateResourceCode(EntityModel entityMetaInfo) throws Exception {
-		new AbstractTemplateProcessor("server/templates/service/CRUDLithoResource.java.template") {
+	private static void generateCRUDResourceCode(EntityModel entityMetaInfo) throws Exception {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"server/templates/service/CRUDLithoResource.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -179,9 +190,31 @@ public class ServerCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				return result;
+			}
+
+		}.execute();
+	}
+	
+	private static void generateDataPointResourceCode(EntityModel entityMetaInfo) throws Exception {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"server/templates/service/DataPointLithoResource.java.template") {
+
+			@Override
+			public String getTargetFilePath() {
+
+				return PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java";
+
+			}
+
+			@Override
+			public String processTemplate(String template) {
+				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				return result;
 			}
 
@@ -194,7 +227,7 @@ public class ServerCodeGenerator {
 	 */
 	private static void generateEntityBatchCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("server/templates/batch/ChildImporter.java.template") {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"server/templates/batch/ChildImporter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -206,8 +239,8 @@ public class ServerCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return result;
 			}
@@ -226,7 +259,7 @@ public class ServerCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
 				return result;
 			}
@@ -240,7 +273,7 @@ public class ServerCodeGenerator {
 	 */
 	private static void generateListServiceCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("server/templates/service/ListLithoService.java.template") {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"server/templates/service/ListLithoService.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -252,7 +285,7 @@ public class ServerCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return result;
 			}
@@ -266,7 +299,7 @@ public class ServerCodeGenerator {
 	 *  
 	 */
 	private static void generateListBatchCode(EntityModel entityMetaInfo) throws Exception {
-		new AbstractTemplateProcessor("server/templates/batch/ListImporter.java.template") {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"server/templates/batch/ListImporter.java.template") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -278,8 +311,8 @@ public class ServerCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return result;
 			}

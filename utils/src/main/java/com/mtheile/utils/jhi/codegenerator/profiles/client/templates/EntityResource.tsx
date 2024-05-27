@@ -24,7 +24,7 @@ function getEntity2Shortname() {
 }
 
 export const entityConfig: EntityConfigInterface = {
-  entityResourceName: 'MODELNAME_LOWERCASE_TOKEN/ENTITYNAME_TOKEN',
+  entityResourceName: 'MODULNAME_LOWERCASE_TOKEN/ENTITYNAME_TOKEN',
   entityLabel: 'ENTITYNAME_TOKEN',
   // batchEditorName: '',
   entity2Shortname: getEntity2Shortname(),

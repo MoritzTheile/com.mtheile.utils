@@ -2,7 +2,7 @@ import { MenuItemLink } from 'react-admin';
 import TocIcon from '@material-ui/icons/Toc';
 import * as React from 'react';
 
-export function getSubMenuMODELNAME_TOKEN(onMenuClick: () => void, open: boolean, dense: boolean) {
+export function getSubMenuMODULNAME_TOKEN(onMenuClick: () => void, open: boolean, dense: boolean) {
   return (
     <>
       {/*<MenuItemLink

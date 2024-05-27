@@ -10,7 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import com.lithodat.app.litho.service.dto.NameDTO;
-import com.lithodat.app.litho.service.MODELNAME_TOKEN.ENTITYNAME_TOKENLithoService;
+import com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN.ENTITYNAME_TOKENLithoService;
 import com.lithodat.app.litho.service.other.batch.AbstractImporter;
 import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO;
 import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO.TABLE;

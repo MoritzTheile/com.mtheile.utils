@@ -1,4 +1,4 @@
-package com.lithodat.app.litho.service.MODELNAME_LOWERCASE_TOKEN;
+package com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN;
 
 
 import java.time.Instant;

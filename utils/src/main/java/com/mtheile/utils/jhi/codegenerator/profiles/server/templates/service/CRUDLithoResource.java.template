@@ -1,4 +1,4 @@
-package com.lithodat.app.litho.web.rest.MODELNAME_LOWERCASE_TOKEN;
+package com.lithodat.app.litho.web.rest.MODULNAME_LOWERCASE_TOKEN;
 
 import java.net.URI;
 import java.util.List;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.lithodat.app.litho.service.MODELNAME_TOKEN.ENTITYNAME_TOKENLithoService;
+import com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN.ENTITYNAME_TOKENLithoService;
 import com.lithodat.app.litho.service.util.AuthzException;
 import com.lithodat.app.litho.service.util.FrequentlyUsedBeans;
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
@@ -43,7 +43,7 @@ public class ENTITYNAME_TOKENLithoResource {
 
 	public static final String ENTITY_NAME = "ENTITYNAME_TOKEN";
 
-	public static final String REQUEST_URL = "/api/MODELNAME_TOKEN";
+	public static final String REQUEST_URL = "/api/MODULNAME_TOKEN";
 	private static final String RESOURCE_URL = "/" + ENTITY_NAME;
 
 	@Value("${jhipster.clientApp.name}")

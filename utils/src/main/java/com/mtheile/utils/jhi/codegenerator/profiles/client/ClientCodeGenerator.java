@@ -47,7 +47,7 @@ public class ClientCodeGenerator {
 	 */
 	private static void generateCRUDCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor("client/templates/EntityListRenderer.tsx") {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"client/templates/EntityListRenderer.tsx") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -59,8 +59,8 @@ public class ClientCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return result;
 			}
@@ -80,8 +80,8 @@ public class ClientCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return result;
 			}
@@ -100,8 +100,8 @@ public class ClientCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return result;
 			}
@@ -120,7 +120,7 @@ public class ClientCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
 
 				return result;
@@ -170,7 +170,7 @@ public class ClientCodeGenerator {
 
 		// 01. Create SubMenu file if not exists
 
-		new AbstractTemplateProcessor("client/templates/GetSubMenu.template.tsx") {
+		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"client/templates/GetSubMenu.template.tsx") {
 
 			@Override
 			public String getTargetFilePath() {
@@ -182,8 +182,8 @@ public class ClientCodeGenerator {
 			@Override
 			public String processTemplate(String template) {
 				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODELNAME_TOKEN", entityMetaInfo.getLithoModule());
-				result = result.replaceAll("MODELNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
+				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule());
+				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
 				
 				return result;
 			}

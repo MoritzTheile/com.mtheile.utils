@@ -11,7 +11,6 @@ public abstract class AbstractTemplateProcessor {
 	
 	public static enum MODE {SKIP_IF_FILE_EXISTS, DEFAULT}
 
-	private static final String EXAMPLE_FILE_RESOURCE = "/com/mtheile/utils/jhi/codegenerator/profiles/";
 
 	private String templateName;
 
@@ -37,7 +36,13 @@ public abstract class AbstractTemplateProcessor {
 			return;
 		}
 
-		String template = new String(STATICUtils.getResourceAsByteArray(EXAMPLE_FILE_RESOURCE + templateName));
+		String template = null;
+		
+		if(templateName.contains(":")) { // enabling absolute file locations besides resources
+			template =  new String(Files.readAllBytes(Paths.get(templateName)));
+		}else {
+			template = new String(STATICUtils.getResourceAsByteArray(templateName));
+		}
 		
 		String result = processTemplate(template);
 		
