@@ -21,6 +21,7 @@ public class TemplateGenerator {
 	}
 
 	private static void code2Template(String parentName, String modulName, String entityName, String sourceFile, String targetFile) throws Exception {
+		
 		new AbstractTemplateProcessor(sourceFile) {
 
 			@Override
@@ -33,12 +34,12 @@ public class TemplateGenerator {
 			@Override
 			public String processTemplate(String template) {
 				
-				String result = template.replaceAll(entityName, "ENTITYNAME_TOKEN");
-				result = result.replaceAll( parentName, "PARENTNAME_TOKEN");
-				result = result.replaceAll( modulName, "MODULNAME_TOKEN");
-				result = result.replaceAll( modulName.toLowerCase(), "MODULNAME_LOWERCASE_TOKEN");
+				template = template.replaceAll( entityName, "ENTITYNAME_TOKEN");
+				template = template.replaceAll( parentName, "PARENTNAME_TOKEN");
+				template = template.replaceAll( modulName, "MODULNAME_TOKEN");
+				template = template.replaceAll( modulName.toLowerCase(), "MODULNAME_LOWERCASE_TOKEN");
 				
-				return result;
+				return template;
 				
 			}
 
