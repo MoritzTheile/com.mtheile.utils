@@ -9,7 +9,6 @@ import com.mtheile.utils.jhi.codegenerator.utils.batcheditor.BatchEditorUtils;
 
 public class ServerCodeGenerator {
 
-
 	public static void generate(EntityModel entityMetaInfo) throws Exception {
 
 		if (LITHO_PROFILE.DATAPOINT.equals(entityMetaInfo.getLithoProfile())) {
