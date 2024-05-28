@@ -47,87 +47,40 @@ public class ClientCodeGenerator {
 	 */
 	private static void generateCRUDCode(EntityModel entityMetaInfo) throws Exception {
 
-		new AbstractTemplateProcessor(CodeGenerator.PROFILES_HOME+"client/templates/EntityListRenderer.tsx") {
+		CodeGenerator.template2Code( //
+				entityMetaInfo.getLithoParent(), //
+				entityMetaInfo.getLithoModule(), //
+				entityMetaInfo.name, //
+				CodeGenerator.PROFILES_HOME+"client/templates/EntityListRenderer.tsx", //
+				PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\renderer\\EntityListRenderer.tsx"//
+		);
+		
+		CodeGenerator.template2Code( //
+				entityMetaInfo.getLithoParent(), //
+				entityMetaInfo.getLithoModule(), //
+				entityMetaInfo.name, //
+				CodeGenerator.PROFILES_HOME+"client/templates/EntityColumns.tsx", //
+				getPathToEntityColumns_tsx(entityMetaInfo)//
+		);
+		
 
-			@Override
-			public String getTargetFilePath() {
+		CodeGenerator.template2Code( //
+				entityMetaInfo.getLithoParent(), //
+				entityMetaInfo.getLithoModule(), //
+				entityMetaInfo.name, //
+				CodeGenerator.PROFILES_HOME+"client/templates/EntityFields.tsx", //
+				getPathToEntityField_tsx(entityMetaInfo)//
+		);
+		
 
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\renderer\\EntityListRenderer.tsx";
-
-			}
-
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule());
-				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				
-				return result;
-			}
-
-		}.execute();
-
-		new AbstractTemplateProcessor("client/templates/EntityColumns.tsx") {
-
-			@Override
-			public String getTargetFilePath() {
-
-				return getPathToEntityColumns_tsx(entityMetaInfo);
-
-			}
-
-
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule());
-				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				
-				return result;
-			}
-
-		}.execute();
-
-		new AbstractTemplateProcessor("client/templates/EntityFields.tsx") {
-
-			@Override
-			public String getTargetFilePath() {
-
-				return getPathToEntityField_tsx(entityMetaInfo);
-
-			}
-
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODULNAME_TOKEN", entityMetaInfo.getLithoModule());
-				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				
-				return result;
-			}
-
-		}.execute();
-
-		new AbstractTemplateProcessor("client/templates/EntityResource.tsx") {
-
-			@Override
-			public String getTargetFilePath() {
-
-				return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityResource.tsx";
-
-			}
-
-			@Override
-			public String processTemplate(String template) {
-				String result = template.replaceAll("ENTITYNAME_TOKEN", entityMetaInfo.name);
-				result = result.replaceAll("MODULNAME_LOWERCASE_TOKEN", entityMetaInfo.getLithoModule().toLowerCase());
-				result = result.replaceAll("PARENTNAME_TOKEN", entityMetaInfo.getLithoParent());
-
-				return result;
-			}
-
-		}.execute();
-
+		CodeGenerator.template2Code( //
+				entityMetaInfo.getLithoParent(), //
+				entityMetaInfo.getLithoModule(), //
+				entityMetaInfo.name, //
+				CodeGenerator.PROFILES_HOME+"client/templates/EntityResource.tsx", //
+				PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityResource.tsx"//
+		);
+		
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\mydata.tsx") {
 
 			@Override
@@ -159,6 +112,7 @@ public class ClientCodeGenerator {
 		}.execute();
 
 	}
+	
 	private static String getPathToEntityColumns_tsx(EntityModel entityMetaInfo) {
 		return PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityColumns.tsx";
 	}

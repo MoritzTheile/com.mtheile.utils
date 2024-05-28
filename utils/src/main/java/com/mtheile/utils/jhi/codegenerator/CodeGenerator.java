@@ -23,9 +23,7 @@ public class CodeGenerator {
 	public static final String ENTITYNAME_TOKEN = "ENTITYNAME_TOKEN";
 	public static final String PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN = "PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN";
 	public static final String ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKEN = "ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKEN";
-	
-
-	
+		
 	private static List<EntityModel> getEntityMetaInfos() throws Exception {
 
 		List<EntityModel> entityMetaInfos = new ArrayList<>();
@@ -94,9 +92,9 @@ public class CodeGenerator {
 		
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "Tag"));
 		
-//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurable"));
-//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoProcedure"));
-//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurement"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurable"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoProcedure"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurement"));
 		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoDataPoint"));
 		
 		return entityMetaInfos;
@@ -109,7 +107,7 @@ public class CodeGenerator {
 
 			ServerCodeGenerator.generate(entityMetaInfo);
 
-			// ClientCodeGenerator.generate(entityMetaInfo);
+			ClientCodeGenerator.generate(entityMetaInfo);
 
 		}
 
