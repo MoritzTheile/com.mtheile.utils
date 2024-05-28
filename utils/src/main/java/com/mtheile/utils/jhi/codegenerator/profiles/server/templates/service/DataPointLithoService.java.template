@@ -3,7 +3,6 @@ package com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN;
 import java.io.File;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,8 +19,6 @@ import javax.persistence.criteria.Subquery;
 
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,23 +30,20 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.io.Files;
 import com.lithodat.app.domain.DataPoint;
 import com.lithodat.app.domain.DataPoint_;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN_;
 import com.lithodat.app.domain.Location;
 import com.lithodat.app.domain.Location_;
 import com.lithodat.app.domain.Sample;
 import com.lithodat.app.domain.Sample_;
-import com.lithodat.app.domain.ENTITYNAME_TOKEN;
-import com.lithodat.app.domain.ENTITYNAME_TOKEN_;
-import com.lithodat.app.domain.MODULNAME_TOKENSpotData;
 import com.lithodat.app.domain.enumeration.DataStructure;
 import com.lithodat.app.litho.service.coremodel.DataPointLithoService;
-import com.lithodat.app.litho.service.coremodel.MaterialLithoService;
 import com.lithodat.app.litho.service.coremodel.SampleWithLocationLithoService;
-import com.lithodat.app.litho.service.dto.ICPMSLithoCriteria;
+import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoCriteria;
+import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoDTO;
 import com.lithodat.app.litho.service.dto.NameDTO;
 import com.lithodat.app.litho.service.dto.ParamDTO;
 import com.lithodat.app.litho.service.dto.ParamDTO.PARAM;
-import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoCriteria;
-import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoDTO;
 import com.lithodat.app.litho.service.dto.projection.DataPointLithoProjectionDTO;
 import com.lithodat.app.litho.service.geojson.base.ProjectionDTOCollection;
 import com.lithodat.app.litho.service.geojson.cluster.ClusterDTO;
@@ -65,15 +59,12 @@ import com.lithodat.app.litho.service.util.ServiceSTATICS;
 import com.lithodat.app.litho.service.util.ServiceUtil;
 import com.lithodat.app.litho.service.util.Specifications;
 import com.lithodat.app.litho.service.util.changedby.ChangedByHelper;
-import com.lithodat.app.litho.service.util.table.FloatTable;
 import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
 import com.lithodat.app.service.DataPointService;
 import com.lithodat.app.service.ENTITYNAME_TOKENQueryService;
 import com.lithodat.app.service.ENTITYNAME_TOKENService;
 import com.lithodat.app.service.dto.DataPointDTO;
-import com.lithodat.app.service.dto.MODULNAME_TOKENAgeGroupCriteria;
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
-import com.lithodat.app.service.dto.MODULNAME_TOKENSpotDataCriteria;
 import com.lithodat.app.service.mapper.ENTITYNAME_TOKENMapper;
 import com.lithodat.app.service.util.RandomUtil;
 
@@ -105,18 +96,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 	private DataPointService extendedServices;
 
 	@Autowired
-	private MaterialLithoService materialLithoService;
-
-	@Autowired
-	private MODULNAME_TOKENSpotDataLithoService uPbSpotDataLithoService;
-
-	@Autowired
-	private MODULNAME_TOKENAgeGroupLithoService uPbAgeGroupLithoService;
-
-	@Autowired
 	private EntityManager em;
-
-	private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 	@Transactional
 	public ENTITYNAME_TOKENLithoDTO create(LithoAuth lithoAuth, ENTITYNAME_TOKENLithoDTO dto, ParamDTO params) throws Exception {
@@ -134,15 +114,15 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 
 		ENTITYNAME_TOKENLithoDTO resultDTO = new ENTITYNAME_TOKENLithoDTO();
 
-		resultDTO.setENTITYNAME_TOKENDTO(service.save(dto.getENTITYNAME_TOKENDTO()));
+		resultDTO.setExtendingDataPointDTO(service.save(dto.getExtendingDataPointDTO()));
 
 		DataPointDTO extensionDTO = dto.getDataPointDTO();
 
-		extensionDTO.setENTITYNAME_TOKENId(resultDTO.getENTITYNAME_TOKENDTO().getId());
+		extensionDTO.setENTITYNAME_TOKENId(resultDTO.getExtendingDataPointDTO().getId());
 
 		// some redundant info here:
-		extensionDTO.setDataEntityId(resultDTO.getENTITYNAME_TOKENDTO().getId());
-		extensionDTO.setDataStructure(DataStructure.UPB);
+		extensionDTO.setDataEntityId(resultDTO.getExtendingDataPointDTO().getId());
+		extensionDTO.setDataStructure(DataStructure.MODULNAME_UPPERCASE_TOKEN);
 
 		extensionDTO = extendedLithoService.create(lithoAuth, extensionDTO, params);
 
@@ -177,7 +157,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 
 		ENTITYNAME_TOKENLithoDTO dto = new ENTITYNAME_TOKENLithoDTO();
 
-		dto.setENTITYNAME_TOKENDTO(mainDTO);
+		dto.setExtendingDataPointDTO(mainDTO);
 
 		DataPointDTO dataPointDTO = extendedLithoService.findOne(lithoAuth, repository.getOne(mainDTO.getId()).getDataPoint().getId()).get();
 
@@ -236,10 +216,6 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 	}
 
 	private Specification<ENTITYNAME_TOKEN> createSpecification(LithoAuth lithoAuth, ENTITYNAME_TOKENLithoCriteria criteria) throws Exception {
-		// extending "in" search for decendants
-		if (criteria.getMineralId() != null && criteria.getMineralId().getIn() != null) {
-			criteria.getMineralId().getIn().addAll(materialLithoService.getDecendantMaterialIds(criteria.getMineralId()));
-		}
 
 		Specification<ENTITYNAME_TOKEN> jhSpecification = queryService.createSpecification(criteria);
 
@@ -276,13 +252,13 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 		validateData(dto);
 
 		// make sure it's an extension
-		if (!dto.getENTITYNAME_TOKENDTO().getId().equals(dto.getDataPointDTO().getENTITYNAME_TOKENId())) {
+		if (!dto.getExtendingDataPointDTO().getId().equals(dto.getDataPointDTO().getENTITYNAME_TOKENId())) {
 			throw new Exception("ENTITYNAME_TOKEN is not an extension (see referencing id)");
 		}
 
 		ENTITYNAME_TOKENLithoDTO resultDTO = new ENTITYNAME_TOKENLithoDTO();
 
-		resultDTO.setENTITYNAME_TOKENDTO(service.save(dto.getENTITYNAME_TOKENDTO()));
+		resultDTO.setExtendingDataPointDTO(service.save(dto.getExtendingDataPointDTO()));
 		resultDTO.setDataPointDTO(extendedLithoService.update(lithoAuth, dto.getDataPointDTO()));
 
 		return toHydratedLithoDTO(lithoAuth, resultDTO, true);
@@ -370,48 +346,20 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 
 	private ENTITYNAME_TOKENLithoDTO toHydratedLithoDTO(LithoAuth lithoAuth, ENTITYNAME_TOKENLithoDTO dto, Boolean hydrateDTO) throws Exception {
 
-		{ // adding ICPMSMetadata if existent
-
-			ICPMSLithoCriteria criteria = new ICPMSLithoCriteria();
-			{
-				LongFilter longFilter = new LongFilter();
-				longFilter.setEquals(dto.getDataPointDTO().getId());
-				criteria.setDataPointId(longFilter);
-			}
-
-		}
-
 		if (!hydrateDTO) {
 			return dto;
 		}
-		{// count
-			MODULNAME_TOKENAgeGroupCriteria criteria = new MODULNAME_TOKENAgeGroupCriteria();
-			LongFilter longFilter = new LongFilter();
-			longFilter.setEquals(dto.getId());
-			criteria.setENTITYNAME_TOKENId(longFilter);
-
-			Long count = uPbAgeGroupLithoService.countByCriteria(lithoAuth, criteria);
-			dto.setCountAgeGroups(count.intValue());
-		}
-
-		{// count
-			MODULNAME_TOKENSpotDataCriteria criteria = new MODULNAME_TOKENSpotDataCriteria();
-			LongFilter longFilter = new LongFilter();
-			longFilter.setEquals(dto.getId());
-			criteria.setENTITYNAME_TOKENId(longFilter);
-
-			Long count = uPbSpotDataLithoService.countByCriteria(lithoAuth, criteria);
-			dto.setCountSpots(count.intValue());
-		}
+		
+		// dto can be hydrated here
 
 		return dto;
 	}
 
 	private void validateData(ENTITYNAME_TOKENLithoDTO dto) throws Exception {
 
-		if (dto.getDataPointDTO().getSampleId() != null && dto.getENTITYNAME_TOKENDTO().getReferenceMaterialId() != null) {
-			throw new Exception("Only one can be assigned. Either Unknown Sample or Reference Material.");
-		}
+//		if (dto.getDataPointDTO().getSampleId() != null && dto.getExtendingDataPointDTO().getReferenceMaterialId() != null) {
+//			throw new Exception("Only one can be assigned. Either Unknown Sample or Reference Material.");
+//		}
 
 	}
 
@@ -519,7 +467,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 
 		File tmpDir = Files.createTempDir();
 
-		File shapeFile = new File(tmpDir.getAbsolutePath() + "/shapefile/MODULNAME_LOWERCASE_TOKEN.shp");
+		File shapeFile = new File(tmpDir.getAbsolutePath() + "/shapefile/MODULNAME_TOKENData.shp");
 
 		shapeFile.getParentFile().mkdirs();
 
@@ -635,20 +583,6 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 		return em.createQuery(criteriaQuery).getResultList();
 
 	}
-
-	public FloatTable getData(LithoAuth lithoAuth, Long uPbDatapointId) {
-		FloatTable floatTable = new FloatTable(	new ArrayList<String>(Arrays.asList("X","errX","Y","errY","rXY")),	new ArrayList<>());
-		try {
-			ENTITYNAME_TOKEN dataPoint = repository.getOne(uPbDatapointId);
-			for(MODULNAME_TOKENSpotData uPbSpot: dataPoint.getMODULNAME_TOKENSpotData()) {
-				
-				floatTable.addRow(new ArrayList<Float>(Arrays.asList(uPbSpot.geti207Pb235UCommPbCorr(), uPbSpot.geti207Pb235UCommPbCorrUncertainty(), uPbSpot.geti206Pb238UCommPbCorr(), uPbSpot.geti206Pb238UCommPbCorrUncertainty(), uPbSpot.getRho207Pb235U206Pb238Ucorr())));
-
-			}
-		} catch (Exception e) {
-			log.error("could not read MODULNAME_LOWERCASE_TOKEN data", e);
-		}
-		return floatTable;
-	}
+	
 
 }
