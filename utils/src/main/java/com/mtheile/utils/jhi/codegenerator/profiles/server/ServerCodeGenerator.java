@@ -103,22 +103,22 @@ public class ServerCodeGenerator {
 		}
 
 		if (LITHO_PROFILE.LIST.equals(entityMetaInfo.getLithoProfile())) {
-//
-//			CodeGenerator.template2Code( //
-//					entityMetaInfo.getLithoParent(), //
-//					entityMetaInfo.getLithoModule(), //
-//					entityMetaInfo.name, //
-//					CodeGenerator.PROFILES_HOME + "server/templates/service/ListLithoService.java.template", //
-//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
-//			);
-//
-//			CodeGenerator.template2Code( //
-//					entityMetaInfo.getLithoParent(), //
-//					entityMetaInfo.getLithoModule(), //
-//					entityMetaInfo.name, //
-//					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
-//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
-//			);
+
+			CodeGenerator.template2Code( //
+					entityMetaInfo.getLithoParent(), //
+					entityMetaInfo.getLithoModule(), //
+					entityMetaInfo.name, //
+					CodeGenerator.PROFILES_HOME + "server/templates/service/ListLithoService.java.template", //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
+			);
+
+			CodeGenerator.template2Code( //
+					entityMetaInfo.getLithoParent(), //
+					entityMetaInfo.getLithoModule(), //
+					entityMetaInfo.name, //
+					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
+			);
 //
 //			// batch code:
 //
