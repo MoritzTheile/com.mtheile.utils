@@ -8,7 +8,6 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.geojson.feature.FeatureJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -30,9 +29,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.lithodat.app.litho.service.dto.GCDataPointLithoCriteria;
-import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoCriteria;
-import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoDTO;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
 import com.lithodat.app.litho.service.geojson.cluster.ClusterDTO;
 import com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN.ENTITYNAME_TOKENLithoService;
 import com.lithodat.app.litho.service.util.AuthzException;
@@ -65,42 +63,42 @@ public class ENTITYNAME_TOKENLithoResource {
 	private ENTITYNAME_TOKENLithoService lithoService;
 
 	@PostMapping(RESOURCE_URL)
-	public ResponseEntity<ENTITYNAME_TOKENLithoDTO> create(@Valid @RequestBody ENTITYNAME_TOKENLithoDTO dto) throws Exception {
+	public ResponseEntity<ENTITYNAME_TOKENDTO> create(@Valid @RequestBody ENTITYNAME_TOKENDTO dto) throws Exception {
 		if (dto.getId() != null) {
 			throw new BadRequestAlertException("A new entity cannot already have an ID", ENTITY_NAME, "idexists");
 		}
-		ENTITYNAME_TOKENLithoDTO result = lithoService.create(fub.getLithoAuth(), dto, null);
+		ENTITYNAME_TOKENDTO result = lithoService.create(fub.getLithoAuth(), dto, null);
 		return ResponseEntity.created(new URI("/api" + RESOURCE_URL + "/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
 				.body(result);
 	}
 
 	@PutMapping(RESOURCE_URL)
-	public ResponseEntity<ENTITYNAME_TOKENLithoDTO> update(@Valid @RequestBody ENTITYNAME_TOKENLithoDTO dataPointDTO) throws Exception {
+	public ResponseEntity<ENTITYNAME_TOKENDTO> update(@Valid @RequestBody ENTITYNAME_TOKENDTO dataPointDTO) throws Exception {
 		if (dataPointDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
-		ENTITYNAME_TOKENLithoDTO result = lithoService.update(fub.getLithoAuth(), dataPointDTO);
+		ENTITYNAME_TOKENDTO result = lithoService.update(fub.getLithoAuth(), dataPointDTO);
 		return ResponseEntity.ok()
 				.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, dataPointDTO.getId().toString()))
 				.body(result);
 	}
 
 	@GetMapping(RESOURCE_URL)
-	public ResponseEntity<List<ENTITYNAME_TOKENLithoDTO>> get(ENTITYNAME_TOKENLithoCriteria criteria, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) throws AuthzException, Exception {
-		Page<ENTITYNAME_TOKENLithoDTO> page = lithoService.findByCriteria(fub.getLithoAuth(), criteria, pageable);
+	public ResponseEntity<List<ENTITYNAME_TOKENDTO>> get(ENTITYNAME_TOKENCriteria criteria, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) throws AuthzException, Exception {
+		Page<ENTITYNAME_TOKENDTO> page = lithoService.findByCriteria(fub.getLithoAuth(), criteria, pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
 	@GetMapping(RESOURCE_URL + "/count")
-	public ResponseEntity<Long> count(ENTITYNAME_TOKENLithoCriteria criteria) throws Exception {
+	public ResponseEntity<Long> count(ENTITYNAME_TOKENCriteria criteria) throws Exception {
 		return ResponseEntity.ok().body(lithoService.countByCriteria(fub.getLithoAuth(), criteria));
 	}
 
 	@GetMapping(RESOURCE_URL + "/{id}")
-	public ResponseEntity<ENTITYNAME_TOKENLithoDTO> get(@PathVariable Long id) throws Exception {
-		Optional<ENTITYNAME_TOKENLithoDTO> dataPointDTO = lithoService.findOne(fub.getLithoAuth(), id);
+	public ResponseEntity<ENTITYNAME_TOKENDTO> get(@PathVariable Long id) throws Exception {
+		Optional<ENTITYNAME_TOKENDTO> dataPointDTO = lithoService.findOne(fub.getLithoAuth(), id);
 		return ResponseUtil.wrapOrNotFound(dataPointDTO);
 	}
 
@@ -109,68 +107,4 @@ public class ENTITYNAME_TOKENLithoResource {
 		lithoService.delete(fub.getLithoAuth(), id);
 		return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
 	}
-	
-
-	@GetMapping(RESOURCE_URL + "/findIds")
-	public ResponseEntity<List<Long>> findIdsByCriteria(ENTITYNAME_TOKENLithoCriteria criteria) throws AuthzException, Exception {
-		List<Long> ids = lithoService.findIdsByCriteria(fub.getLithoAuth(), criteria);
-		return ResponseEntity.ok().body(ids);
-	}
-	
-	@GetMapping("/cluster")
-	public ResponseEntity<List<ClusterDTO>> getMapCluster(//
-			ENTITYNAME_TOKENLithoCriteria criteria, //
-			Integer maxZoomLevel, Integer maxNoOfCluster, Integer maxClusterSize) throws Exception {
-
-		if (maxZoomLevel == null) {
-			maxZoomLevel = 2;
-		}
-		if (maxNoOfCluster == null) {
-			maxNoOfCluster = 32;
-		}
-		if (maxClusterSize == null) {
-			maxClusterSize = 15000;
-		}
-
-		List<ClusterDTO> clusterDTOs = lithoService.findClusterByCriteria(fub.getLithoAuth(), //
-				criteria, maxZoomLevel, maxNoOfCluster, maxClusterSize);
-
-		return ResponseEntity.ok().body(clusterDTOs);
-
-	}
-
-	@SuppressWarnings("deprecation")
-	@GetMapping("/geojson")
-	public ResponseEntity<String> getGeoJson(ENTITYNAME_TOKENLithoCriteria criteria) throws Exception {
-		
-		SimpleFeatureCollection featureCollection = lithoService.findGeoFeatureCollection(fub.getLithoAuth(), //
-				criteria);
-	    // Serialize FeatureCollection to String
-	    FeatureJSON fjson = new FeatureJSON();
-	    StringWriter writer = new StringWriter();
-	    fjson.writeFeatureCollection(featureCollection, writer);
-	    String geoJson = writer.toString();
-	    
-	    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(geoJson);
-
-	}
-	@GetMapping(RESOURCE_URL +"/downloadShapefile")
-	public ResponseEntity<Resource> downloadShapefile(ENTITYNAME_TOKENLithoCriteria criteria) throws AuthzException, Exception {
-
-		LithoAuth lithoAuth = fub.getLithoAuth();
-		
-		byte[] byteArray = lithoService.createShapefileByCriteria(lithoAuth, criteria);
-
-		ByteArrayResource resource = new ByteArrayResource(byteArray);
-
-		HttpHeaders headers = new HttpHeaders();
-
-		headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=Shapefile.zip");
-		headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
-
-		return ResponseEntity.ok().headers(headers).contentLength(byteArray.length).body(resource);
-
-	}
-
-
 }

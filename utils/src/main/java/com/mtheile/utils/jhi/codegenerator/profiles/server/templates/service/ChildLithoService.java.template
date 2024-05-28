@@ -216,7 +216,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 
 			Join<DataPoint, PARENTNAME_TOKEN> gcDataPointJoin = dataPointJoin.join(DataPoint_.PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN, JoinType.LEFT);
 
-			Join<PARENTNAME_TOKEN, ENTITYNAME_TOKEN> elementalConcentrationDataPointJoin = gcDataPointJoin.join(PARENTNAME_TOKEN_.ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKEN, JoinType.LEFT);
+			Join<PARENTNAME_TOKEN, ENTITYNAME_TOKEN> elementalConcentrationDataPointJoin = gcDataPointJoin.join(PARENTNAME_TOKEN_.ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKENs, JoinType.LEFT);
 
 			return criteriaBuilder.equal(elementalConcentrationDataPointJoin.get(ENTITYNAME_TOKEN_.id), entityId);
 
