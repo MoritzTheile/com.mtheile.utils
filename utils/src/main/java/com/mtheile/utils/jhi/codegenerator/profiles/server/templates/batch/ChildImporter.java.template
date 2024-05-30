@@ -1,4 +1,4 @@
-package com.lithodat.app.litho.service.other.batch.tableimporter.lists;
+package com.lithodat.app.litho.service.other.batch.tableimporter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,6 @@ import com.lithodat.app.litho.service.util.LithoAuth;
 
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
-
-import io.github.jhipster.service.filter.StringFilter;
 
 @Component
 public class ENTITYNAME_TOKENImporter extends AbstractImporter<ENTITYNAME_TOKENDTO, ENTITYNAME_TOKENLithoService, ENTITYNAME_TOKENCriteria> {
@@ -48,15 +46,12 @@ public class ENTITYNAME_TOKENImporter extends AbstractImporter<ENTITYNAME_TOKEND
 
 		ENTITYNAME_TOKENCriteria criteria = new ENTITYNAME_TOKENCriteria();
 
-		if (term != null && !term.isEmpty()) {
-			StringFilter stringFilter = new StringFilter();
-			if (FINDMODE.EQUAL.equals(findmode)) {
-				stringFilter.setEquals(term);
-			} else {
-				stringFilter.setContains(term);
-			}
-			criteria.setName(stringFilter);
-		}
+		// if (term != null && !term.isEmpty()) {
+		// StringFilter stringFilter = new StringFilter();
+		// if(FINDMODE.EQUAL.equals(findmode)) {stringFilter.setEquals(term);} else
+		// {stringFilter.setContains(term);}
+		// criteria.setName(stringFilter);
+		// }
 
 		return criteria;
 
@@ -69,7 +64,7 @@ public class ENTITYNAME_TOKENImporter extends AbstractImporter<ENTITYNAME_TOKEND
 
 	@Override
 	public String getEntityName(ENTITYNAME_TOKENDTO dto) {
-		return dto.getName();
+		return dto.getId() + "";
 	}
 
 	@Override
