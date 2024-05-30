@@ -121,6 +121,8 @@ public class ServerCodeGenerator {
 
 			// batch code:
 
+			ServerCodeGenerator.registerToBatch(entityMetaInfo);
+
 			CodeGenerator.template2Code( //
 					entityMetaInfo.getLithoParent(), //
 					entityMetaInfo.getLithoModule(), //

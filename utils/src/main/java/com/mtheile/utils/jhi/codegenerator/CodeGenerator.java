@@ -109,7 +109,7 @@ public class CodeGenerator {
 
 			ServerCodeGenerator.generate(entityMetaInfo);
 
-			//ClientCodeGenerator.generate(entityMetaInfo);
+			ClientCodeGenerator.generate(entityMetaInfo);
 
 		}
 
