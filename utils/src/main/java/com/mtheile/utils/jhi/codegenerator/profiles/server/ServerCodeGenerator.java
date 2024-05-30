@@ -13,121 +13,121 @@ public class ServerCodeGenerator {
 
 		if (LITHO_PROFILE.DATAPOINT.equals(entityMetaInfo.getLithoProfile())) {
 
-			CodeGenerator.template2Code( //
-					entityMetaInfo.getLithoParent(), //
-					entityMetaInfo.getLithoModule(), //
-					entityMetaInfo.name, //
-					CodeGenerator.PROFILES_HOME + "server/templates/service/DataPointLithoService.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
-			);
-
-			CodeGenerator.template2Code( //
-					entityMetaInfo.getLithoParent(), //
-					entityMetaInfo.getLithoModule(), //
-					entityMetaInfo.name, //
-					CodeGenerator.PROFILES_HOME + "server/templates/service/DataPointLithoResource.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
-			);
+//			CodeGenerator.template2Code( //
+//					entityMetaInfo.getLithoParent(), //
+//					entityMetaInfo.getLithoModule(), //
+//					entityMetaInfo.name, //
+//					CodeGenerator.PROFILES_HOME + "server/templates/service/DataPointLithoService.java.template", //
+//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
+//			);
+//
+//			CodeGenerator.template2Code( //
+//					entityMetaInfo.getLithoParent(), //
+//					entityMetaInfo.getLithoModule(), //
+//					entityMetaInfo.name, //
+//					CodeGenerator.PROFILES_HOME + "server/templates/service/DataPointLithoResource.java.template", //
+//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
+//			);
 
 //			// batch code:
 //
-//			CodeGenerator.template2Code( //
-//					entityMetaInfo.getLithoParent(), //
-//					entityMetaInfo.getLithoModule(), //
-//					entityMetaInfo.name, //
-//					CodeGenerator.PROFILES_HOME + "server/templates/batch/ChildImporter.java.template", //
-//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java" //
-//			);
-//
-//			ServerCodeGenerator.registerToBatch(entityMetaInfo);
-//
-//			CodeGenerator.template2Code( //
-//					entityMetaInfo.getLithoParent(), //
-//					entityMetaInfo.getLithoModule(), //
-//					entityMetaInfo.name, //
-//					CodeGenerator.PROFILES_HOME + "server/templates/batch/BatchAdapter.java.template", //
-//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java" //
-//			);
+			CodeGenerator.template2Code( //
+					entityMetaInfo.getLithoParent(), //
+					entityMetaInfo.getLithoModule(), //
+					entityMetaInfo.name, //
+					CodeGenerator.PROFILES_HOME + "server/templates/batch/DataPointImporter.java.template", //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java" //
+			);
+
+			ServerCodeGenerator.registerToBatch(entityMetaInfo);
+
+			CodeGenerator.template2Code( //
+					entityMetaInfo.getLithoParent(), //
+					entityMetaInfo.getLithoModule(), //
+					entityMetaInfo.name, //
+					CodeGenerator.PROFILES_HOME + "server/templates/batch/DataPointBatchAdapter.java.template", //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java" //
+			);
 //
 //			/**
 //			 * no templates used
 //			 */
-//			ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
+			ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
 
 		}
 		
 		if (LITHO_PROFILE.CHILD.equals(entityMetaInfo.getLithoProfile())) {
 
+//			CodeGenerator.template2Code( //
+//					entityMetaInfo.getLithoParent(), //
+//					entityMetaInfo.getLithoModule(), //
+//					entityMetaInfo.name, //
+//					CodeGenerator.PROFILES_HOME + "server/templates/service/ChildLithoService.java.template", //
+//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
+//			);
+//
+//			CodeGenerator.template2Code( //
+//					entityMetaInfo.getLithoParent(), //
+//					entityMetaInfo.getLithoModule(), //
+//					entityMetaInfo.name, //
+//					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
+//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
+//			);
+//
+//			// batch code:
+//
 			CodeGenerator.template2Code( //
 					entityMetaInfo.getLithoParent(), //
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
-					CodeGenerator.PROFILES_HOME + "server/templates/service/ChildLithoService.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
+					CodeGenerator.PROFILES_HOME + "server/templates/batch/ChildImporter.java.template", //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java" //
 			);
+
+			ServerCodeGenerator.registerToBatch(entityMetaInfo);
 
 			CodeGenerator.template2Code( //
 					entityMetaInfo.getLithoParent(), //
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
-					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
+					CodeGenerator.PROFILES_HOME + "server/templates/batch/ChildBatchAdapter.java.template", //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java" //
 			);
-//
-//			// batch code:
-//
-//			CodeGenerator.template2Code( //
-//					entityMetaInfo.getLithoParent(), //
-//					entityMetaInfo.getLithoModule(), //
-//					entityMetaInfo.name, //
-//					CodeGenerator.PROFILES_HOME + "server/templates/batch/ChildImporter.java.template", //
-//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java" //
-//			);
-//
-//			ServerCodeGenerator.registerToBatch(entityMetaInfo);
-//
-//			CodeGenerator.template2Code( //
-//					entityMetaInfo.getLithoParent(), //
-//					entityMetaInfo.getLithoModule(), //
-//					entityMetaInfo.name, //
-//					CodeGenerator.PROFILES_HOME + "server/templates/batch/BatchAdapter.java.template", //
-//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java" //
-//			);
 //
 //			/**
 //			 * no templates used
 //			 */
-//			ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
+			ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
 //
 		}
 
 		if (LITHO_PROFILE.LIST.equals(entityMetaInfo.getLithoProfile())) {
 
-			CodeGenerator.template2Code( //
-					entityMetaInfo.getLithoParent(), //
-					entityMetaInfo.getLithoModule(), //
-					entityMetaInfo.name, //
-					CodeGenerator.PROFILES_HOME + "server/templates/service/ListLithoService.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
-			);
-
-			CodeGenerator.template2Code( //
-					entityMetaInfo.getLithoParent(), //
-					entityMetaInfo.getLithoModule(), //
-					entityMetaInfo.name, //
-					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
-			);
-//
-//			// batch code:
+//			CodeGenerator.template2Code( //
+//					entityMetaInfo.getLithoParent(), //
+//					entityMetaInfo.getLithoModule(), //
+//					entityMetaInfo.name, //
+//					CodeGenerator.PROFILES_HOME + "server/templates/service/ListLithoService.java.template", //
+//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
+//			);
 //
 //			CodeGenerator.template2Code( //
 //					entityMetaInfo.getLithoParent(), //
 //					entityMetaInfo.getLithoModule(), //
 //					entityMetaInfo.name, //
-//					CodeGenerator.PROFILES_HOME + "server/templates/batch/ListImporter.java.template", //
-//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\" + entityMetaInfo.name + "Importer.java" //
+//					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
+//					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
 //			);
+//
+//			// batch code:
+//
+			CodeGenerator.template2Code( //
+					entityMetaInfo.getLithoParent(), //
+					entityMetaInfo.getLithoModule(), //
+					entityMetaInfo.name, //
+					CodeGenerator.PROFILES_HOME + "server/templates/batch/ListImporter.java.template", //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\" + entityMetaInfo.name + "Importer.java" //
+			);
 //
 		}
 

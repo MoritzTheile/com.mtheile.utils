@@ -340,8 +340,8 @@ public class ClientCodeGenerator {
 
 					{ // adding resource
 						// String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) +
-						// "EntityPicker dtoIdPath={'" + relationship.relationshipName + "'}/>";
-						String element = "<EntityPicker" + firstLetterToUpperCase(relationship.otherEntityName) + " dtoIdPath={'" + relationship.relationshipName + "Id'}  label={'"+relationship.getLithoLabel()+"'}  description={'"+relationship.getLithoDocumentation()+"'}/>";
+						// "EntityPicker source={'" + relationship.relationshipName + "'}/>";
+						String element = "<EntityPicker" + firstLetterToUpperCase(relationship.otherEntityName) + " source={'" + relationship.relationshipName + "Id'}  label={'"+relationship.getLithoLabel()+"'}  description={'"+relationship.getLithoDocumentation()+"'}/>";
 
 						if (!text.contains(element)) {
 

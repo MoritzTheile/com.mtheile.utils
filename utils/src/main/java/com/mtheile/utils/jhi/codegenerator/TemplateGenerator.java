@@ -1,5 +1,6 @@
 package com.mtheile.utils.jhi.codegenerator;
 
+@SuppressWarnings("unused")
 public class TemplateGenerator {
 
 	public static void main(String[] args) throws Exception {
@@ -8,16 +9,26 @@ public class TemplateGenerator {
 		// Using UPb module files as master code
 		//
 
-		String parentName = "IsoDataPoint"; // stays the same for all UPb files
+		String parentName = "UPbDataPoint"; // stays the same for all Iso files
 
-		String modulName = "Iso"; // stays the same for all UPb files
+		String modulName = "UPb"; // stays the same for all Iso files
 
-		//createListTemplatesFromMaster("LUPbGrainDomain", parentName, modulName);
+		//createListTemplatesFromMaster("LIsoGrainDomain", parentName, modulName);
 
-		createDataPointTemplatesFromMaster("IsoDataPoint", parentName, modulName);
+		createBatchTemplatesFromMaster("UPbSpotData", parentName, modulName);
 
 	}
 
+	private static void createBatchTemplatesFromMaster(String entityName, String parentName, String modulName) throws Exception {
+
+		CodeGenerator.code2Template(parentName, modulName, entityName, //
+				"C:\\Users\\theil\\git\\com.lithodat.app\\src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\UPbSpotDataImporter.java", //
+				"C:\\Users\\theil\\git\\com.mtheile.utils\\utils\\src\\main\\java\\com\\mtheile\\utils\\jhi\\codegenerator\\profiles\\server\\templates\\batch\\ChildImporter.java.template" //
+		);
+	}
+	
+	
+	
 	private static void createListTemplatesFromMaster(String entityName, String parentName, String modulName) throws Exception {
 
 		CodeGenerator.code2Template(parentName, modulName, entityName, //

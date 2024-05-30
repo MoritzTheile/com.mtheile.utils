@@ -92,10 +92,12 @@ public class CodeGenerator {
 		
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "Tag"));
 		
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurable"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoProcedure"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurement"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoDataPoint"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUnit"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurable"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoProcedure")); // List
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurement")); // Child
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoDataPoint")); // DataPoint
+		
 		
 		return entityMetaInfos;
 
@@ -107,7 +109,7 @@ public class CodeGenerator {
 
 			ServerCodeGenerator.generate(entityMetaInfo);
 
-			ClientCodeGenerator.generate(entityMetaInfo);
+			//ClientCodeGenerator.generate(entityMetaInfo);
 
 		}
 
