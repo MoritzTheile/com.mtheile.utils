@@ -1,0 +1,102 @@
+package com.lithodat.app.litho.service.other.batch.tableimporter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Component;
+
+import com.lithodat.app.litho.service.dto.NameDTO;
+import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoCriteria;
+import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoDTO;
+import com.lithodat.app.litho.service.other.batch.AbstractImporter;
+import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO;
+import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO.TABLE;
+import com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN.ENTITYNAME_TOKENLithoService;
+import com.lithodat.app.litho.service.util.LithoAuth;
+
+import io.github.jhipster.service.filter.StringFilter;
+
+@Component
+public class ENTITYNAME_TOKENImporter extends AbstractImporter<ENTITYNAME_TOKENLithoDTO, ENTITYNAME_TOKENLithoService, ENTITYNAME_TOKENLithoCriteria> {
+
+	@Autowired
+	private ENTITYNAME_TOKENLithoService service;
+
+	@Autowired
+	private ENTITYNAME_TOKENImporter self;
+
+	public ENTITYNAME_TOKENImporter() {
+
+		super(TABLE.ENTITYNAME_TOKEN);
+
+	}
+
+	@Override
+	public ENTITYNAME_TOKENLithoService getService() {
+
+		return service;
+
+	}
+
+	@Override
+	public ENTITYNAME_TOKENLithoCriteria getFindEntityCriteria(String term, FINDMODE findmode) {
+		ENTITYNAME_TOKENLithoCriteria criteria = new ENTITYNAME_TOKENLithoCriteria();
+
+		if (term != null && !term.isEmpty()) {
+			StringFilter stringFilter = new StringFilter();
+			if (FINDMODE.EQUAL.equals(findmode)) {
+				stringFilter.setEquals(term);
+			} else {
+				stringFilter.setContains(term);
+			}
+			criteria.getDataPointLithoCriteria().setName(stringFilter);
+		}
+
+		return criteria;
+
+	}
+
+	@Override
+	public ENTITYNAME_TOKENLithoDTO getNewDTO() {
+		return new ENTITYNAME_TOKENLithoDTO();
+	}
+
+	@Override
+	public String getEntityName(ENTITYNAME_TOKENLithoDTO dto) {
+		return dto.getId() + "";
+	}
+
+	@Override
+	public Long getEntityId(ENTITYNAME_TOKENLithoDTO dto) {
+		return dto.getId();
+	}
+
+	@Override
+	public void postprocessEntity(LithoAuth lithoAuth, BatchTableDTO batchTableDTO, ENTITYNAME_TOKENLithoDTO entityDTO) {
+
+		// nothing to postprocess here
+
+		
+	}
+
+	@Override
+	public AbstractImporter<ENTITYNAME_TOKENLithoDTO, ENTITYNAME_TOKENLithoService, ENTITYNAME_TOKENLithoCriteria> getSelf() {
+		return self;
+	}
+
+	@Override
+	public List<NameDTO> findNameDTOs(LithoAuth lithoAuth, String term, FINDMODE findmode) throws Exception {
+
+		ENTITYNAME_TOKENLithoCriteria criteria = getFindEntityCriteria(term, findmode);
+
+		return getService().getNameDTOs(lithoAuth, criteria, PageRequest.of(0, 124));
+
+		
+
+	}
+
+}
