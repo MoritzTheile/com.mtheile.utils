@@ -1,49 +1,340 @@
 package com.lithodat.app.litho.service.other.batch.adapters;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import com.lithodat.app.domain.PARENTNAME_TOKEN;
-import com.lithodat.app.domain.ENTITYNAME_TOKEN;
+import com.lithodat.app.litho.service.coremodel.LPerson2DataPointRoleLithoService;
+import com.lithodat.app.litho.service.coremodel.LPerson2DataPointRoleLithoService.PERSON2DATAPOINT_ROLE_SEARCHTERM;
+import com.lithodat.app.litho.service.coremodel.Lab2DataPointLithoService;
+import com.lithodat.app.litho.service.coremodel.Literature2DataPointLithoService;
+import com.lithodat.app.litho.service.coremodel.Person2DataPointLithoService;
+import com.lithodat.app.litho.service.coremodel.Tag2DataPointLithoService;
+import com.lithodat.app.litho.service.dto.ENTITYNAME_TOKENLithoDTO;
 import com.lithodat.app.litho.service.other.batch.AbstractBatchAdapter;
-import com.lithodat.app.litho.service.other.batch.celladapters.AbstractBooleanValueCellAdapter;
-import com.lithodat.app.litho.service.other.batch.celladapters.AbstractFloatValueCellAdapter;
-import com.lithodat.app.litho.service.other.batch.celladapters.AbstractIntegerValueCellAdapter;
-import com.lithodat.app.litho.service.other.batch.celladapters.AbstractStringValueCellAdapter;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractCellExecutor;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractJoinCellAdapter;
 import com.lithodat.app.litho.service.other.batch.celladapters.AbstractRefCellAdapter;
+import com.lithodat.app.litho.service.other.batch.celladapters.AbstractStringValueCellAdapter;
 import com.lithodat.app.litho.service.other.batch.dto.BatchTableDTO.TABLE;
+import com.lithodat.app.litho.service.other.batch.dto.CellDTO;
 import com.lithodat.app.litho.service.other.batch.dto.RowDTO;
-import com.lithodat.app.repository.PARENTNAME_TOKENRepository;
-import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
-import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
+import com.lithodat.app.litho.service.util.LithoAuth;
+import com.lithodat.app.service.TagQueryService;
+import com.lithodat.app.service.TagService;
+import com.lithodat.app.service.dto.LPerson2DataPointRoleDTO;
+import com.lithodat.app.service.dto.Lab2DataPointCriteria;
+import com.lithodat.app.service.dto.Lab2DataPointDTO;
+import com.lithodat.app.service.dto.Literature2DataPointCriteria;
+import com.lithodat.app.service.dto.Literature2DataPointDTO;
+import com.lithodat.app.service.dto.Person2DataPointCriteria;
+import com.lithodat.app.service.dto.Person2DataPointDTO;
+import com.lithodat.app.service.dto.Tag2DataPointDTO;
+import com.lithodat.app.service.dto.TagCriteria;
+import com.lithodat.app.service.dto.TagDTO;
+
+import io.github.jhipster.service.filter.LongFilter;
+import io.github.jhipster.service.filter.StringFilter;
 
 @Component
-public class ENTITYNAME_TOKENBatchAdapter extends AbstractBatchAdapter<ENTITYNAME_TOKENDTO> {
+public class ENTITYNAME_TOKENBatchAdapter extends AbstractBatchAdapter<ENTITYNAME_TOKENLithoDTO> {
+
+	public static final String SAMPLE_NAME = "sampleName";
+	public static final String DATAPOINT_NAME = "datapointName";
+	public static final String DATAPACKAGE_NAME = "datapackageName";
+	public static final String CNAME_Tag = "Tag";
 
 	@Autowired
-	private ENTITYNAME_TOKENRepository repository;
-	
+	private TagService tagService;
+
 	@Autowired
-	private PARENTNAME_TOKENRepository parentRepository;
-	
+	private Tag2DataPointLithoService tag2DataPointLithoService;
+
+	@Autowired
+	private TagQueryService tagQueryService;
+
+	@Autowired
+	private Person2DataPointLithoService person2DataPointLithoService;
+
+	@Autowired
+	private LPerson2DataPointRoleLithoService lPerson2DataPointRoleLithoService;
+
+	@Autowired
+	private Literature2DataPointLithoService literature2DataPointLithoService;
+
+	@Autowired
+	private Lab2DataPointLithoService lab2DataPointLithoService;
 
 	public ENTITYNAME_TOKENBatchAdapter() {
 
 		super(TABLE.ENTITYNAME_TOKEN);
 		
-        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->\n
+		addCellAdapter(new AbstractStringValueCellAdapter<ENTITYNAME_TOKENLithoDTO>(DATAPOINT_NAME, true) {
+
+			@Override
+			public String getValueFromEntity(ENTITYNAME_TOKENLithoDTO entityDTO) {
+				return entityDTO.getDataPointDTO().getName();
+			}
+
+			@Override
+			public void setValueOnEntity(String value, ENTITYNAME_TOKENLithoDTO entityDTO) {
+				entityDTO.getDataPointDTO().setName(value);
+			}
+
+		});
+
+		addCellAdapter(new AbstractRefCellAdapter<ENTITYNAME_TOKENLithoDTO>(DATAPACKAGE_NAME, true, TABLE.DataPackage) {
+
+			@Override
+			public Long getRefIdFromEntity(ENTITYNAME_TOKENLithoDTO entityDTO) {
+				return entityDTO.getDataPointDTO().getDataPackageId();
+			}
+
+			@Override
+			public String getRefNameFromEntity(ENTITYNAME_TOKENLithoDTO entityDTO) {
+				return entityDTO.getDataPointDTO().getDataPackageName();
+			}
+
+			@Override
+			public void setRefIdOnEntity(Long value, ENTITYNAME_TOKENLithoDTO entityDTO) {
+				entityDTO.getDataPointDTO().setDataPackageId(value);
+			}
+
+		});
+
+		addCellAdapter(new AbstractRefCellAdapter<ENTITYNAME_TOKENLithoDTO>(SAMPLE_NAME, false, TABLE.SAMPLE) {
+
+			@Override
+			public Long getRefIdFromEntity(ENTITYNAME_TOKENLithoDTO entityDTO) {
+				return entityDTO.getDataPointDTO().getSampleId();
+			}
+
+			@Override
+			public String getRefNameFromEntity(ENTITYNAME_TOKENLithoDTO entityDTO) {
+				return entityDTO.getDataPointDTO().getSampleName();
+			}
+
+			@Override
+			public void setRefIdOnEntity(Long value, ENTITYNAME_TOKENLithoDTO entityDTO) {
+				entityDTO.getDataPointDTO().setSampleId(value);
+			}
+
+		});
+
+		addCellAdapter(new AbstractStringValueCellAdapter<ENTITYNAME_TOKENLithoDTO>("description", false) {
+
+			@Override
+			public String getValueFromEntity(ENTITYNAME_TOKENLithoDTO entityDTO) {
+				return entityDTO.getDataPointDTO().getDescription();
+			}
+
+			@Override
+			public void setValueOnEntity(String value, ENTITYNAME_TOKENLithoDTO entityDTO) {
+				entityDTO.getDataPointDTO().setDescription(value);
+			}
+		});
+
+		addCellAdapter(new AbstractJoinCellAdapter<ENTITYNAME_TOKENLithoDTO>("literature", false, TABLE.Literature) {
+
+			@Override
+			public void updateEntityLayer(LithoAuth lithoAuth, RowDTO rowDTO, CellDTO cellDTO, ENTITYNAME_TOKENLithoDTO entityDTO) throws Exception {
+
+				Long joinedEntityId = cellDTO.getId();
+
+				if (joinedEntityId != null) {
+
+					Literature2DataPointDTO dto = new Literature2DataPointDTO();
+					dto.setLiteratureId(joinedEntityId);
+					dto.setDataPointId(entityDTO.getDataPointId());
+
+					literature2DataPointLithoService.create(lithoAuth, dto, null);
+
+				}
+			}
+
+			@Override
+			public void fillRowDTOCell(LithoAuth lithoAuth, ENTITYNAME_TOKENLithoDTO entityDTO, CellDTO cellDTO) throws Exception {
+
+				Literature2DataPointCriteria criteria = new Literature2DataPointCriteria();
+
+				{ // setting the datapoint filter
+					LongFilter dataPointFilter = new LongFilter();
+					dataPointFilter.setEquals(entityDTO.getDataPointId());
+					criteria.setDataPointId(dataPointFilter);
+				}
+
+				List<Literature2DataPointDTO> content = literature2DataPointLithoService.findByCriteria(lithoAuth, criteria, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
+
+				if (content.size() == 1) {
+
+					cellDTO.setValue(content.iterator().next().getLiteratureCalcName());
+
+				} else if (content.size() > 0) {
+
+					cellDTO.setValue(content.size() + " refs");
+
+				}
+
+			}
+
+		});
+
+		addCellAdapter(new AbstractJoinCellAdapter<ENTITYNAME_TOKENLithoDTO>("laboratory", false, TABLE.Lab) {
+
+			@Override
+			public void updateEntityLayer(LithoAuth lithoAuth, RowDTO rowDTO, CellDTO cellDTO, ENTITYNAME_TOKENLithoDTO entityDTO) throws Exception {
+
+				Long joinedEntityId = cellDTO.getId();
+
+				if (joinedEntityId != null) {
+
+					Lab2DataPointDTO dto = new Lab2DataPointDTO();
+					dto.setLabId(joinedEntityId);
+					dto.setDataPointId(entityDTO.getDataPointId());
+
+					lab2DataPointLithoService.create(lithoAuth, dto, null);
+
+				}
+			}
+
+			@Override
+			public void fillRowDTOCell(LithoAuth lithoAuth, ENTITYNAME_TOKENLithoDTO entityDTO, CellDTO cellDTO) throws Exception {
+
+				Lab2DataPointCriteria criteria = new Lab2DataPointCriteria();
+
+				{ // setting the datapoint filter
+					LongFilter dataPointFilter = new LongFilter();
+					dataPointFilter.setEquals(entityDTO.getDataPointId());
+					criteria.setDataPointId(dataPointFilter);
+				}
+
+				List<Lab2DataPointDTO> content = lab2DataPointLithoService.findByCriteria(lithoAuth, criteria, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
+
+				if (content.size() == 1) {
+
+					cellDTO.setValue(content.iterator().next().getLabName());
+
+				} else if (content.size() > 0) {
+
+					cellDTO.setValue(content.size() + " labs");
+
+				}
+
+			}
+
+		});
+
+		addCellAdapter(new AbstractJoinCellAdapter<ENTITYNAME_TOKENLithoDTO>("analyst", false, TABLE.PERSON) {
+
+			@Override
+			public void updateEntityLayer(LithoAuth lithoAuth, RowDTO rowDTO, CellDTO cellDTO, ENTITYNAME_TOKENLithoDTO entityDTO) throws Exception {
+				Long joinedEntityId = cellDTO.getId();
+				if (joinedEntityId != null) {
+					Person2DataPointDTO dto = new Person2DataPointDTO();
+					dto.setPersonId(joinedEntityId);
+
+					{ // setting the role
+						LPerson2DataPointRoleDTO lPerson2DataPointRoleDTO = lPerson2DataPointRoleLithoService.findSingleResult(lithoAuth, PERSON2DATAPOINT_ROLE_SEARCHTERM.ANALYST);
+						dto.setRoleId(lPerson2DataPointRoleDTO.getId());
+					}
+
+					dto.setDataPointId(entityDTO.getDataPointId());
+					person2DataPointLithoService.create(lithoAuth, dto, null);
+				}
+			}
+
+			@Override
+			public void fillRowDTOCell(LithoAuth lithoAuth, ENTITYNAME_TOKENLithoDTO entityDTO, CellDTO cellDTO) throws Exception {
+
+				Person2DataPointCriteria criteria = new Person2DataPointCriteria();
+
+				{ // setting the role filter
+					LPerson2DataPointRoleDTO lPerson2DataPointRoleDTO = lPerson2DataPointRoleLithoService.findSingleResult(lithoAuth, PERSON2DATAPOINT_ROLE_SEARCHTERM.ANALYST);
+					LongFilter roleFilter = new LongFilter();
+					roleFilter.setIn(Arrays.asList(lPerson2DataPointRoleDTO.getId()));
+					criteria.setRoleId(roleFilter);
+				}
+
+				{ // setting the datapoint filter
+					LongFilter dataPointFilter = new LongFilter();
+					dataPointFilter.setEquals(entityDTO.getDataPointId());
+					criteria.setDataPointId(dataPointFilter);
+				}
+
+				List<Person2DataPointDTO> content = person2DataPointLithoService.findByCriteria(lithoAuth, criteria, PageRequest.of(0, Integer.MAX_VALUE)).getContent();
+				String analysts = "";
+				for (Person2DataPointDTO person2DataPointDTO : content) {
+					if (!analysts.isEmpty()) {
+						analysts += ", ";
+					}
+					analysts += person2DataPointDTO.getPersonCalcName();
+				}
+				cellDTO.setValue(analysts);
+			}
+
+		});
+
+		addCellAdapter(new AbstractCellExecutor<ENTITYNAME_TOKENLithoDTO>(CNAME_Tag, false) {
+
+			@Override
+			public void execute(LithoAuth lithoAuth, RowDTO rowDTO, CellDTO cellDTO, ENTITYNAME_TOKENLithoDTO entityDTO) throws Exception {
+
+				String tag = rowDTO.getCellByName(CNAME_Tag).getValue();
+
+				if (tag == null || tag.isEmpty()) {
+					return;
+				}
+
+				TagCriteria criteria = new TagCriteria();
+
+				StringFilter nameFilter = new StringFilter();
+				nameFilter.setEquals(tag);
+				criteria.setName(nameFilter);
+
+				// rem1 Stopwatch.start(" tagQueryService.findByCriteria");
+				List<TagDTO> tagDTOs = tagQueryService.findByCriteria(criteria);
+				// rem1 Stopwatch.stop(" tagQueryService.findByCriteria");
+
+				TagDTO tagDTO = null;
+
+				for (TagDTO iteratedTagDTO : tagDTOs) {
+					tagDTO = iteratedTagDTO;
+				}
+
+				if (tagDTO == null) {
+					tagDTO = new TagDTO();
+					tagDTO.setName(tag);
+					tagDTO = tagService.save(tagDTO);
+				}
+
+				Tag2DataPointDTO dto = new Tag2DataPointDTO();
+				dto.setTagId(tagDTO.getId());
+				dto.setDataPointId(entityDTO.getDataPointId());
+
+				// rem1 Stopwatch.start(" tag2DataPointLithoService.create");
+				tag2DataPointLithoService.create(lithoAuth, dto, null);
+				// rem1 Stopwatch.stop(" tag2DataPointLithoService.create");
+
+			}
+
+		});
+
+		// <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->\n
 
 	}
 
 	@Override
-	protected void setRowDTOId(ENTITYNAME_TOKENDTO entityDTO, RowDTO rowDTO) {
+	protected void setRowDTOId(ENTITYNAME_TOKENLithoDTO entityDTO, RowDTO rowDTO) {
 		rowDTO.setId(entityDTO.getId());
 
 	}
 
 	@Override
-	protected void setEntityDTOId(RowDTO rowDTO, ENTITYNAME_TOKENDTO entityDTO) {
-		entityDTO.setId(rowDTO.getId());
+	protected void setEntityDTOId(RowDTO rowDTO, ENTITYNAME_TOKENLithoDTO entityDTO) {
+		entityDTO.getExtendingDataPointDTO().setId(rowDTO.getId());
 	}
 
 }
