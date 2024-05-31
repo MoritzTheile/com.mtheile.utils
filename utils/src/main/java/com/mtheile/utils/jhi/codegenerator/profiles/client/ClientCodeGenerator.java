@@ -14,8 +14,10 @@ public class ClientCodeGenerator {
 
 	public static void generate(EntityModel entityMetaInfo) throws Exception {
 		/**
-		 * "childts/EntityListRenderer.tsx" "childts/EntityColumns.tsx"
-		 * "childts/EntityFields.tsx" "childts/EntityResource.tsx"
+		 * "EntityListRenderer.tsx" 
+		 * "EntityColumns.tsx"
+		 * "EntityFields.tsx" 
+		 * "EntityResource.tsx"
 		 */
 		ClientCodeGenerator.generateCRUDCode(entityMetaInfo, MODE.SKIP_IF_FILE_EXISTS);
 
@@ -32,7 +34,7 @@ public class ClientCodeGenerator {
 		/**
 		 * no templates used
 		 */
-		ClientCodeGenerator.addSimpleColumns(entityMetaInfo);
+		 ClientCodeGenerator.addSimpleColumns(entityMetaInfo);
 		ClientCodeGenerator.addReferenceColumns(entityMetaInfo);
 
 		/**
@@ -42,8 +44,10 @@ public class ClientCodeGenerator {
 	}
 
 	/**
-	 * "childts/EntityListRenderer.tsx" "childts/EntityColumns.tsx"
-	 * "childts/EntityFields.tsx" "childts/EntityResource.tsx"
+	 * "EntityListRenderer.tsx" 
+	 * "EntityColumns.tsx"
+	 * "EntityFields.tsx" 
+	 * "EntityResource.tsx"
 	 */
 	private static void generateCRUDCode(EntityModel entityMetaInfo, MODE mode) throws Exception {
 
@@ -229,7 +233,7 @@ public class ClientCodeGenerator {
 					{ // adding resource
 						String element = getInputFieldCode(entityModel, fieldModel);
 
-						if (!text.contains(element)) {
+						if (!text.contains("\""+fieldModel.fieldName+"\"")) {
 
 							String replacement = element + "\n" + "			{/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}";
 
@@ -247,6 +251,7 @@ public class ClientCodeGenerator {
 
 		}
 	}
+	
 	private static void addSimpleColumns(EntityModel entityModel) throws Exception {
 
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
@@ -259,7 +264,7 @@ public class ClientCodeGenerator {
 					{ // adding resource
 						String element = getFieldCode(entityModel, fieldModel.fieldName, fieldModel.getLithoLabel());
 
-						if (!text.contains(element)) {
+						if (!text.contains("\""+fieldModel.fieldName+"\"")) {
 
 							String replacement = element + "\n" + "  // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
 
@@ -293,7 +298,7 @@ public class ClientCodeGenerator {
 					{ // adding resource
 						String element = getFieldCode(entityModel, relationship.otherEntityName, relationship.getLithoLabel());
 
-						if (!text.contains(element)) {
+						if (!text.contains("\""+relationship.otherEntityName+"\"")) {
 
 							String replacement = element + "\n" + "  // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
 
@@ -327,10 +332,7 @@ public class ClientCodeGenerator {
 				public String processFileText(String text) throws Exception {
 
 					{ // adding import
-						// String element = "import {EntityPicker as " +
-						// firstLetterToUpperCase(relationship.otherEntityName) + "EntityPicker} from
-						// \"app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" +
-						// firstLetterToUpperCase(relationship.otherEntityName) + "/EntityPicker\";";
+
 						String element = "import { EntityPicker" + firstLetterToUpperCase(relationship.otherEntityName) + " } from 'app/litho-ui/mydata/resources/" + entityModel.getLithoModule() + "/" + firstLetterToUpperCase(relationship.otherEntityName) + "/EntityResource';";
 
 						if (!text.contains(element)) {
@@ -344,11 +346,10 @@ public class ClientCodeGenerator {
 					}
 
 					{ // adding resource
-						// String element = "<" + firstLetterToUpperCase(relationship.otherEntityName) +
-						// "EntityPicker source={'" + relationship.relationshipName + "'}/>";
+
 						String element = "<EntityPicker" + firstLetterToUpperCase(relationship.otherEntityName) + " source={'" + relationship.relationshipName + "Id'}  label={'"+relationship.getLithoLabel()+"'}  description={'"+relationship.getLithoDocumentation()+"'}/>";
 
-						if (!text.contains(element)) {
+						if (!text.contains("'"+relationship.relationshipName+"Id'")) {
 
 							String replacement = element + "\n" + "        {/*{<!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->}*/}";
 
