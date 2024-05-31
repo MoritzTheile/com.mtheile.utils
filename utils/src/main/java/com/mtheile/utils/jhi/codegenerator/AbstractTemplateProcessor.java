@@ -33,6 +33,7 @@ public abstract class AbstractTemplateProcessor {
 	public void execute(MODE mode) throws Exception {
 
 		if(new File(getTargetFilePath()).exists() && MODE.SKIP_IF_FILE_EXISTS.equals(mode)) {
+			System.out.println("Attention: file "+getTargetFilePath()+" already exists. It will not be overwritten.");
 			return;
 		}
 

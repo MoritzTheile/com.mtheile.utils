@@ -17,7 +17,7 @@ public class ClientCodeGenerator {
 		 * "childts/EntityListRenderer.tsx" "childts/EntityColumns.tsx"
 		 * "childts/EntityFields.tsx" "childts/EntityResource.tsx"
 		 */
-		ClientCodeGenerator.generateCRUDCode(entityMetaInfo);
+		ClientCodeGenerator.generateCRUDCode(entityMetaInfo, MODE.SKIP_IF_FILE_EXISTS);
 
 		/**
 		 * no templates used
@@ -45,14 +45,15 @@ public class ClientCodeGenerator {
 	 * "childts/EntityListRenderer.tsx" "childts/EntityColumns.tsx"
 	 * "childts/EntityFields.tsx" "childts/EntityResource.tsx"
 	 */
-	private static void generateCRUDCode(EntityModel entityMetaInfo) throws Exception {
+	private static void generateCRUDCode(EntityModel entityMetaInfo, MODE mode) throws Exception {
 
 		CodeGenerator.template2Code( //
 				entityMetaInfo.getLithoParent(), //
 				entityMetaInfo.getLithoModule(), //
 				entityMetaInfo.name, //
 				CodeGenerator.PROFILES_HOME+"client/templates/EntityListRenderer.tsx", //
-				PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\renderer\\EntityListRenderer.tsx"//
+				PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\renderer\\EntityListRenderer.tsx",//
+				mode
 		);
 		
 		CodeGenerator.template2Code( //
@@ -60,7 +61,8 @@ public class ClientCodeGenerator {
 				entityMetaInfo.getLithoModule(), //
 				entityMetaInfo.name, //
 				CodeGenerator.PROFILES_HOME+"client/templates/EntityColumns.tsx", //
-				getPathToEntityColumns_tsx(entityMetaInfo)//
+				getPathToEntityColumns_tsx(entityMetaInfo),//
+				mode
 		);
 		
 
@@ -69,7 +71,9 @@ public class ClientCodeGenerator {
 				entityMetaInfo.getLithoModule(), //
 				entityMetaInfo.name, //
 				CodeGenerator.PROFILES_HOME+"client/templates/EntityFields.tsx", //
-				getPathToEntityField_tsx(entityMetaInfo)//
+				getPathToEntityField_tsx(entityMetaInfo),//
+				mode
+				
 		);
 		
 
@@ -78,7 +82,8 @@ public class ClientCodeGenerator {
 				entityMetaInfo.getLithoModule(), //
 				entityMetaInfo.name, //
 				CodeGenerator.PROFILES_HOME+"client/templates/EntityResource.tsx", //
-				PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityResource.tsx"//
+				PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\resources\\" + entityMetaInfo.getLithoModule() + "\\" + entityMetaInfo.name + "\\EntityResource.tsx",//
+				mode
 		);
 		
 		new AbstractTextFileProcessor(PROJECT_HOME + "src\\main\\webapp\\app\\litho-ui\\mydata\\mydata.tsx") {

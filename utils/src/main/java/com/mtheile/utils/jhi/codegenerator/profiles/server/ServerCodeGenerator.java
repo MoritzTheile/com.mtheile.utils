@@ -3,6 +3,7 @@ package com.mtheile.utils.jhi.codegenerator.profiles.server;
 import com.mtheile.utils.file.textfile.TextFileManipulator;
 import com.mtheile.utils.jhi.codegenerator.AbstractTextFileProcessor;
 import com.mtheile.utils.jhi.codegenerator.CodeGenerator;
+import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel.LITHO_PROFILE;
 import com.mtheile.utils.jhi.codegenerator.utils.batcheditor.BatchEditorUtils;
@@ -18,7 +19,8 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/service/DataPointLithoService.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java", //
+					MODE.DEFAULT
 			);
 
 			CodeGenerator.template2Code( //
@@ -26,7 +28,8 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/service/DataPointLithoResource.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java", //
+					MODE.DEFAULT
 			);
 
 			// batch code:
@@ -36,7 +39,8 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/batch/DataPointImporter.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java", //
+					MODE.DEFAULT
 			);
 
 			ServerCodeGenerator.registerToBatch(entityMetaInfo);
@@ -46,8 +50,9 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/batch/DataPointBatchAdapter.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java" //
-			);
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java", //
+					MODE.DEFAULT
+	);
 
 			/**
 			 * no templates used
@@ -63,15 +68,17 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/service/ChildLithoService.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
-			);
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java", //
+					MODE.DEFAULT
+		);
 
 			CodeGenerator.template2Code( //
 					entityMetaInfo.getLithoParent(), //
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java", //
+					MODE.DEFAULT
 			);
 
 			// batch code:
@@ -81,7 +88,8 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/batch/ChildImporter.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\" + entityMetaInfo.name + "Importer.java", //
+					MODE.DEFAULT
 			);
 
 			ServerCodeGenerator.registerToBatch(entityMetaInfo);
@@ -91,8 +99,9 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/batch/ChildBatchAdapter.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java" //
-			);
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java", //
+					MODE.DEFAULT
+	);
 
 			/**
 			 * no templates used
@@ -108,7 +117,8 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/service/ListLithoService.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoService.java", //
+					MODE.DEFAULT
 			);
 
 			CodeGenerator.template2Code( //
@@ -116,7 +126,8 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/service/CRUDLithoResource.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\web\\rest\\" + entityMetaInfo.getLithoModule().toLowerCase() + "\\" + entityMetaInfo.name + "LithoResource.java", //
+					MODE.DEFAULT
 			);
 
 			// batch code:
@@ -128,7 +139,8 @@ public class ServerCodeGenerator {
 					entityMetaInfo.getLithoModule(), //
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/batch/ListImporter.java.template", //
-					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\" + entityMetaInfo.name + "Importer.java" //
+					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\" + entityMetaInfo.name + "Importer.java", //
+					MODE.DEFAULT
 			);
 
 		}

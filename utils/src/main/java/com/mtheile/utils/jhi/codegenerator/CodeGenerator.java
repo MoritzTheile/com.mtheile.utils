@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mtheile.utils.jhi.codegenerator.AbstractTemplateProcessor.MODE;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModel;
 import com.mtheile.utils.jhi.codegenerator.model.EntityModelService;
 import com.mtheile.utils.jhi.codegenerator.profiles.client.ClientCodeGenerator;
@@ -116,7 +117,7 @@ public class CodeGenerator {
 	}
 
 	
-	public static void template2Code(String parentName, String modulName, String entityName, String sourceFile, String targetFile) throws Exception {
+	public static void template2Code(String parentName, String modulName, String entityName, String sourceFile, String targetFile, MODE mode) throws Exception {
 
 		new AbstractTemplateProcessor(sourceFile) {
 
@@ -142,7 +143,7 @@ public class CodeGenerator {
 
 			}
 
-		}.execute();
+		}.execute(mode);
 	}
 
 	/**
