@@ -51,13 +51,13 @@ public class ServerCodeGenerator {
 					entityMetaInfo.name, //
 					CodeGenerator.PROFILES_HOME + "server/templates/batch/DataPointBatchAdapter.java.template", //
 					CodeGenerator.PROJECT_HOME + "src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\adapters\\" + entityMetaInfo.name + "BatchAdapter.java", //
-					MODE.DEFAULT
+					MODE.SKIP_IF_FILE_EXISTS
 	);
 
 			/**
 			 * no templates used
 			 */
-			ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
+			ServerCodeGenerator.addBatchAdaptorFields(entityMetaInfo);
 
 		}
 		
@@ -106,7 +106,7 @@ public class ServerCodeGenerator {
 			/**
 			 * no templates used
 			 */
-			ServerCodeGenerator.addBatchEditorFields(entityMetaInfo);
+			ServerCodeGenerator.addBatchAdaptorFields(entityMetaInfo);
 
 		}
 
@@ -172,7 +172,7 @@ public class ServerCodeGenerator {
 	/**
 	 * no templates used
 	 */
-	private static void addBatchEditorFields(EntityModel entityModel) throws Exception {
+	private static void addBatchAdaptorFields(EntityModel entityModel) throws Exception {
 
 		for (EntityModel.FieldModel fieldModel : entityModel.fields) {
 
@@ -184,7 +184,7 @@ public class ServerCodeGenerator {
 					{ // adding resource
 						String element = BatchEditorUtils.getAdapterFieldCode(entityModel, fieldModel);
 
-						if (!text.contains(element)) {
+						if (!text.contains("\""+fieldModel.fieldName+"\"")) {
 
 							String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
 
@@ -212,7 +212,7 @@ public class ServerCodeGenerator {
 					{ // adding resource
 						String element = BatchEditorUtils.getAdapterRef(entityModel, relationship);
 
-						if (!text.contains(element)) {
+						if (!text.contains("\""+entityModel.getLithoParent()+"\"")) {
 
 							String replacement = element + "\n" + "        // <!-- CODEGENERATOR_NEEDLE_FOR_ADDING_FIELDS (don't remove) -->";
 
