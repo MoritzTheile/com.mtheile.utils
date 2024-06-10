@@ -28,12 +28,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.io.Files;
+import com.lithodat.app.domain.DataPackage;
+import com.lithodat.app.domain.DataPackage_;
 import com.lithodat.app.domain.DataPoint;
 import com.lithodat.app.domain.DataPoint_;
 import com.lithodat.app.domain.ENTITYNAME_TOKEN;
 import com.lithodat.app.domain.ENTITYNAME_TOKEN_;
+import com.lithodat.app.domain.LCelestial;
+import com.lithodat.app.domain.LLocationKind;
+import com.lithodat.app.domain.LLocationKind_;
+import com.lithodat.app.domain.LSampleKind;
+import com.lithodat.app.domain.LSampleKind_;
+import com.lithodat.app.domain.LSampleMethod;
+import com.lithodat.app.domain.LSampleMethod_;
 import com.lithodat.app.domain.Location;
 import com.lithodat.app.domain.Location_;
+import com.lithodat.app.domain.Material;
+import com.lithodat.app.domain.Material_;
 import com.lithodat.app.domain.Sample;
 import com.lithodat.app.domain.Sample_;
 import com.lithodat.app.domain.enumeration.DataStructure;
@@ -220,8 +231,8 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 		Specification<ENTITYNAME_TOKEN> jhSpecification = queryService.createSpecification(criteria);
 
 		Specification<DataPoint> extendedSpecification = extendedLithoService.createLithoSpecification(lithoAuth, criteria.getDataPointLithoCriteria());
-		
-		{// taking care of bounding box	
+
+		{// taking care of bounding box
 			Specification<DataPoint> boundingBoxSpecification = Specifications.dataPointIsInBoundingBox(criteria.getLowerBound(), criteria.getLeftBound(), criteria.getUpperBound(), criteria.getRightBound());
 			extendedSpecification = extendedSpecification.and(boundingBoxSpecification);
 		}
@@ -349,7 +360,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 		if (!hydrateDTO) {
 			return dto;
 		}
-		
+
 		// dto can be hydrated here
 
 		return dto;
@@ -492,6 +503,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 		return byteArray;
 
 	}
+
 	public List<ClusterDTO> findClusterByCriteria(LithoAuth lithoAuth, //
 			ENTITYNAME_TOKENLithoCriteria criteria, int maxZoomLevel, int maxNoOfCluster, int maxClusterSize) throws Exception {
 
@@ -511,7 +523,6 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 				criteria.setUpperBound(upperBound);
 				criteria.setRightBound(rightBound);
 
-
 				long result = -1;
 
 				try {
@@ -528,6 +539,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 		}.cluster();
 
 	}
+
 	private void checkPackages(LithoAuth lithoAuth, ENTITYNAME_TOKENLithoCriteria criteria) throws Exception {
 		if (criteria.getDataPointLithoCriteria().getDataPackageId() == null) {
 			criteria.getDataPointLithoCriteria().setDataPackageId(new LongFilter());
@@ -554,24 +566,42 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 	public List<DataPointLithoProjectionDTO> filterAndProject(Specification<ENTITYNAME_TOKEN> specification) {
 
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-
 		CriteriaQuery<DataPointLithoProjectionDTO> criteriaQuery = cb.createQuery(DataPointLithoProjectionDTO.class);
 
 		{ // defining the criteriaQuery
-			// FROM
 			Root<ENTITYNAME_TOKEN> root = criteriaQuery.from(ENTITYNAME_TOKEN.class);
 			Join<ENTITYNAME_TOKEN, DataPoint> dataPointJoin = root.join(ENTITYNAME_TOKEN_.dataPoint, JoinType.LEFT);
 			Join<DataPoint, Sample> sampleJoin = dataPointJoin.join(DataPoint_.sample, JoinType.LEFT);
+			Join<Sample, DataPackage> dataPackageJoin = sampleJoin.join(Sample_.dataPackage, JoinType.LEFT);
 			Join<Sample, Location> locationJoin = sampleJoin.join(Sample_.location, JoinType.LEFT);
+			Join<Sample, LLocationKind> locationKindJoin = sampleJoin.join(Sample_.locationKind, JoinType.LEFT);
+			Join<Sample, LSampleMethod> sampleMethodJoin = sampleJoin.join(Sample_.sampleMethod, JoinType.LEFT);
+			Join<Sample, LSampleKind> sampleKindJoin = sampleJoin.join(Sample_.sampleKind, JoinType.LEFT);
+			Join<Sample, Material> materialJoin = sampleJoin.join(Sample_.material, JoinType.LEFT);
 
 			criteriaQuery = criteriaQuery.select(cb.construct(DataPointLithoProjectionDTO.class, //
-					dataPointJoin.get(DataPoint_.id), // Long id, //
-					locationJoin.get(Location_.lon), // Float lat, //
-					locationJoin.get(Location_.lat), // Float lon, //
-					dataPointJoin.get(DataPoint_.name), // String name, //
-					sampleJoin.get(Sample_.id), // Long sampleId, //
-					sampleJoin.get(Sample_.name) // String sampleName //
-			));
+					dataPointJoin.get(DataPoint_.id), // Long id,//
+					locationJoin.get(Location_.lat), // Float lat,//
+					locationJoin.get(Location_.lon), // Float lon,//
+					dataPointJoin.get(DataPoint_.name), // String name,//
+					sampleJoin.get(Sample_.id), // Long sampleId,//
+					sampleJoin.get(Sample_.name), // String sampleName,//
+					dataPackageJoin.get(DataPackage_.name), // String dataPackageName,//
+					locationJoin.get(Location_.name), // String locationName,//
+					sampleJoin.get(Sample_.REFERENCE_ELEVATION), // Float referenceElevation,//
+					sampleJoin.get(Sample_.RELATIVE_ELEVATION_MIN), // Float depthMax,//
+					sampleJoin.get(Sample_.RELATIVE_ELEVATION_MAX), // Float depthMin,//
+					locationKindJoin.get(LLocationKind_.NAME), // String locationKindName,//
+					sampleMethodJoin.get(LSampleMethod_.NAME), // String sampleMethodName,//
+					sampleKindJoin.get(LSampleKind_.NAME), // String sampleKindName,//
+					materialJoin.get(Material_.NAME), // String materialName,//
+					materialJoin.get(Material_.CALC_PATH1), // String materialPath//
+					sampleJoin.get(Sample_.doi),
+					sampleJoin.get(Sample_.samplingStart),
+					sampleJoin.get(Sample_.samplingDuration),
+					dataPointJoin.get(DataPoint_.dataStructure), // String structureOfExtension
+					root.get(ENTITYNAME_TOKEN_.id) // Long extendingId
+					)); 
 
 			Predicate wherePredicate = specification.toPredicate(root, criteriaQuery, cb);
 
@@ -583,6 +613,5 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENL
 		return em.createQuery(criteriaQuery).getResultList();
 
 	}
-	
 
 }
