@@ -1,6 +1,5 @@
 package com.mtheile.utils.jhi.codegenerator;
 
-@SuppressWarnings("unused")
 public class TemplateGenerator {
 
 	public static void main(String[] args) throws Exception {
@@ -9,13 +8,13 @@ public class TemplateGenerator {
 		// Using UPb module files as master code
 		//
 
-		String parentName = "UPbDataPoint"; // stays the same for all Iso files
+		String parentName = "IsoDataPoint"; // stays the same for all Iso files
 
-		String modulName = "UPb"; // stays the same for all Iso files
+		String modulName = "Iso"; // stays the same for all Iso files
 
 		//createListTemplatesFromMaster("LIsoGrainDomain", parentName, modulName);
 
-		createBatchTemplatesFromMaster("UPbSpotData", parentName, modulName);
+		createListTemplatesFromMaster("IsoDataPoint", parentName, modulName);
 
 	}
 
@@ -32,14 +31,14 @@ public class TemplateGenerator {
 	private static void createListTemplatesFromMaster(String entityName, String parentName, String modulName) throws Exception {
 
 		CodeGenerator.code2Template(parentName, modulName, entityName, //
-				"C:\\Users\\theil\\git\\com.lithodat.app\\src\\main\\java\\com\\lithodat\\app\\litho\\service\\upb\\LUPbGrainDomainLithoService.java", //
-				"C:\\Users\\theil\\git\\com.mtheile.utils\\utils\\src\\main\\java\\com\\mtheile\\utils\\jhi\\codegenerator\\profiles\\server\\templates\\service\\ListLithoService.java.template" //
+				"C:\\Users\\theil\\git\\com.lithodat.app\\src\\main\\java\\com\\lithodat\\app\\litho\\service\\iso\\IsoDataPointLithoService.java", //
+				"C:\\Users\\theil\\git\\com.mtheile.utils\\utils\\src\\main\\java\\com\\mtheile\\utils\\jhi\\codegenerator\\profiles\\server\\templates\\service\\DataPointLithoService.java.template" //
 		);
 
-		CodeGenerator.code2Template(parentName, modulName, entityName, //
-				"C:\\Users\\theil\\git\\com.lithodat.app\\src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\LUPbGrainDomainImporter.java", //
-				"C:\\Users\\theil\\git\\com.mtheile.utils\\utils\\src\\main\\java\\com\\mtheile\\utils\\jhi\\codegenerator\\profiles\\server\\templates\\batch\\ChildImporter.java.template" //
-		);
+//		CodeGenerator.code2Template(parentName, modulName, entityName, //
+//				"C:\\Users\\theil\\git\\com.lithodat.app\\src\\main\\java\\com\\lithodat\\app\\litho\\service\\other\\batch\\tableimporter\\lists\\LUPbGrainDomainImporter.java", //
+//				"C:\\Users\\theil\\git\\com.mtheile.utils\\utils\\src\\main\\java\\com\\mtheile\\utils\\jhi\\codegenerator\\profiles\\server\\templates\\batch\\ChildImporter.java.template" //
+//		);
 
 	}
 

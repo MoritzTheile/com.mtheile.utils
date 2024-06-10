@@ -93,12 +93,15 @@ public class CodeGenerator {
 		
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "Tag"));
 		
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUnit"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurable"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoProcedure")); // List
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurement")); // Child
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoDataPoint")); // DataPoint
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LUnit"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurable"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoProcedure")); // List
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoMeasurement")); // Child
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "IsoDataPoint")); // DataPoint
 		
+		
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "ArArIrradiation")); 
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LReactor")); 
 		
 		return entityMetaInfos;
 
