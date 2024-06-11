@@ -117,7 +117,7 @@ public class ENTITYNAME_TOKENLithoResource {
 		return ResponseEntity.ok().body(ids);
 	}
 	
-	@GetMapping("/cluster")
+	@GetMapping(RESOURCE_URL +"/cluster")
 	public ResponseEntity<List<ClusterDTO>> getMapCluster(//
 			ENTITYNAME_TOKENLithoCriteria criteria, //
 			Integer maxZoomLevel, Integer maxNoOfCluster, Integer maxClusterSize) throws Exception {
@@ -140,7 +140,7 @@ public class ENTITYNAME_TOKENLithoResource {
 	}
 
 	@SuppressWarnings("deprecation")
-	@GetMapping("/geojson")
+	@GetMapping(RESOURCE_URL +"/geojson")
 	public ResponseEntity<String> getGeoJson(ENTITYNAME_TOKENLithoCriteria criteria) throws Exception {
 		
 		SimpleFeatureCollection featureCollection = lithoService.findGeoFeatureCollection(fub.getLithoAuth(), //
