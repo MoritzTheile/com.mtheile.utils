@@ -71,6 +71,8 @@ public class EntityProcessor {
 				TextFileManipulator.searchAndReplace(" = \"lUPbDataInterpretationTool", " = \"LUPbDataInterpretationTool", file);
 				TextFileManipulator.searchAndReplace(" = \"tHDataPoint", " = \"THDataPoint", file);
 			
+				TextFileManipulator.searchAndReplace(" = \"ArAr", " = \"arAr", file);
+				TextFileManipulator.searchAndReplace(" = \"jValueUncert", " = \"JValueUncert", file);
 
 			}
 		}
