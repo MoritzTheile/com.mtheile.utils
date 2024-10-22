@@ -171,6 +171,7 @@ public class EntityProcessor {
 		addChangedByInterfaceToDTO("MachineDTO.java");
 		addChangedByInterfaceToDTO("SnapshotDTO.java");
 		addChangedByInterfaceToDTO("JobDTO.java");
+		addChangedByInterfaceToDTO("DepositDTO.java");
 	}
 
 	private static void addChangedByInterfaceToDTO(String entityFile) throws Exception {

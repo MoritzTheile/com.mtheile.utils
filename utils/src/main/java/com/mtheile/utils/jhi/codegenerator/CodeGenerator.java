@@ -134,11 +134,11 @@ public class CodeGenerator {
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LOperatingStatus"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "Deposit"));
 //		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositInfo"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositOpStatus"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositStyle"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositAge"));
-		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositEndowment"));
-
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositOpStatus"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositStyle"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositAge"));
+//		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "DepositEndowment"));
+		entityMetaInfos.add(EntityModelService.getModelInfosFromJHipster(jHipsterDir, "LAnalyteMaterial"));
 		
 		return entityMetaInfos;
 
