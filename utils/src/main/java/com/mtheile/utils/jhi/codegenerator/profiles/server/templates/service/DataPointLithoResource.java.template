@@ -129,7 +129,7 @@ public class ENTITYNAME_TOKENLithoResource {
 			maxNoOfCluster = 32;
 		}
 		if (maxClusterSize == null) {
-			maxClusterSize = 15000;
+			maxClusterSize = 3000;
 		}
 
 		List<ClusterDTO> clusterDTOs = lithoService.findClusterByCriteria(fub.getLithoAuth(), //

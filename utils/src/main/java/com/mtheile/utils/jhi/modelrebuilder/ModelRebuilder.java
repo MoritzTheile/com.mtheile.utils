@@ -52,6 +52,7 @@ public class ModelRebuilder {
 		// // web/rest
 		// FileUtils.deleteFileFromDir(JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\web\\rest", ENTITY_NAME + "Resource.java");
 		FileUtils.deleteFilesFromDirExcept(new File(JHI_PROJ_HOME + "\\src\\main\\java\\com\\lithodat\\app\\web\\rest"),
+				"OAuthTokenController\\.java",
 				"AccountResource\\.java",
 				"package-info\\.java",
 				"PersistenceAuditEventRepository\\.java",
