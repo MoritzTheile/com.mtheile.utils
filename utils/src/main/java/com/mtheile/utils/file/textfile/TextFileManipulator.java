@@ -89,6 +89,10 @@ public class TextFileManipulator {
 
 	public static void deleteSections(File file, String sectionStart, String sectionEnd, boolean keepSectionMarker, boolean useRegex) throws Exception {
 
+		if (!file.exists()) {
+			System.out.println("File " + file.getAbsolutePath() + " does not exist. Skipping deleteSections.");
+			return;
+		}
 		if (!useRegex) {
 			sectionStart = Pattern.quote(sectionStart);
 			sectionEnd = Pattern.quote(sectionEnd);
