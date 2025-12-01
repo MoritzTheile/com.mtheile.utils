@@ -1,0 +1,1 @@
+liquibase   --url="jdbc:postgresql://localhost:5432/prodcopy?currentSchema=public"   --username=postgres --password=mutzmutz   generate-changelog   --changelog-file=C:/Users/theil/git/com.lithodat.app/tmp/master.xml

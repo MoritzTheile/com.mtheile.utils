@@ -1,23 +1,31 @@
 package com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lithodat.app.domain.ENTITYNAME_TOKEN;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN_;
 import com.lithodat.app.litho.service.dto.ParamDTO;
 import com.lithodat.app.litho.service.util.AuthzException;
 import com.lithodat.app.litho.service.util.Bouncer.BounceDecision;
+import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
 import com.lithodat.app.litho.service.util.FrequentlyUsedBeans;
 import com.lithodat.app.litho.service.util.LithoAuth;
 import com.lithodat.app.litho.service.util.LithoCRUD;
 import com.lithodat.app.service.ENTITYNAME_TOKENQueryService;
 import com.lithodat.app.service.ENTITYNAME_TOKENService;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
+import com.lithodat.app.service.mapper.ENTITYNAME_TOKENMapper;
 
 @Service
 public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKENDTO, ENTITYNAME_TOKENCriteria> {
@@ -30,6 +38,12 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 
 	@Autowired
 	private ENTITYNAME_TOKENQueryService queryService;
+
+	@Autowired 
+	private ENTITYNAME_TOKENRepository repository;
+	
+	@Autowired 
+	private ENTITYNAME_TOKENMapper mapper;
 
 	@Transactional
 	public ENTITYNAME_TOKENDTO create(LithoAuth lithoAuth, ENTITYNAME_TOKENDTO dto, ParamDTO params) throws Exception {
@@ -113,6 +127,39 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 		}
 
 		service.delete(id);
+	}
+
+	public ENTITYNAME_TOKENDTO findSingleResult(LithoAuth lithoAuth, String searchTerm) throws Exception {
+		return mapper.toDto(findSingleResult(searchTerm, false));
+	}
+
+	public ENTITYNAME_TOKEN findSingleResult(String searchTerm, boolean perfectMatch) throws Exception {
+
+		List<ENTITYNAME_TOKEN> findAll = repository.findAll(matchName(searchTerm, perfectMatch));
+
+		if (findAll.isEmpty()) {
+			throw new Exception("No ENTITYNAME_TOKEN could be found for \"" + searchTerm + "\"");
+		}
+
+		if (findAll.size() > 1) {
+			throw new Exception("More than one ENTITYNAME_TOKEN was found for \"" + searchTerm + "\": " + findAll.stream().map(elevationKind -> elevationKind.getName()).collect(Collectors.toList()));
+		}
+
+		return findAll.iterator().next();
+
+	}
+
+	private static Specification<ENTITYNAME_TOKEN> matchName(String seachTerm, boolean perfectMatch) {
+		
+		if(perfectMatch) {
+			
+			return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(ENTITYNAME_TOKEN_.name),  seachTerm );
+			
+		}else {
+			
+			return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(ENTITYNAME_TOKEN_.name), "%" + seachTerm + "%");
+			
+		}
 	}
 
 }

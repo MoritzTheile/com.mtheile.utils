@@ -26,10 +26,10 @@ import com.lithodat.app.domain.DataPackage;
 import com.lithodat.app.domain.DataPackage_;
 import com.lithodat.app.domain.DataPoint;
 import com.lithodat.app.domain.DataPoint_;
-import com.lithodat.app.domain.ENTITYNAME_TOKEN;
-import com.lithodat.app.domain.ENTITYNAME_TOKEN_;
 import com.lithodat.app.domain.PARENTNAME_TOKEN;
 import com.lithodat.app.domain.PARENTNAME_TOKEN_;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN;
+import com.lithodat.app.domain.ENTITYNAME_TOKEN_;
 import com.lithodat.app.litho.service.dto.ParamDTO;
 import com.lithodat.app.litho.service.util.Bouncer;
 import com.lithodat.app.litho.service.util.Bouncer.BounceDecision;
@@ -37,8 +37,8 @@ import com.lithodat.app.litho.service.util.FindByNameService;
 import com.lithodat.app.litho.service.util.LithoAuth;
 import com.lithodat.app.litho.service.util.LithoCRUD;
 import com.lithodat.app.litho.service.util.ServiceSTATICS;
-import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
 import com.lithodat.app.repository.PARENTNAME_TOKENRepository;
+import com.lithodat.app.repository.ENTITYNAME_TOKENRepository;
 import com.lithodat.app.service.ENTITYNAME_TOKENQueryService;
 import com.lithodat.app.service.ENTITYNAME_TOKENService;
 import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
@@ -106,8 +106,8 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 	}
 
 	public Long countByCriteria(LithoAuth lithoAuth, ENTITYNAME_TOKENCriteria criteria) throws Exception {
-
-		return findByCriteria(lithoAuth, criteria, PageRequest.of(0, 1)).getTotalElements();
+		
+		return queryService.countByCriteria(criteria);
 
 	}
 
@@ -117,7 +117,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 
 		{ // access control
 			
-			List<Long> dataPackageIds = bouncer.getPackageIdsWithViewableContent(lithoAuth.getAuthenticatedUser());
+			List<Long> dataPackageIds = bouncer.getPackageIdsWithFindableContentConsideringOrigin(lithoAuth);
 
 			jhSpecification = ServiceSTATICS.<ENTITYNAME_TOKEN> emptyDistinctSpecification().and(jhSpecification.and(dataIsInPackage(dataPackageIds)));
 		}
@@ -216,7 +216,7 @@ public class ENTITYNAME_TOKENLithoService implements LithoCRUD<ENTITYNAME_TOKEND
 
 			Join<DataPoint, PARENTNAME_TOKEN> gcDataPointJoin = dataPointJoin.join(DataPoint_.PARENTNAME_FIRSTLETTER_LOWERCASE_TOKEN, JoinType.LEFT);
 
-			Join<PARENTNAME_TOKEN, ENTITYNAME_TOKEN> elementalConcentrationDataPointJoin = gcDataPointJoin.join(PARENTNAME_TOKEN_.ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKENs, JoinType.LEFT);
+			Join<PARENTNAME_TOKEN, ENTITYNAME_TOKEN> elementalConcentrationDataPointJoin = gcDataPointJoin.join(PARENTNAME_TOKEN_.ENTITYNAME_FIRSTLETTER_LOWERCASE_TOKEN, JoinType.LEFT);
 
 			return criteriaBuilder.equal(elementalConcentrationDataPointJoin.get(ENTITYNAME_TOKEN_.id), entityId);
 

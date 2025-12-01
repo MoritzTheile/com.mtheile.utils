@@ -1,21 +1,17 @@
 package com.lithodat.app.litho.web.rest.MODULNAME_LOWERCASE_TOKEN;
 
-import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,13 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
-import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
-import com.lithodat.app.litho.service.geojson.cluster.ClusterDTO;
 import com.lithodat.app.litho.service.MODULNAME_LOWERCASE_TOKEN.ENTITYNAME_TOKENLithoService;
 import com.lithodat.app.litho.service.util.AuthzException;
 import com.lithodat.app.litho.service.util.FrequentlyUsedBeans;
-import com.lithodat.app.litho.service.util.LithoAuth;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENCriteria;
+import com.lithodat.app.service.dto.ENTITYNAME_TOKENDTO;
 import com.lithodat.app.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -63,48 +57,48 @@ public class ENTITYNAME_TOKENLithoResource {
 	private ENTITYNAME_TOKENLithoService lithoService;
 
 	@PostMapping(RESOURCE_URL)
-	public ResponseEntity<ENTITYNAME_TOKENDTO> create(@Valid @RequestBody ENTITYNAME_TOKENDTO dto) throws Exception {
+	public ResponseEntity<ENTITYNAME_TOKENDTO> create(@Valid @RequestBody ENTITYNAME_TOKENDTO dto, HttpServletRequest httpRequest) throws Exception {
 		if (dto.getId() != null) {
 			throw new BadRequestAlertException("A new entity cannot already have an ID", ENTITY_NAME, "idexists");
 		}
-		ENTITYNAME_TOKENDTO result = lithoService.create(fub.getLithoAuth(), dto, null);
+		ENTITYNAME_TOKENDTO result = lithoService.create(fub.getLithoAuth(httpRequest.getRequestURL()+""), dto, null);
 		return ResponseEntity.created(new URI("/api" + RESOURCE_URL + "/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
 				.body(result);
 	}
 
 	@PutMapping(RESOURCE_URL)
-	public ResponseEntity<ENTITYNAME_TOKENDTO> update(@Valid @RequestBody ENTITYNAME_TOKENDTO dataPointDTO) throws Exception {
+	public ResponseEntity<ENTITYNAME_TOKENDTO> update(@Valid @RequestBody ENTITYNAME_TOKENDTO dataPointDTO, HttpServletRequest httpRequest) throws Exception {
 		if (dataPointDTO.getId() == null) {
 			throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
 		}
-		ENTITYNAME_TOKENDTO result = lithoService.update(fub.getLithoAuth(), dataPointDTO);
+		ENTITYNAME_TOKENDTO result = lithoService.update(fub.getLithoAuth(httpRequest.getRequestURL()+""), dataPointDTO);
 		return ResponseEntity.ok()
 				.headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, dataPointDTO.getId().toString()))
 				.body(result);
 	}
 
 	@GetMapping(RESOURCE_URL)
-	public ResponseEntity<List<ENTITYNAME_TOKENDTO>> get(ENTITYNAME_TOKENCriteria criteria, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder) throws AuthzException, Exception {
-		Page<ENTITYNAME_TOKENDTO> page = lithoService.findByCriteria(fub.getLithoAuth(), criteria, pageable);
+	public ResponseEntity<List<ENTITYNAME_TOKENDTO>> get(ENTITYNAME_TOKENCriteria criteria, Pageable pageable, @RequestParam MultiValueMap<String, String> queryParams, UriComponentsBuilder uriBuilder, HttpServletRequest httpRequest) throws AuthzException, Exception {
+		Page<ENTITYNAME_TOKENDTO> page = lithoService.findByCriteria(fub.getLithoAuth(httpRequest.getRequestURL()+""), criteria, pageable);
 		HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(uriBuilder.queryParams(queryParams), page);
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
 	}
 
 	@GetMapping(RESOURCE_URL + "/count")
-	public ResponseEntity<Long> count(ENTITYNAME_TOKENCriteria criteria) throws Exception {
-		return ResponseEntity.ok().body(lithoService.countByCriteria(fub.getLithoAuth(), criteria));
+	public ResponseEntity<Long> count(ENTITYNAME_TOKENCriteria criteria, HttpServletRequest httpRequest) throws Exception {
+		return ResponseEntity.ok().body(lithoService.countByCriteria(fub.getLithoAuth(httpRequest.getRequestURL()+""), criteria));
 	}
 
 	@GetMapping(RESOURCE_URL + "/{id}")
-	public ResponseEntity<ENTITYNAME_TOKENDTO> get(@PathVariable Long id) throws Exception {
-		Optional<ENTITYNAME_TOKENDTO> dataPointDTO = lithoService.findOne(fub.getLithoAuth(), id);
+	public ResponseEntity<ENTITYNAME_TOKENDTO> get(@PathVariable Long id, HttpServletRequest httpRequest) throws Exception {
+		Optional<ENTITYNAME_TOKENDTO> dataPointDTO = lithoService.findOne(fub.getLithoAuth(httpRequest.getRequestURL()+""), id);
 		return ResponseUtil.wrapOrNotFound(dataPointDTO);
 	}
 
 	@DeleteMapping(RESOURCE_URL + "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
-		lithoService.delete(fub.getLithoAuth(), id);
+	public ResponseEntity<Void> delete(@PathVariable Long id, HttpServletRequest httpRequest) throws Exception {
+		lithoService.delete(fub.getLithoAuth(httpRequest.getRequestURL()+""), id);
 		return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
 	}
 }
